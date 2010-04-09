@@ -52,6 +52,7 @@ namespace GameStateManagement
         Ship m_kShip;
         WallManager m_kWallManager;
         //Wall topWall;
+        Plane m_kPlane;
 
 
         #endregion
@@ -97,16 +98,15 @@ namespace GameStateManagement
             // it should not try to catch up.
             ScreenManager.Game.ResetElapsedTime();
 
-
-
-
             m_kShip = new Ship(ScreenManager.Game);
-
             ScreenManager.Game.Components.Add(m_kShip);
 
 
             m_kWallManager = new WallManager(ScreenManager.Game);
             ScreenManager.Game.Components.Add(m_kWallManager);
+
+            m_kPlane = new Plane(ScreenManager.Game);
+            ScreenManager.Game.Components.Add(m_kPlane);
 
         }
 

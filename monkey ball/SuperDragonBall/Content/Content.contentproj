@@ -65,19 +65,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Asteroid.x">
+    <Compile Include="meshes\Asteroid.x">
       <Name>Asteroid</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Ship.x">
+    <Compile Include="meshes\Ship.x">
       <Name>Ship</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Missile.x">
+    <Compile Include="meshes\Missile.x">
       <Name>Missile</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
@@ -91,10 +91,31 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cube.x">
+    <Compile Include="meshes\cube.x">
       <Name>cube</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="meshes\testBallThing.fbx">
+      <Name>testBallThing</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="meshes\checker_plane.fbx">
+      <Name>checker_plane</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="2031.jpg">
+      <Name>2031</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v3.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

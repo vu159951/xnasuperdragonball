@@ -4,10 +4,13 @@ Content\gradient.xnb
 Content\gamefont.xnb
 Content\menufont.xnb
 Content\fpsfont.xnb
-Content\Asteroid.xnb
-Content\Ship.xnb
-Content\Missile.xnb
-Content\cube.xnb
+Content\meshes\Asteroid.xnb
+Content\meshes\Ship.xnb
+Content\meshes\Missile.xnb
+Content\meshes\cube.xnb
+Content\meshes\testBallThing.xnb
+Content\2031.xnb
+Content\meshes\checker_plane.xnb
 Content\Sounds.xgs
 Content\XNAsteroids Waves.xwb
 Content\XNAsteroids Cues.xsb
