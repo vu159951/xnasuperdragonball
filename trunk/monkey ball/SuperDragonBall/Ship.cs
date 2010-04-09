@@ -22,8 +22,9 @@ namespace GameStateManagement
         public Ship(Game game)
             : base(game)
         {
-            modelName = "Ship";
+            modelName = "testBallThing";
             Position = new Vector3(0f, 0f, 0f);
+            Scale *= 5;
             
             Quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
             

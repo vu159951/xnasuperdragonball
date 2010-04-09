@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Asteroid.cs" />
+    <Compile Include="Plane.cs" />
     <Compile Include="Screens\JesseTestMenu.cs" />
     <Compile Include="Screens\ScottTestMenu.cs" />
     <Compile Include="Screens\GregTestMenu.cs" />

@@ -177,7 +177,7 @@ namespace GameStateManagement
 
             base.LoadContent();
             contentManager = new ContentManager(Game.Services, "Content");
-            model = contentManager.Load<Model>(modelName);
+            model = contentManager.Load<Model>("meshes/" + modelName);
             boneTransforms = new Matrix[model.Bones.Count];
             foreach (ModelMesh mesh in model.Meshes)
             {
