@@ -217,9 +217,9 @@ namespace GameStateManagement
                     effect.DirectionalLight0.Direction=GameplayScreen.DLightDirection;
                     effect.DirectionalLight0.DiffuseColor = GameplayScreen.DLightColor;
 
-                    effect.TextureEnabled = true;
-                    Texture2D tex = contentManager.Load<Texture2D>("2031");
-                    effect.Texture = tex;
+                    //effect.TextureEnabled = true;
+                    //Texture2D tex = contentManager.Load<Texture2D>("2031");
+                    //effect.Texture = tex;
                   
                 }
                 mesh.Draw();
