@@ -82,11 +82,8 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Asteroid.cs" />
-<<<<<<< .mine
     <Compile Include="Screens\GregTestFlatPlane.cs" />
-=======
     <Compile Include="Plane.cs" />
->>>>>>> .r20
     <Compile Include="Screens\JesseTestMenu.cs" />
     <Compile Include="Screens\ScottTestMenu.cs" />
     <Compile Include="Screens\GregTestMenu.cs" />
