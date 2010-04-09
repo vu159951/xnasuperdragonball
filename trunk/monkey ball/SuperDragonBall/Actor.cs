@@ -197,6 +197,10 @@ namespace GameStateManagement
             
             base.Draw(gameTime);
             GraphicsDevice.RenderState.DepthBufferEnable = true;
+            GraphicsDevice.RenderState.AlphaBlendEnable = true;
+            GraphicsDevice.RenderState.SourceBlend = Blend.SourceAlpha;
+            GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
+            GraphicsDevice.RenderState.BlendFunction = BlendFunction.Add;
             model.CopyAbsoluteBoneTransformsTo(boneTransforms);
             foreach (ModelMesh mesh in model.Meshes)
             {
@@ -212,11 +216,16 @@ namespace GameStateManagement
                     effect.SpecularColor = GameplayScreen.SpecularColor;
                     effect.DirectionalLight0.Direction=GameplayScreen.DLightDirection;
                     effect.DirectionalLight0.DiffuseColor = GameplayScreen.DLightColor;
-                    
+
+                    effect.TextureEnabled = true;
+                    Texture2D tex = contentManager.Load<Texture2D>("2031");
+                    effect.Texture = tex;
                   
                 }
                 mesh.Draw();
             }
+
+            GraphicsDevice.RenderState.AlphaBlendEnable = false;
         }
 
         public Vector3 GetWorldFacing()
