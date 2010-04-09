@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Game State Management")]
-[assembly: AssemblyProduct("Game State Management")]
+[assembly: AssemblyTitle("Super Dragon Ball")]
+[assembly: AssemblyProduct("Super Dragon Ball")]
 [assembly: AssemblyDescription("This sample shows how to manage the transitions between different menus and gameplay states.")]
 [assembly: AssemblyCompany("Microsoft")]
 
