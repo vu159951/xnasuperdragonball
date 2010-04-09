@@ -82,6 +82,11 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Asteroid.cs" />
+    <Compile Include="Screens\JesseTestMenu.cs" />
+    <Compile Include="Screens\ScottTestMenu.cs" />
+    <Compile Include="Screens\GregTestMenu.cs" />
+    <Compile Include="Screens\UnitTestMenuScreen.cs" />
+    <Compile Include="Screens\YinTestMenu.cs" />
     <Compile Include="WallManager.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Game.cs" />

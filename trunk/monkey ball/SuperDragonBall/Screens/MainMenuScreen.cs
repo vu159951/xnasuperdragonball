@@ -29,16 +29,19 @@ namespace GameStateManagement
         {
             // Create our menu entries.
             MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
+            MenuEntry unitTestMenuEntry = new MenuEntry("Unit Tests");
             MenuEntry optionsMenuEntry = new MenuEntry("Options");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
             optionsMenuEntry.Selected += OptionsMenuEntrySelected;
+            unitTestMenuEntry.Selected += UnitTestMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(playGameMenuEntry);
+            MenuEntries.Add(unitTestMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
@@ -66,6 +69,15 @@ namespace GameStateManagement
             ScreenManager.AddScreen(new OptionsMenuScreen());
         }
 
+        
+
+        /// <summary>
+        /// Event handler for when the Options menu entry is selected.
+        /// </summary>
+        void UnitTestMenuEntrySelected(object sender, EventArgs e)
+        {
+            ScreenManager.AddScreen(new UnitTestMenuScreen());
+        }
 
         /// <summary>
         /// When the user cancels the main menu, ask if they want to exit the sample.
