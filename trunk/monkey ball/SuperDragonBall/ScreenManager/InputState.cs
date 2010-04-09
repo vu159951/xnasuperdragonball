@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 #endregion
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
     /// <summary>
     /// Helper for reading input from keyboard and gamepad. This class tracks both
@@ -194,6 +194,30 @@ namespace GameStateManagement
             }
         }
 
+        public bool ShipMoveRelease
+        {
+            get
+            {
+                return IsNewKeyRelease(Keys.W);
+            }
+        }
+
+        public bool ReverseThrust
+        {
+            get
+            {
+                return IsKeyHeld(Keys.S);
+            }
+        }
+
+        public bool ReverseThrustRelease
+        {
+            get
+            {
+                return IsNewKeyRelease(Keys.S);
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -258,6 +282,35 @@ namespace GameStateManagement
         {
             return (CurrentKeyboardStates[(int)playerIndex].IsKeyDown(key) &&
                     LastKeyboardStates[(int)playerIndex].IsKeyDown(key));
+        }
+
+        /// <summary>
+        /// Key Just Released
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool IsNewKeyRelease(Keys key)
+        {
+            for (int i = 0; i < MaxInputs; i++)
+            {
+                if (IsNewKeyRelease(key, (PlayerIndex)i))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Helper for Key Just Released
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="playerIndex"></param>
+        /// <returns></returns>
+        public bool IsNewKeyRelease(Keys key, PlayerIndex playerIndex)
+        {
+            return !CurrentKeyboardStates[(int)playerIndex].IsKeyDown(key) &&
+                LastKeyboardStates[(int)playerIndex].IsKeyDown(key);
         }
 
 

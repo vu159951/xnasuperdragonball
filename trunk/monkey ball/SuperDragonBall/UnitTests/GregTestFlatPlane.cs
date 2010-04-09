@@ -1,4 +1,4 @@
-#region File Description
+﻿#region File Description
 //-----------------------------------------------------------------------------
 // GameplayScreen.cs
 //
@@ -25,7 +25,7 @@ namespace SuperDragonBall
     /// placeholder to get the idea across: you'll probably want to
     /// put some more interesting gameplay in here!
     /// </summary>
-    class GameplayScreen : GameScreen
+    class GregTestFlatPlane : GameScreen
     {
         #region Fields
 
@@ -49,12 +49,12 @@ namespace SuperDragonBall
         public static WaveBank wavebank;
         public static SoundBank soundbank;
         //public static Dictionary<Asteroid, bool> asteroidCollided = new Dictionary<Asteroid, bool>();
-        Ship m_kShip;
+        Ship player;
         WallManager m_kWallManager;
         //Wall topWall;
         Plane m_kPlane;
 
-       
+
 
         #endregion
 
@@ -64,14 +64,17 @@ namespace SuperDragonBall
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GameplayScreen()
+        public GregTestFlatPlane()
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-            CameraMatrix = Matrix.CreateLookAt(new Vector3(0.0f, 10.0f, 100.0f), Vector3.Zero, Vector3.UnitY);
+            //CameraMatrix = Matrix.CreateLookAt(new Vector3(0.0f, 10.0f, 100.0f), Vector3.Zero, Vector3.UnitY);
 
-            ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, 1f, 2.0f, 10000f);
-          
+            //ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, 1f, 2.0f, 10000f);
+            
+            CameraMatrix = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 2000.0f), Vector3.Zero, Vector3.UnitY);
+            ProjectionMatrix = Matrix.CreateOrthographic(GameStateManagementGame.SCREEN_WIDTH,
+                GameStateManagementGame.SCREEN_HEIGHT, 0.1f, 10000.0f);
         }
 
 
@@ -89,10 +92,10 @@ namespace SuperDragonBall
             wavebank = new WaveBank(audio, "Content/XNAsteroids Waves.xwb");
             soundbank = new SoundBank(audio, "Content/XNAsteroids Cues.xsb");
 
+           
 
-            m_kShip = new Ship(ScreenManager.Game);
-            ScreenManager.Game.Components.Add(m_kShip);
-
+            player = new Ship(ScreenManager.Game);
+            ScreenManager.Game.Components.Add(player);
 
             m_kWallManager = new WallManager(ScreenManager.Game);
             ScreenManager.Game.Components.Add(m_kWallManager);
@@ -108,9 +111,8 @@ namespace SuperDragonBall
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
-            ScreenManager.Game.ResetElapsedTime();
 
-           
+            ScreenManager.Game.ResetElapsedTime();
 
         }
 
@@ -153,7 +155,6 @@ namespace SuperDragonBall
         /// </summary>
         public override void HandleInput(InputState input, GameTime gameTime)
         {
-    
             float timeDelta = (float)(gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000.0f);
 
             if (input == null)
@@ -168,54 +169,25 @@ namespace SuperDragonBall
             {
                 //fireMissile();
             }
-            m_kShip.rotationVelocity = 0;
+            player.rotationVelocity = 0;
             if (input.ShipTurnLeft)
             {
-                m_kShip.rotationVelocity += 3;
+                player.rotationVelocity += 3;
             }
             if (input.ShipTurnRight)
             {
-                m_kShip.rotationVelocity += -3;
+                player.rotationVelocity += -3;
             }
             Vector3 thrust = Vector3.Zero;
             if (input.ShipMove)
             {
-                thrust += 3500f * m_kShip.directionVec;
+                thrust += 3500f * player.directionVec;
             }
             if (input.ReverseThrust)
             {
-                thrust += -3500f * m_kShip.directionVec;
+                thrust += -3500f * player.directionVec;
             }
-            m_kShip.netForce = thrust;
-
-            /*
-            if (ScreenManager.Game.Components.Contains(m_kShip))
-            {
-                if (input.ShipMove)
-                {
-                    m_kShip.moveForward(gameTime);
-                }
-                if (input.ShipBrake)
-                {
-                    m_kShip.brake(gameTime);
-                }
-                if (input.ShipTurnRight)
-                {
-                    m_kShip.turnRight(gameTime);
-                }
-                if (input.ShipTurnLeft)
-                {
-                    m_kShip.turnLeft(gameTime);
-                }
-                if (input.ShipFire)
-                {
-                    //m_kShip.shootMissile();
-                }
-                if (input.shipStop)
-                {
-                    m_kShip.stop();
-                }
-            }*/
+            player.netForce = thrust;
         }
 
 
@@ -224,7 +196,7 @@ namespace SuperDragonBall
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-
+           
             // This game has a blue background. Why? Because!
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
                                                Color.Black, 0, 0);
@@ -238,8 +210,7 @@ namespace SuperDragonBall
 
         #endregion
 
-       
     }
 
-		
+
 }

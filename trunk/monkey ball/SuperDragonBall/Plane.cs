@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
@@ -25,10 +25,10 @@ namespace GameStateManagement
         {
             // TODO: Construct any child components here
             modelName = "checker_plane";
-            Position = new Vector3(0f, 0f, -10f);
-            Scale *= 50;
+            position = new Vector3(0f, 0f, -10f);
+            scale *= 50;
             
-            Quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
+            quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
 
             //effect.TextureEnabled = true;
 

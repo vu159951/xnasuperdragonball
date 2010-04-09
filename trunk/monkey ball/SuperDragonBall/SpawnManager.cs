@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
@@ -65,9 +65,8 @@ namespace GameStateManagement
             if (asteroids.Count < 0)
             {
                  temp= new Asteroid(game);
-                temp.Position = new Vector3((float)(random.NextDouble() * 1024)-512, (float)(random.NextDouble() * 768)-384, 0.0f);
-                temp.vForce = new Vector3(((float)random.NextDouble()*2-1), ((float)random.NextDouble()*2-1), 0)*300f;
-                temp.bPhysicsDriven = true;
+                temp.position = new Vector3((float)(random.NextDouble() * 1024)-512, (float)(random.NextDouble() * 768)-384, 0.0f);
+                temp.netForce = new Vector3(((float)random.NextDouble()*2-1), ((float)random.NextDouble()*2-1), 0)*300f;
                 game.Components.Add(temp);
                 //if(temp
                 asteroids.Add(temp);

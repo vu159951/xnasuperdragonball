@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
@@ -21,6 +21,10 @@ namespace GameStateManagement
     public class WallManager : Microsoft.Xna.Framework.GameComponent
     {
       private Game game;
+
+      public static float WallBoundsX = 600f;
+      public static float WallBoundsY = 600f;
+
         public WallManager(Game game)
             : base(game)
         {
@@ -54,29 +58,29 @@ namespace GameStateManagement
 
         private void buildWall()
         {
-            for (int i = (int)-Actor.Bounds / 20; i < (int)Actor.Bounds / 20; i++)
+            for (int i = (int)-WallBoundsY / 20; i < (int)WallBoundsY / 20; i++)
             {
                 Wall topWall = new Wall(game);
-                topWall.Position = new Vector3(i * 20.0f, -Actor.Bounds, 0f);
+                topWall.position = new Vector3(i * 20.0f, -WallBoundsY, 0f);
                 game.Components.Add(topWall);
             }
-            for (int i = (int)-Actor.Bounds / 20; i < (int)Actor.Bounds / 20; i++)
+            for (int i = (int)-WallBoundsY / 20; i < (int)WallBoundsY / 20; i++)
             {
-                Wall topWall = new Wall(game);
-                topWall.Position = new Vector3(i * 20.0f, Actor.Bounds, 0f);
-                game.Components.Add(topWall);
+                Wall bottomWall = new Wall(game);
+                bottomWall.position = new Vector3(i * 20.0f, WallBoundsY, 0f);
+                game.Components.Add(bottomWall);
             }
-            for (int i = (int)-Actor.Bounds / 20; i < (int)Actor.Bounds / 20; i++)
+            for (int i = (int)-WallBoundsX / 20; i < (int)WallBoundsX / 20; i++)
             {
-                Wall topWall = new Wall(game);
-                topWall.Position = new Vector3(-Actor.Bounds, i * 20.0f, 0f);
-                game.Components.Add(topWall);
+                Wall leftWall = new Wall(game);
+                leftWall.position = new Vector3(-WallBoundsX, i * 20.0f, 0f);
+                game.Components.Add(leftWall);
             }
-            for (int i = (int)-Actor.Bounds / 20; i < (int)Actor.Bounds / 20; i++)
+            for (int i = (int)-WallBoundsX / 20; i < (int)WallBoundsX / 20; i++)
             {
-                Wall topWall = new Wall(game);
-                topWall.Position = new Vector3(Actor.Bounds, i * 20.0f, 0f);
-                game.Components.Add(topWall);
+                Wall rightWall = new Wall(game);
+                rightWall.position = new Vector3(WallBoundsX, i * 20.0f, 0f);
+                game.Components.Add(rightWall);
             }
         }
 

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
     /// <summary>
     /// Sample showing how to manage different game states, with transitions
@@ -27,6 +27,13 @@ namespace GameStateManagement
         GraphicsDeviceManager graphics;
         ScreenManager screenManager;
         public Utils.FrameRateCounter m_kFrameRate;
+
+        //screen width/height
+        public static int SCREEN_WIDTH = 1024;
+        public static int SCREEN_HEIGHT = 768;
+        //buffer for world wrap
+        public static int BUFFER_W = 50;
+        public static int BUFFER_H = 50;
 
         #endregion
 
@@ -72,7 +79,8 @@ namespace GameStateManagement
             Components.Add(m_kFrameRate);
 
             // For testing purposes, let's disable fixed time step and vsync.
-            IsFixedTimeStep = false;
+            // non-fixed timestep is damned irritating
+            IsFixedTimeStep = true;
             graphics.SynchronizeWithVerticalRetrace = false;
         }
 

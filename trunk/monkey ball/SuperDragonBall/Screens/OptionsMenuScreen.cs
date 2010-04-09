@@ -12,7 +12,7 @@ using System;
 using Microsoft.Xna.Framework;
 #endregion
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
     /// <summary>
     /// The options screen is brought up over the top of the main menu
