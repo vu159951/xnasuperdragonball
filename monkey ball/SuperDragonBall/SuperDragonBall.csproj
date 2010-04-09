@@ -82,13 +82,14 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Asteroid.cs" />
-    <Compile Include="Screens\GregTestFlatPlane.cs" />
+    <Compile Include="BallCharacter.cs" />
+    <Compile Include="UnitTests\GregTestFlatPlane.cs" />
     <Compile Include="Plane.cs" />
-    <Compile Include="Screens\JesseTestMenu.cs" />
-    <Compile Include="Screens\ScottTestMenu.cs" />
-    <Compile Include="Screens\GregTestMenu.cs" />
-    <Compile Include="Screens\UnitTestMenuScreen.cs" />
-    <Compile Include="Screens\YinTestMenu.cs" />
+    <Compile Include="Screens\MenuScreens\JesseTestMenu.cs" />
+    <Compile Include="Screens\MenuScreens\ScottTestMenu.cs" />
+    <Compile Include="Screens\MenuScreens\GregTestMenu.cs" />
+    <Compile Include="Screens\MenuScreens\UnitTestMenuScreen.cs" />
+    <Compile Include="Screens\MenuScreens\YinTestMenu.cs" />
     <Compile Include="WallManager.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Game.cs" />
@@ -99,12 +100,12 @@
     <Compile Include="Screens\BackgroundScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
-    <Compile Include="Screens\MainMenuScreen.cs" />
+    <Compile Include="Screens\MenuScreens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuEntry.cs" />
-    <Compile Include="Screens\MenuScreen.cs" />
+    <Compile Include="Screens\MenuScreens\MenuScreen.cs" />
     <Compile Include="Screens\MessageBoxScreen.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />
-    <Compile Include="Screens\PauseMenuScreen.cs" />
+    <Compile Include="Screens\MenuScreens\PauseMenuScreen.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="SpawnManager.cs" />
     <Compile Include="Utils\FrameRateCounter.cs" />
@@ -147,9 +148,6 @@
       <ProductName>Microsoft XNA Framework Redistributable 3.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" Condition="" />

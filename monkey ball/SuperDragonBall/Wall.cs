@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
 
     public class Wall : Actor
@@ -21,12 +21,15 @@ namespace GameStateManagement
         public Wall(Game game)
             : base(game)
         {
-            Position = new Vector3(0f, 0f, 0f);
+            position = new Vector3(0f, 0f, 0f);
             modelName = "cube";
-            isWall = true;
            
-            Scale = 5;
-           
+            scale = 5;    
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            //base.Update(gameTime);
         }
 
      

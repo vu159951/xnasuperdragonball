@@ -12,90 +12,69 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
     public class Actor : Microsoft.Xna.Framework.DrawableGameComponent
     {
+
         protected Model model;
         public Matrix worldTransform;
+        //variables to describe the position/scale/rotation of the actor
+        protected float m_scale;
+        protected Vector3 m_position;
+        protected Quaternion m_quat;
+        protected bool m_changed;
+
+        //velocity
+        protected Vector3 m_velocity;
+        protected Vector3 m_rotationAxis;
+        protected float m_rotationVelocity;
+        //set to 1 for no speed up
+        public const int SPEED_UP = 5;
+
         protected ContentManager contentManager;
-        public static String modelName;
+        protected static string modelName;
         protected Utils.Timer timer;
-        protected Matrix[] boneTransforms;
-        public static float Bounds =600f;
-        private float MaxX = Bounds;
-        private float MaxY = Bounds;
+        protected Matrix[] bones;
 
-        public float fMass=10;
-        public float fTerminalVelocity=10;
-        public Vector3 vForce=new Vector3(0f,0f,0f);
-        protected Vector3 vAcceleration = new Vector3(0f, 0f, 0f);
-        public bool bPhysicsDriven=false;
-        public bool isWall = false;
+        protected float fMass;
+        protected float fTerminalVelocity;
+        protected Vector3 vForce;
+        protected Vector3 vAcceleration;
+        protected bool bPhysicsDriven;
 
-        public BoundingSphere ModelBounds;
-        public BoundingSphere WorldBounds;
+        protected BoundingSphere ModelBounds;
+        protected BoundingSphere WorldBounds;
 
-        public Vector3 velocity = new Vector3(0);
-
-        private bool m_bChanged = false;
-        
-
-        private float m_kScale=1.0f;
-        public float Scale
-        {
-            get
-            {
-                return m_kScale;
-            }
-            set
-            {
-                m_kScale = value;
-                m_bChanged = true;
-            }
-        }
-
-
-        private Vector3 m_kPosition = new Vector3(0f, 0f, 0f);
-        public Vector3 Position
-        {
-            get
-            {
-                return m_kPosition;
-            }
-            set
-            {
-                m_kPosition = value;
-                
-                m_bChanged = true;
-            }
-        }
-
-
-        private Quaternion m_kQuat = Quaternion.Identity;
-        public Quaternion Quat
-        {
-            get
-            {
-                return m_kQuat;
-            }
-            set
-            {
-                m_kQuat = value;
-                m_bChanged = true;
-            }
-        }
 
 
         public Actor(Game game)
             : base(game)
         {
+            // TODO: Construct any child components here
             timer = new Utils.Timer();
+            worldTransform = new Matrix();
             worldTransform = Matrix.Identity;
-            
+
+            m_scale = 1.0f;
+            m_position = new Vector3(0.0f, 0.0f, 0.0f);
+            m_quat = Quaternion.Identity;
+            m_changed = true;
+            modifyWorldTransform();
+
+            m_velocity = new Vector3(0.0f, 0.0f, 0.0f);
+            //default, rotate zero speed around the Up vector
+            m_rotationAxis = Vector3.Up;
+            m_rotationVelocity = 0.0f;
+
+            fMass = 1;
+            fTerminalVelocity = 350;
+            vForce = Vector3.Zero;
+            vAcceleration = Vector3.Zero;
+            bPhysicsDriven = false;
 
         }
 
@@ -117,115 +96,265 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-       
-            base.Update(gameTime);
             timer.Update(gameTime);
-            if (!isWall)
-            {
-                if (bPhysicsDriven)
-                {
-                    velocity += vAcceleration * ((float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond) / 2.0f;
-                    if (velocity.LengthSquared() > (fTerminalVelocity * fTerminalVelocity))
-                    {
-                        velocity = Vector3.Normalize(velocity) * fTerminalVelocity;
-                    }
-                    Position += velocity * ((float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond) / 30f;
-                    vAcceleration = vForce / fMass;
-                    velocity += vAcceleration * ((float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond) / 2.0f;
-                    if (velocity.LengthSquared() > (fTerminalVelocity * fTerminalVelocity))
-                    {
-                        velocity = Vector3.Normalize(velocity) * fTerminalVelocity;
-                        //vForce.Normalize();
-                    }
-                }
-                else
-                {
-                    //Position += velocity * ((float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond) / 30.0f;
-                }
-                if (m_kPosition.X > MaxX)
-                {
-                    m_kPosition.X = MaxX -5;
-                    vForce = new Vector3(0, 0, 0);
-                }
-                else if (m_kPosition.X < -MaxX)
-                {
-                    m_kPosition.X = -MaxX+5;
-                    vForce = new Vector3(0, 0, 0);
-                }
-                if (m_kPosition.Y > MaxY)
-                {
-                    m_kPosition.Y = MaxY -5;
-                    vForce = new Vector3(0, 0, 0);
-                }
-                else if (m_kPosition.Y < -MaxY)
-                {
-                    m_kPosition.Y = -MaxY +5;
-                    vForce = new Vector3(0, 0, 0);
-                }
-            }
-            
 
-            if (m_bChanged)
+            float timeDelta = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+
+
+            if (bPhysicsDriven)
             {
-                recalculateWolrdTransform();
-                m_bChanged = false;
+                m_velocity += vAcceleration * timeDelta / 2.0f;
+                m_position += m_velocity * timeDelta;
+                vAcceleration = vForce / fMass;
+                m_velocity += vAcceleration * timeDelta / 2.0f;
+
+                if (m_velocity.Length() > fTerminalVelocity)
+                {
+                    m_velocity *= fTerminalVelocity / m_velocity.Length();
+                }
             }
+            else
+            {
+                //do it the previous way
+                //add velocity to position
+                this.position += m_velocity * timeDelta * SPEED_UP;
+            }
+
+            //rotate around axis            
+            this.quat *= Quaternion.CreateFromAxisAngle(rotationAxis, rotationVelocity * timeDelta);
+
+            // for all actors in the game
+            worldBoarder();
+
+            base.Update(gameTime);
         }
 
         protected override void LoadContent()
         {
-
-            base.LoadContent();
-            contentManager = new ContentManager(Game.Services, "Content");
-            model = contentManager.Load<Model>("meshes/" + modelName);
-            boneTransforms = new Matrix[model.Bones.Count];
+            contentManager = new ContentManager(Game.Services, "Content/meshes");
+            model = contentManager.Load<Model>(modelName);
+            bones = new Matrix[model.Bones.Count];
             foreach (ModelMesh mesh in model.Meshes)
             {
                 ModelBounds = BoundingSphere.CreateMerged(ModelBounds,
-                mesh.BoundingSphere);
+            mesh.BoundingSphere);
             }
+            base.LoadContent();
         }
 
         protected override void UnloadContent()
         {
-            base.UnloadContent();
             contentManager.Unload();
+            base.UnloadContent();
         }
 
         public override void Draw(GameTime gameTime)
         {
-            
-            base.Draw(gameTime);
+            //modify the world transform matrix if necessary
+            if (m_changed)
+            {
+                modifyWorldTransform();
+            }
+
+            //do the drawing part
             GraphicsDevice.RenderState.DepthBufferEnable = true;
-            GraphicsDevice.RenderState.AlphaBlendEnable = true;
-            GraphicsDevice.RenderState.SourceBlend = Blend.SourceAlpha;
-            GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
-            GraphicsDevice.RenderState.BlendFunction = BlendFunction.Add;
-            model.CopyAbsoluteBoneTransformsTo(boneTransforms);
+            model.CopyAbsoluteBoneTransformsTo(bones);
+
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.World =boneTransforms[mesh.ParentBone.Index] * worldTransform;
+                    effect.World = bones[mesh.ParentBone.Index] * worldTransform;
                     effect.View = GameplayScreen.CameraMatrix;
                     effect.Projection = GameplayScreen.ProjectionMatrix;
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
-                    effect.AmbientLightColor = GameplayScreen.AmbientLightColor;
-                    effect.SpecularPower = GameplayScreen.SpecularPower;
-                    effect.SpecularColor = GameplayScreen.SpecularColor;
-                    effect.DirectionalLight0.Direction=GameplayScreen.DLightDirection;
-                    effect.DirectionalLight0.DiffuseColor = GameplayScreen.DLightColor;
 
-                    //effect.TextureEnabled = true;
-                    //Texture2D tex = contentManager.Load<Texture2D>("2031");
-                    //effect.Texture = tex;
-                  
+                    effect.AmbientLightColor = GameplayScreen.AmbientLightColor;
+                    effect.SpecularColor = GameplayScreen.SpecularColor;
+                    effect.SpecularPower = GameplayScreen.SpecularPower;
+                    effect.DirectionalLight0.Direction = GameplayScreen.DLightDirection;
+                    effect.DirectionalLight0.DiffuseColor = GameplayScreen.DLightColor;
                 }
                 mesh.Draw();
             }
 
-            GraphicsDevice.RenderState.AlphaBlendEnable = false;
+            base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Should be called before draw functions are done
+        /// </summary>
+        private void modifyWorldTransform()
+        {
+            m_changed = false;
+            worldTransform = Matrix.CreateScale(m_scale) * Matrix.CreateFromQuaternion(m_quat) * Matrix.CreateTranslation(m_position);
+            WorldBounds.Center = m_position;
+            WorldBounds.Radius = ModelBounds.Radius * m_scale;
+        }
+
+        //all actors in this test class stop at the edges of the world
+        private void worldBoarder()
+        {
+            Vector3 currentP = position;
+            Vector3 nextVel = Vector3.Zero;
+            bool brokeWorldBounds = false;
+
+            float boundX = WallManager.WallBoundsX;
+            float boundY = WallManager.WallBoundsY;
+            //float boundX = GameStateManagementGame.SCREEN_WIDTH / 2 + GameStateManagementGame.BUFFER_W;
+            //float boundY = GameStateManagementGame.SCREEN_HEIGHT / 2 + GameStateManagementGame.BUFFER_H;
+
+            if (currentP.X < -boundX)
+            {
+                nextVel.X += 30;
+                currentP.X = -boundX;
+                brokeWorldBounds = true;
+                //currentP.X += boundX * 2;
+            }
+            else if (currentP.X > boundX)
+            {
+                nextVel.X -= 30;
+                currentP.X = boundX;
+                brokeWorldBounds = true;
+                //currentP.X -= boundX * 2;
+            }
+            if (currentP.Y < -boundY)
+            {
+                nextVel.Y += 30;
+                currentP.Y = -boundY;
+                brokeWorldBounds = true;
+                //currentP.Y += boundY * 2;
+            }
+            else if (currentP.Y > boundY)
+            {
+                nextVel.Y -= 30;
+                currentP.Y = boundY;
+                brokeWorldBounds = true;
+                //currentP.Y -= boundY * 2;
+            }
+            if (brokeWorldBounds)
+            {
+                //position = currentP;
+                velocity = nextVel;
+            }
+        }
+
+
+        //
+        // Getters
+        //
+
+        public Quaternion quat
+        {
+            get
+            {
+                return m_quat;
+            }
+            set
+            {
+                m_quat = value;
+                m_changed = true;
+            }
+        }
+
+        public Vector3 position
+        {
+            get
+            {
+                return m_position;
+            }
+            set
+            {
+                m_position = value;
+                m_changed = true;
+            }
+        }
+
+        public Vector3 velocity
+        {
+            get
+            {
+                return m_velocity;
+            }
+            set
+            {
+                m_velocity = value;
+            }
+        }
+
+        public Vector3 netForce
+        {
+            get
+            {
+                return vForce;
+            }
+            set
+            {
+                vForce = value;
+                m_changed = true;
+            }
+        }
+
+
+        public Vector3 directionVec
+        {
+            get
+            {
+                //return Matrix.CreateFromQuaternion(quat) * Vector3.One;
+                Vector3 dir = worldTransform.Forward;
+                dir.Normalize();
+                return dir;
+            }
+        }
+
+        public Vector3 rotationAxis
+        {
+            get
+            {
+                return m_rotationAxis;
+            }
+            set
+            {
+                //normalize when set
+                m_rotationAxis = new Vector3(value.X, value.Y, value.Z);
+                m_rotationAxis.Normalize();
+                m_changed = true;
+            }
+        }
+
+        public float rotationVelocity
+        {
+            get
+            {
+                return m_rotationVelocity;
+            }
+            set
+            {
+                m_rotationVelocity = value;
+                m_changed = true;
+            }
+        }
+
+        public float scale
+        {
+            get
+            {
+                return m_scale;
+            }
+            set
+            {
+                m_scale = value;
+                m_changed = true;
+            }
+        }
+
+        public BoundingSphere WorldBoundSphere
+        {
+            get
+            {
+                return WorldBounds;
+            }
         }
 
         public Vector3 GetWorldFacing()
@@ -233,20 +362,10 @@ namespace GameStateManagement
             return worldTransform.Forward;
         }
 
-        public Vector3 GetWorldPosition()
-        {
+        /*
+        public Vector3 GetWorldPosition() {
             return worldTransform.Translation;
         }
-
-        public void recalculateWolrdTransform()
-        {
-            //Matrix temp = Matrix.Identity;
-            worldTransform =Matrix.CreateScale(m_kScale);
-            worldTransform  *= Matrix.CreateFromQuaternion(m_kQuat);
-            worldTransform  *= Matrix.CreateTranslation(m_kPosition);
-            WorldBounds.Center = m_kPosition;
-            WorldBounds.Radius = ModelBounds.Radius * Scale;
-        
-        }
+        */
     }
 }

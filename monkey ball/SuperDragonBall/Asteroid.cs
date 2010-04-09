@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
 
-namespace GameStateManagement
+namespace SuperDragonBall
 {
     public class Asteroid : Actor
     {
@@ -22,8 +22,9 @@ namespace GameStateManagement
         public Asteroid(Game game)
             : base(game)
         {
-            Position = new Vector3(-2000f, -2000f, 0f);
-            recalculateWolrdTransform();
+            position = new Vector3(-2000f, -2000f, 0f);
+            //recalculateWolrdTransform();
+            
             fTerminalVelocity = 5f;
             fMass = 3;
             modelName = "Asteroid";
@@ -38,19 +39,11 @@ namespace GameStateManagement
             rotationAxis.Normalize();
            // bPhysicsDriven = false;
 
-            Quat *= Quaternion.CreateFromAxisAngle(rotationAxis, (float)Math.PI / 512 * Math.Max((gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond),0.5f));
+            quat *= Quaternion.CreateFromAxisAngle(rotationAxis, (float)Math.PI / 512 * Math.Max((gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond),0.5f));
            
         }
 
-        public void collideAgain()
-        {
-            timer.AddTimer("recollide",.2f,collideAllow,false);
-        }
-
-        private void collideAllow()
-        {
-            collided = false;
-        }
+      
 
 
 
