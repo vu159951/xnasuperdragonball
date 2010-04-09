@@ -106,7 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="dragonballicon.ico" />
-    <Content Include="Game.ico" />
     <None Include="GameStateSample.PNG" />
   </ItemGroup>
   <ItemGroup>
