@@ -25,30 +25,108 @@ namespace SuperDragonBall
     /// placeholder to get the idea across: you'll probably want to
     /// put some more interesting gameplay in here!
     /// </summary>
-    class GameplayScreen : GameScreen
+    public abstract class GameplayScreen : GameScreen
     {
         #region Fields
 
-        ContentManager content;
-        SpriteFont gameFont;
+        protected ContentManager content;
+        protected SpriteFont gameFont;
 
-        Vector2 playerPosition = new Vector2(100, 100);
-        Vector2 enemyPosition = new Vector2(100, 100);
+        protected Random random = new Random();
 
-        Random random = new Random();
+        protected Utils.Timer m_kTimer = new Utils.Timer();
+        protected Matrix cameraMatrix;
+        protected Matrix projectionMatrix;
+        protected Vector3 ambientLightColor = new Vector3(.15f, .3f, .5f);
+        protected float specularPower = .010f;
+        protected Vector3 specularColor = new Vector3(.3f, .2f, .6f);
+        protected Vector3 dLightDirection = new Vector3((float)Math.Sqrt(3), (float)Math.Sqrt(3), -(float)Math.Sqrt(3));
+        protected Vector3 dLightColor = new Vector3(.4f, .25f, .1f);
+        protected AudioEngine audio;
+        protected WaveBank wavebank;
+        protected SoundBank soundbank;
 
-        Utils.Timer m_kTimer = new Utils.Timer();
-        public static Matrix CameraMatrix;
-        public static Matrix ProjectionMatrix;
-        public static Vector3 AmbientLightColor = new Vector3(.15f, .3f, .5f);
-        public static float SpecularPower = .010f;
-        public static Vector3 SpecularColor = new Vector3(.3f, .2f, .6f);
-        public static Vector3 DLightDirection = new Vector3((float)Math.Sqrt(3), (float)Math.Sqrt(3), -(float)Math.Sqrt(3));
-        public static Vector3 DLightColor = new Vector3(.4f, .25f, .1f);
-        public static AudioEngine audio;
-        public static WaveBank wavebank;
-        public static SoundBank soundbank;
-        //public static Dictionary<Asteroid, bool> asteroidCollided = new Dictionary<Asteroid, bool>();
+        public Matrix CameraMatrix {
+            get {
+                return cameraMatrix;
+            }
+            set {
+                cameraMatrix = value;
+            }
+        }
+
+        public Matrix ProjectionMatrix
+        {
+            get
+            {
+                return projectionMatrix;
+            }
+            set
+            {
+                projectionMatrix = value;
+            }
+        }
+
+        public Vector3 AmbientLightColor
+        {
+            get
+            {
+                return ambientLightColor;
+            }
+            set
+            {
+                ambientLightColor = value;
+            }
+        }
+
+        public float SpecularPower
+        {
+            get
+            {
+                return specularPower;
+            }
+            set
+            {
+                specularPower = value;
+            }
+        }
+
+        public Vector3 SpecularColor
+        {
+            get
+            {
+                return specularColor;
+            }
+            set
+            {
+                specularColor = value;
+            }
+        }
+
+        public Vector3 DLightDirection
+        {
+            get
+            {
+                return dLightDirection;
+            }
+            set
+            {
+                dLightDirection = value;
+            }
+        }
+        public Vector3 DLightColor
+        {
+            get
+            {
+                return dLightColor;
+            }
+            set
+            {
+                dLightColor = value;
+            }
+        }
+        
+        
         Ship m_kShip;
         WallManager m_kWallManager;
         //Wall topWall;
@@ -59,21 +137,6 @@ namespace SuperDragonBall
         #endregion
 
         #region Initialization
-
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public GameplayScreen()
-        {
-            TransitionOnTime = TimeSpan.FromSeconds(1.5);
-            TransitionOffTime = TimeSpan.FromSeconds(0.5);
-            CameraMatrix = Matrix.CreateLookAt(new Vector3(0.0f, 10.0f, 100.0f), Vector3.Zero, Vector3.UnitY);
-
-            ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, 1f, 2.0f, 10000f);
-          
-        }
-
 
         /// <summary>
         /// Load graphics content for the game.
@@ -89,17 +152,6 @@ namespace SuperDragonBall
             wavebank = new WaveBank(audio, "Content/XNAsteroids Waves.xwb");
             soundbank = new SoundBank(audio, "Content/XNAsteroids Cues.xsb");
 
-
-            m_kShip = new Ship(ScreenManager.Game);
-            ScreenManager.Game.Components.Add(m_kShip);
-
-
-            m_kWallManager = new WallManager(ScreenManager.Game);
-            ScreenManager.Game.Components.Add(m_kWallManager);
-
-            m_kPlane = new Plane(ScreenManager.Game);
-            ScreenManager.Game.Components.Add(m_kPlane);
-
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
             // while, giving you a chance to admire the beautiful loading screen.
@@ -108,9 +160,7 @@ namespace SuperDragonBall
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
-            ScreenManager.Game.ResetElapsedTime();
-
-           
+            ScreenManager.Game.ResetElapsedTime(); 
 
         }
 
@@ -151,90 +201,14 @@ namespace SuperDragonBall
         /// Lets the game respond to player input. Unlike the Update method,
         /// this will only be called when the gameplay screen is active.
         /// </summary>
-        public override void HandleInput(InputState input, GameTime gameTime)
-        {
-    
-            float timeDelta = (float)(gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000.0f);
-
-            if (input == null)
-                throw new ArgumentNullException("input");
-
-            if (input.PauseGame)
-            {
-                // If they pressed pause, bring up the pause menu screen.
-                ScreenManager.AddScreen(new PauseMenuScreen());
-            }
-            if (input.ShipFire)
-            {
-                //fireMissile();
-            }
-            m_kShip.rotationVelocity = 0;
-            if (input.ShipTurnLeft)
-            {
-                m_kShip.rotationVelocity += 3;
-            }
-            if (input.ShipTurnRight)
-            {
-                m_kShip.rotationVelocity += -3;
-            }
-            Vector3 thrust = Vector3.Zero;
-            if (input.ShipMove)
-            {
-                thrust += 3500f * m_kShip.directionVec;
-            }
-            if (input.ReverseThrust)
-            {
-                thrust += -3500f * m_kShip.directionVec;
-            }
-            m_kShip.netForce = thrust;
-
-            /*
-            if (ScreenManager.Game.Components.Contains(m_kShip))
-            {
-                if (input.ShipMove)
-                {
-                    m_kShip.moveForward(gameTime);
-                }
-                if (input.ShipBrake)
-                {
-                    m_kShip.brake(gameTime);
-                }
-                if (input.ShipTurnRight)
-                {
-                    m_kShip.turnRight(gameTime);
-                }
-                if (input.ShipTurnLeft)
-                {
-                    m_kShip.turnLeft(gameTime);
-                }
-                if (input.ShipFire)
-                {
-                    //m_kShip.shootMissile();
-                }
-                if (input.shipStop)
-                {
-                    m_kShip.stop();
-                }
-            }*/
-        }
+       // public virtual void HandleInput(InputState input, GameTime gameTime)
+        //{ }
 
 
         /// <summary>
         /// Draws the gameplay screen.
         /// </summary>
-        public override void Draw(GameTime gameTime)
-        {
-
-            // This game has a blue background. Why? Because!
-            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                               Color.Black, 0, 0);
-
-
-            // If the game is transitioning on or off, fade it out to black.
-            if (TransitionPosition > 0)
-                ScreenManager.FadeBackBufferToBlack(255 - TransitionAlpha);
-
-        }
+        public virtual void Draw(GameTime gameTime) { }
 
         #endregion
 

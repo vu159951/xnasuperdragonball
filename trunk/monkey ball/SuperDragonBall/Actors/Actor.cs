@@ -49,11 +49,14 @@ namespace SuperDragonBall
         protected BoundingSphere ModelBounds;
         protected BoundingSphere WorldBounds;
 
+        protected GameplayScreen hostScreen;
 
-
-        public Actor(Game game)
+        public Actor(Game game, GameplayScreen host)
             : base(game)
         {
+            //the host contains useful things such as a camera matrix
+            hostScreen = host;
+
             // TODO: Construct any child components here
             timer = new Utils.Timer();
             worldTransform = new Matrix();
@@ -165,16 +168,16 @@ namespace SuperDragonBall
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.World = bones[mesh.ParentBone.Index] * worldTransform;
-                    effect.View = GameplayScreen.CameraMatrix;
-                    effect.Projection = GameplayScreen.ProjectionMatrix;
+                    effect.View = hostScreen.CameraMatrix;
+                    effect.Projection = hostScreen.ProjectionMatrix;
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
 
-                    effect.AmbientLightColor = GameplayScreen.AmbientLightColor;
-                    effect.SpecularColor = GameplayScreen.SpecularColor;
-                    effect.SpecularPower = GameplayScreen.SpecularPower;
-                    effect.DirectionalLight0.Direction = GameplayScreen.DLightDirection;
-                    effect.DirectionalLight0.DiffuseColor = GameplayScreen.DLightColor;
+                    effect.AmbientLightColor = hostScreen.AmbientLightColor;
+                    effect.SpecularColor = hostScreen.SpecularColor;
+                    effect.SpecularPower = hostScreen.SpecularPower;
+                    effect.DirectionalLight0.Direction = hostScreen.DLightDirection;
+                    effect.DirectionalLight0.DiffuseColor = hostScreen.DLightColor;
                 }
                 mesh.Draw();
             }

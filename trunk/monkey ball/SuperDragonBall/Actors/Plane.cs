@@ -20,8 +20,8 @@ namespace SuperDragonBall
     public class Plane : Actor
 
     {
-        public Plane(Game game)
-            : base(game)
+        public Plane(Game game, GameplayScreen host)
+            : base(game, host)
         {
             // TODO: Construct any child components here
             modelName = "checker_plane";

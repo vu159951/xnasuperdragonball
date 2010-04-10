@@ -80,18 +80,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actor.cs" />
-    <Compile Include="Asteroid.cs" />
-    <Compile Include="BallCharacter.cs" />
+    <Compile Include="Actors\Actor.cs" />
+    <Compile Include="Actors\Asteroid.cs" />
+    <Compile Include="Actors\BallCharacter.cs" />
+    <Compile Include="GameplayMain.cs" />
+    <Compile Include="UnitTests\GregTest2.cs" />
     <Compile Include="UnitTests\GregTestFlatPlane.cs" />
-    <Compile Include="Plane.cs" />
+    <Compile Include="Actors\Plane.cs" />
     <Compile Include="Screens\MenuScreens\JesseTestMenu.cs" />
     <Compile Include="Screens\MenuScreens\ScottTestMenu.cs" />
     <Compile Include="Screens\MenuScreens\GregTestMenu.cs" />
     <Compile Include="Screens\MenuScreens\UnitTestMenuScreen.cs" />
     <Compile Include="Screens\MenuScreens\YinTestMenu.cs" />
     <Compile Include="WallManager.cs" />
-    <Compile Include="Missile.cs" />
+    <Compile Include="Actors\Missile.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
@@ -106,11 +108,11 @@
     <Compile Include="Screens\MessageBoxScreen.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />
     <Compile Include="Screens\MenuScreens\PauseMenuScreen.cs" />
-    <Compile Include="Ship.cs" />
+    <Compile Include="Actors\Ship.cs" />
     <Compile Include="SpawnManager.cs" />
     <Compile Include="Utils\FrameRateCounter.cs" />
     <Compile Include="Utils\Timer.cs" />
-    <Compile Include="Wall.cs" />
+    <Compile Include="Actors\Wall.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="dragonballicon.ico" />

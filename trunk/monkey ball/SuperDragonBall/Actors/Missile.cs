@@ -20,8 +20,8 @@ namespace SuperDragonBall
         private const float MISSILE_DELETE_TIME = 5.0f;
         private Utils.Timer missileTimer;
 
-        public Missile(Game game)
-            : base(game)
+        public Missile(Game game, GameplayScreen host)
+            : base(game, host)
         {
             modelName = "Missile";
 
