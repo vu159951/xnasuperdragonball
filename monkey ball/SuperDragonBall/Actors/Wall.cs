@@ -18,8 +18,8 @@ namespace SuperDragonBall
     public class Wall : Actor
     {
         
-        public Wall(Game game)
-            : base(game)
+        public Wall(Game game, GameplayScreen host)
+            : base(game, host)
         {
             position = new Vector3(0f, 0f, 0f);
             modelName = "cube";

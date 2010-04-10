@@ -8,7 +8,7 @@ namespace SuperDragonBall
 {
     class BallCharacter: Actor
     {
-        public BallCharacter(Game game) : base(game)
+        public BallCharacter(Game game, GameplayScreen host) : base(game, host)
         {
             modelName = "testBallThing";
             //m_scale *= 5;

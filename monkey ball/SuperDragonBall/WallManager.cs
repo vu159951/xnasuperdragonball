@@ -24,11 +24,12 @@ namespace SuperDragonBall
 
       public static float WallBoundsX = 600f;
       public static float WallBoundsY = 600f;
+      private GameplayScreen hostScreen;
 
-        public WallManager(Game game)
+      public WallManager(Game game, GameplayScreen host)
             : base(game)
         {
-            
+            hostScreen = host;   
           this.game = game;
         }
 
@@ -60,25 +61,25 @@ namespace SuperDragonBall
         {
             for (int i = (int)-WallBoundsY / 20; i < (int)WallBoundsY / 20; i++)
             {
-                Wall topWall = new Wall(game);
+                Wall topWall = new Wall(game, hostScreen);
                 topWall.position = new Vector3(i * 20.0f, -WallBoundsY, 0f);
                 game.Components.Add(topWall);
             }
             for (int i = (int)-WallBoundsY / 20; i < (int)WallBoundsY / 20; i++)
             {
-                Wall bottomWall = new Wall(game);
+                Wall bottomWall = new Wall(game, hostScreen);
                 bottomWall.position = new Vector3(i * 20.0f, WallBoundsY, 0f);
                 game.Components.Add(bottomWall);
             }
             for (int i = (int)-WallBoundsX / 20; i < (int)WallBoundsX / 20; i++)
             {
-                Wall leftWall = new Wall(game);
+                Wall leftWall = new Wall(game, hostScreen);
                 leftWall.position = new Vector3(-WallBoundsX, i * 20.0f, 0f);
                 game.Components.Add(leftWall);
             }
             for (int i = (int)-WallBoundsX / 20; i < (int)WallBoundsX / 20; i++)
             {
-                Wall rightWall = new Wall(game);
+                Wall rightWall = new Wall(game, hostScreen);
                 rightWall.position = new Vector3(WallBoundsX, i * 20.0f, 0f);
                 game.Components.Add(rightWall);
             }

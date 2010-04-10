@@ -19,8 +19,8 @@ namespace SuperDragonBall
         public bool collided=false;
         //public bool earlyCollide=false;
 
-        public Asteroid(Game game)
-            : base(game)
+        public Asteroid(Game game, GameplayScreen host)
+            : base(game, host)
         {
             position = new Vector3(-2000f, -2000f, 0f);
             //recalculateWolrdTransform();

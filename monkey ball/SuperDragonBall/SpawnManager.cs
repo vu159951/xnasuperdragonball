@@ -61,6 +61,7 @@ namespace SuperDragonBall
 
         public void createAsteroids()
         {
+            /*
             Asteroid temp;
             if (asteroids.Count < 0)
             {
@@ -74,6 +75,7 @@ namespace SuperDragonBall
                 //GameplayScreen.asteroidLocations.Add(temp, temp.Position);
 
             }
+             */
         }
     }
 }

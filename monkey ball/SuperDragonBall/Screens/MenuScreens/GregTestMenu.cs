@@ -44,10 +44,8 @@ namespace SuperDragonBall
         /// </summary>
         void LaunchTest2(object sender, EventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, true, new GameplayScreen());
+            LoadingScreen.Load(ScreenManager, true, new GregTest2());
         }
-      
-
 
 
     }

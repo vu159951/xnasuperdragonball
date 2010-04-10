@@ -57,8 +57,8 @@ namespace SuperDragonBall
         /// </summary>
         void PlayGameMenuEntrySelected(object sender, EventArgs e)
         {
-           //LoadingScreen.Load(ScreenManager, true, new GregTestFlatPlane());
-           LoadingScreen.Load(ScreenManager, true, new GameplayScreen());
+           //LoadingScreen.Load(ScreenManager, true, new GregTest2());
+           LoadingScreen.Load(ScreenManager, true, new GameplayMain());
 
         }
 

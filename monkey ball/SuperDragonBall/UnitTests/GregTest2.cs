@@ -25,7 +25,7 @@ namespace SuperDragonBall
     /// placeholder to get the idea across: you'll probably want to
     /// put some more interesting gameplay in here!
     /// </summary>
-    class GregTestFlatPlane : GameplayScreen
+    class GregTest2 : GameplayScreen
     {
         #region Fields
 
@@ -45,7 +45,7 @@ namespace SuperDragonBall
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GregTestFlatPlane()
+        public GregTest2()
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -65,7 +65,6 @@ namespace SuperDragonBall
 
             m_kShip = new Ship(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kShip);
-
 
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);

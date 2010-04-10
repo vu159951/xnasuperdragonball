@@ -19,8 +19,8 @@ namespace SuperDragonBall
 
         public bool isAlive;
 
-        public Ship(Game game)
-            : base(game)
+        public Ship(Game game, GameplayScreen host)
+            : base(game, host)
         {
            // modelName = "testBallThing";
             modelName = "Ship";
@@ -55,7 +55,7 @@ namespace SuperDragonBall
             Vector3 camup = new Vector3(0, 1, 0);
             camup = Vector3.Transform(camup, Matrix.CreateFromQuaternion(quat));
             
-            GameplayScreen.CameraMatrix = Matrix.CreateLookAt(campos, position, camup);
+            hostScreen.CameraMatrix = Matrix.CreateLookAt(campos, position, camup);
         }
 
         public void turnLeft(GameTime gameTime)
