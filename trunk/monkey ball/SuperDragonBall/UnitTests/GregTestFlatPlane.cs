@@ -66,7 +66,7 @@ namespace SuperDragonBall
             base.LoadContent();
 
             player = new BallCharacter(ScreenManager.Game, this);
-            player.position = new Vector3(0f, 50f, 0f);
+            player.position = new Vector3(0f, 25f, 0f);
             ScreenManager.Game.Components.Add(player);
 
 
