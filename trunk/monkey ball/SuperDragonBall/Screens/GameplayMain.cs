@@ -68,6 +68,7 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Add(m_kWallManager);
 
             m_kPlane = new Plane(ScreenManager.Game, this);
+            m_kPlane.position += new Vector3(0, -10f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);
 
         }

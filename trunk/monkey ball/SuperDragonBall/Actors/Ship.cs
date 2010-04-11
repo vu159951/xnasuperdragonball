@@ -26,8 +26,8 @@ namespace SuperDragonBall
             modelName = "Ship";
             //m_scale *= 5;
             
-            quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
-            
+            //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
+            quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);
             //GameplayScreen.soundbank.PlayCue("Ship_Spawn");
             
             fMass = 10;
