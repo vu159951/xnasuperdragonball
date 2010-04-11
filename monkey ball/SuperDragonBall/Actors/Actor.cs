@@ -141,6 +141,7 @@ namespace SuperDragonBall
             {
                 ModelBounds = BoundingSphere.CreateMerged(ModelBounds,
             mesh.BoundingSphere);
+                
             }
             base.LoadContent();
         }
@@ -188,7 +189,7 @@ namespace SuperDragonBall
         /// <summary>
         /// Should be called before draw functions are done
         /// </summary>
-        private void modifyWorldTransform()
+        protected virtual void modifyWorldTransform()
         {
             m_changed = false;
             worldTransform = Matrix.CreateScale(m_scale) * Matrix.CreateFromQuaternion(m_quat) * Matrix.CreateTranslation(m_position);
@@ -204,7 +205,7 @@ namespace SuperDragonBall
             bool brokeWorldBounds = false;
 
             float boundX = WallManager.WallBoundsX;
-            float boundY = WallManager.WallBoundsY;
+            float boundZ = WallManager.WallBoundsZ;
             //float boundX = GameStateManagementGame.SCREEN_WIDTH / 2 + GameStateManagementGame.BUFFER_W;
             //float boundY = GameStateManagementGame.SCREEN_HEIGHT / 2 + GameStateManagementGame.BUFFER_H;
 
@@ -222,17 +223,17 @@ namespace SuperDragonBall
                 brokeWorldBounds = true;
                 //currentP.X -= boundX * 2;
             }
-            if (currentP.Y < -boundY)
+            if (currentP.Z < -boundZ)
             {
-                nextVel.Y += 30;
-                currentP.Y = -boundY;
+                nextVel.Z += 30;
+                currentP.Z = -boundZ;
                 brokeWorldBounds = true;
                 //currentP.Y += boundY * 2;
             }
-            else if (currentP.Y > boundY)
+            else if (currentP.Z > boundZ)
             {
-                nextVel.Y -= 30;
-                currentP.Y = boundY;
+                nextVel.Z -= 30;
+                currentP.Z = boundZ;
                 brokeWorldBounds = true;
                 //currentP.Y -= boundY * 2;
             }

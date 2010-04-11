@@ -22,22 +22,30 @@ namespace SuperDragonBall
     {
         private Quaternion originalRot;
         private float rotX, rotZ;
-        private GraphicsDeviceManager graphics;
-        private GraphicsDevice device;
+        // a function of player position relative to the origin of the plane
+        private Vector3 rotationOffset;
+
+        //data extracted from the mesh
+        private List<Vector3> verticies;
+        private List<MeshDataExtractor.TriangleVertexIndices> TVIndices;
 
         public Plane(Game game, GameplayScreen host)
             : base(game, host)
         {
             // TODO: Construct any child components here
             modelName = "checker_plane";
-            position = new Vector3(0f, 0f, -10f);
+            position = new Vector3(0f, 0f, 0f);
             scale = 50;
             rotX = 0;
             rotZ = 0;
-            quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
+            //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
+            quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);
             originalRot = quat;
-            List<Vector3> verticies = new List<Vector3>();
+            TVIndices = new List<MeshDataExtractor.TriangleVertexIndices>();
+            verticies = new List<Vector3>();
+            rotationOffset = Vector3.Zero;
             //effect.TextureEnabled = true;
+           
 
         }
 
@@ -52,6 +60,16 @@ namespace SuperDragonBall
             base.Initialize();
         }
 
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            modifyWorldTransform();
+            Matrix identity = Matrix.Identity;
+            MeshDataExtractor.ExtractModelMeshData(model.Meshes[0], ref identity, verticies, TVIndices, modelName, true);
+            printExtractedData();
+        }
+
         /// <summary>
         /// Allows the game component to update itself.
         /// </summary>
@@ -63,16 +81,46 @@ namespace SuperDragonBall
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Plane rotation is dependent on player postion
+        /// </summary>
+        protected override void modifyWorldTransform()
+        {
+            Matrix rom = Matrix.CreateTranslation(rotationOffset);
+            Matrix rom2 = Matrix.CreateTranslation(-rotationOffset);
+            m_changed = false;
+            worldTransform = Matrix.CreateScale(m_scale)* rom * Matrix.CreateFromQuaternion(m_quat) * rom2 * Matrix.CreateTranslation(m_position);
+            WorldBounds.Center = m_position;
+            WorldBounds.Radius = ModelBounds.Radius * m_scale;
+            
+        }
+
         public bool testCollision(Actor ball) {
+            if (spherePlaneIntersect(ball, this)) {
+                return true;
+            }           
             return false;
         }
 
-        public Vector3 TEST_getPlaneNormal() {
-            IndexBuffer ind = model.Meshes[0].IndexBuffer;
-            VertexBuffer vert = model.Meshes[0].VertexBuffer;
-            //Console.Write("INDEX BUFFER: " + ind);
-            return Vector3.Zero;
+        //(C-P)*n < r 
+        private bool spherePlaneIntersect(Actor ball, Plane p) {
+            return (Vector3.Dot(ball.WorldBoundSphere.Center - p.getPlanePoint(), p.getPlaneNormal())
+                < ball.WorldBoundSphere.Radius);       
         }
+
+        public void printExtractedData() {
+            Console.WriteLine("Verticies:");
+            foreach (Vector3 v in verticies)
+            {
+                Console.WriteLine(v);
+            }
+            Console.WriteLine("\nTriangle Vertex Indicies:");
+            foreach (MeshDataExtractor.TriangleVertexIndices t in TVIndices)
+            {
+                Console.WriteLine("{0}, {1}, {2}", t.I0, t.I1, t.I2);
+            }
+        }
+
 
 
         public float RotX {
@@ -85,6 +133,37 @@ namespace SuperDragonBall
             get { return rotZ; }
             set { rotZ = value; }
         }
+
+        /// <summary>
+        /// Gets the face normal of the first triangle in the mesh
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 getPlaneNormal() {
+            Vector3 v0 = Vector3.Transform(verticies[0], worldTransform);
+            Vector3 v1 = Vector3.Transform(verticies[1], worldTransform);
+            Vector3 v2 = Vector3.Transform(verticies[2], worldTransform);
+            Vector3 va = v0 - v1;
+            Vector3 vb = v1 - v2;
+            Vector3 n = Vector3.Cross(vb, va);
+            n.Normalize();
+            return n;
+        }
+
+        //returns an arbitrary point on the plane
+        public Vector3 getPlanePoint() { 
+            return Vector3.Transform(verticies[0], worldTransform);
+        }
+
+        /// <summary>
+        /// Used to keep the plane rotating around the player's postion
+        /// Should be set every time the player's postion changes
+        /// </summary>
+        /// <param name="playerPosition"></param>
+        public void setRotationOffset(Vector3 playerPosition) {
+            rotationOffset = this.position - playerPosition;      
+        }
+
+
       
     }
 }

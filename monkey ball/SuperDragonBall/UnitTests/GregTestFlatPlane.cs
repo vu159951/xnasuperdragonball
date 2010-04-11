@@ -35,6 +35,8 @@ namespace SuperDragonBall
         //Wall topWall;
         Plane m_kPlane;
 
+        protected Vector3 gravityVec;
+
 
 
         #endregion
@@ -51,6 +53,7 @@ namespace SuperDragonBall
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
             gameCamera = new GameCamera();
+            gravityVec = new Vector3(0, -1, 0);
 
         }
 
@@ -63,6 +66,7 @@ namespace SuperDragonBall
             base.LoadContent();
 
             player = new BallCharacter(ScreenManager.Game, this);
+            player.position = new Vector3(0f, 50f, 0f);
             ScreenManager.Game.Components.Add(player);
 
 
@@ -70,9 +74,11 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Add(m_kWallManager);
 
             m_kPlane = new Plane(ScreenManager.Game, this);
-            m_kPlane.scale = 5;
+            m_kPlane.scale = 15;
+            m_kPlane.position += new Vector3(0, -10f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);
-
+            
+          
         }
 
 
@@ -103,17 +109,13 @@ namespace SuperDragonBall
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
+            player.velocity += gravityVec * 0.1f;
             gameCamera.followBehind(player);
 
-            TestAndResolveCollision();
+            
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-        }
-
-        private void TestAndResolveCollision() {
-            m_kPlane.TEST_getPlaneNormal();
-        
         }
 
       
@@ -155,8 +157,37 @@ namespace SuperDragonBall
                 m_kPlane.RotZ += -(float)Math.PI / 9;
             }
 
-            
+            if (m_kPlane.testCollision(player))
+            {
+                player.CollidedWithStage = true;
+                Console.WriteLine("HIT");
+                //gravityVec = Vector3.Zero;
+                Vector3 v3 = m_kPlane.getPlaneNormal();
+                //if (v3.X != 0 || v3.Z != 0) {
+                //   Console.WriteLine(v3);
+                //}
 
+                Vector3 vDiff = player.velocity;
+                vDiff.X += v3.X * 10;
+                vDiff.Z += v3.Z * 10;
+                player.velocity = vDiff;
+
+                //temporary collision resolution
+                player.velocity += v3;
+                //player.position += new Vector3(0, 5, 0);
+                Vector3 stop = player.velocity;
+                stop.Y = 0;
+                player.velocity = stop;
+            }
+            else
+            {
+                player.CollidedWithStage = false;
+            }
+      
+            m_kPlane.setRotationOffset(player.position);
+
+            
+            /*
             //OLD SHIP FUNCTIONS
             player.rotationVelocity = 0;
             if (input.ShipTurnLeft)
@@ -177,6 +208,7 @@ namespace SuperDragonBall
                 thrust += -3500f * player.directionVec;
             }
             player.netForce = thrust;
+            */
         }
 
         /// <summary>
