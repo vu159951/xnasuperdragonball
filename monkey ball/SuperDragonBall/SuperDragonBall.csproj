@@ -83,7 +83,8 @@
     <Compile Include="Actors\Actor.cs" />
     <Compile Include="Actors\Asteroid.cs" />
     <Compile Include="Actors\BallCharacter.cs" />
-    <Compile Include="GameplayMain.cs" />
+    <Compile Include="GameCamera.cs" />
+    <Compile Include="Screens\GameplayMain.cs" />
     <Compile Include="UnitTests\GregTest2.cs" />
     <Compile Include="UnitTests\GregTestFlatPlane.cs" />
     <Compile Include="Actors\Plane.cs" />

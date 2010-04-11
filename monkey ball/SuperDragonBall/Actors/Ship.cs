@@ -47,15 +47,7 @@ namespace SuperDragonBall
         {
             base.Update(gameTime);
             
-           // GameplayScreen.CameraMatrix = Matrix.CreateLookAt(Position+new Vector3(0.0f, 10.0f, 50.0f), Position, Vector3.UnitY);
            
-            Vector3 campos = new Vector3(0f, 50.0f, 60.0f);
-            campos = (Vector3.Transform(campos, Matrix.CreateFromQuaternion(quat)));
-            campos += position;
-            Vector3 camup = new Vector3(0, 1, 0);
-            camup = Vector3.Transform(camup, Matrix.CreateFromQuaternion(quat));
-            
-            hostScreen.CameraMatrix = Matrix.CreateLookAt(campos, position, camup);
         }
 
         public void turnLeft(GameTime gameTime)
