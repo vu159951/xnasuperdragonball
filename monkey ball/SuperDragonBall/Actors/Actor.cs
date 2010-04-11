@@ -365,6 +365,10 @@ namespace SuperDragonBall
             return worldTransform.Forward;
         }
 
+      
+
+        
+
         /*
         public Vector3 GetWorldPosition() {
             return worldTransform.Translation;

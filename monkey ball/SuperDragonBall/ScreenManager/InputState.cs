@@ -130,6 +130,12 @@ namespace SuperDragonBall
             }
         }
 
+
+
+
+        /// <summary>
+        /// OLD SHIP RELATED INPUT PROPERTIES
+        /// </summary>
         public bool ShipFire
         {
             get
