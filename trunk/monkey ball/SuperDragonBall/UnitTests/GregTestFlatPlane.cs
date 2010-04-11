@@ -70,6 +70,7 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Add(m_kWallManager);
 
             m_kPlane = new Plane(ScreenManager.Game, this);
+            m_kPlane.scale = 5;
             ScreenManager.Game.Components.Add(m_kPlane);
 
         }
@@ -103,8 +104,16 @@ namespace SuperDragonBall
                                                        bool coveredByOtherScreen)
         {
             gameCamera.followBehind(player);
+
+            TestAndResolveCollision();
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
+        }
+
+        private void TestAndResolveCollision() {
+            m_kPlane.TEST_getPlaneNormal();
+        
         }
 
       
@@ -126,10 +135,29 @@ namespace SuperDragonBall
                 // If they pressed pause, bring up the pause menu screen.
                 ScreenManager.AddScreen(new PauseMenuScreen());
             }
-            if (input.ShipFire)
-            {
-                //fireMissile();
+
+           
+            m_kPlane.RotX = 0;
+            m_kPlane.RotZ = 0;
+            if(input.IsKeyHeld(Keys.Up)) {
+                m_kPlane.RotX += -(float)Math.PI / 9;
             }
+            if (input.IsKeyHeld(Keys.Down))
+            {
+                m_kPlane.RotX += (float)Math.PI / 9;
+            }
+            if (input.IsKeyHeld(Keys.Left))
+            {
+                m_kPlane.RotZ += (float)Math.PI / 9;
+            }
+            if (input.IsKeyHeld(Keys.Right))
+            {
+                m_kPlane.RotZ += -(float)Math.PI / 9;
+            }
+
+            
+
+            //OLD SHIP FUNCTIONS
             player.rotationVelocity = 0;
             if (input.ShipTurnLeft)
             {
