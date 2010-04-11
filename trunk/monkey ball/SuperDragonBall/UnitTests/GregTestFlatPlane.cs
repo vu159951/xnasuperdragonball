@@ -30,7 +30,7 @@ namespace SuperDragonBall
         #region Fields
 
 
-        Ship m_kShip;
+        BallCharacter player;
         WallManager m_kWallManager;
         //Wall topWall;
         Plane m_kPlane;
@@ -50,8 +50,7 @@ namespace SuperDragonBall
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
-            cameraMatrix = Matrix.CreateLookAt(new Vector3(0.0f, 10.0f, 100.0f), Vector3.Zero, Vector3.UnitY);
-            ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, 1f, 2.0f, 10000f);
+            gameCamera = new GameCamera();
 
         }
 
@@ -63,8 +62,8 @@ namespace SuperDragonBall
         {
             base.LoadContent();
 
-            m_kShip = new Ship(ScreenManager.Game, this);
-            ScreenManager.Game.Components.Add(m_kShip);
+            player = new BallCharacter(ScreenManager.Game, this);
+            ScreenManager.Game.Components.Add(player);
 
 
             m_kWallManager = new WallManager(ScreenManager.Game, this);
@@ -81,6 +80,11 @@ namespace SuperDragonBall
         /// </summary>
         public override void UnloadContent()
         {
+            ScreenManager.Game.Components.Remove(player);
+            ScreenManager.Game.Components.Remove(m_kPlane);
+            m_kWallManager.removeWallComponents();
+            ScreenManager.Game.Components.Remove(m_kWallManager);
+
             base.UnloadContent();
         }
 
@@ -98,10 +102,12 @@ namespace SuperDragonBall
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
+            gameCamera.followBehind(player);
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
         }
 
+      
 
         /// <summary>
         /// Lets the game respond to player input. Unlike the Update method,
@@ -124,25 +130,25 @@ namespace SuperDragonBall
             {
                 //fireMissile();
             }
-            m_kShip.rotationVelocity = 0;
+            player.rotationVelocity = 0;
             if (input.ShipTurnLeft)
             {
-                m_kShip.rotationVelocity += 3;
+                player.rotationVelocity += 3;
             }
             if (input.ShipTurnRight)
             {
-                m_kShip.rotationVelocity += -3;
+                player.rotationVelocity += -3;
             }
             Vector3 thrust = Vector3.Zero;
             if (input.ShipMove)
             {
-                thrust += 3500f * m_kShip.directionVec;
+                thrust += 3500f * player.directionVec;
             }
             if (input.ReverseThrust)
             {
-                thrust += -3500f * m_kShip.directionVec;
+                thrust += -3500f * player.directionVec;
             }
-            m_kShip.netForce = thrust;
+            player.netForce = thrust;
         }
 
         /// <summary>

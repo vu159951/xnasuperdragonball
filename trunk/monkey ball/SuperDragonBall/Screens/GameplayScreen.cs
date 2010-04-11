@@ -35,8 +35,9 @@ namespace SuperDragonBall
         protected Random random = new Random();
 
         protected Utils.Timer m_kTimer = new Utils.Timer();
-        protected Matrix cameraMatrix;
-        protected Matrix projectionMatrix;
+        protected GameCamera gameCamera;
+        //protected Matrix cameraMatrix;
+        //protected Matrix projectionMatrix;
         protected Vector3 ambientLightColor = new Vector3(.15f, .3f, .5f);
         protected float specularPower = .010f;
         protected Vector3 specularColor = new Vector3(.3f, .2f, .6f);
@@ -48,10 +49,7 @@ namespace SuperDragonBall
 
         public Matrix CameraMatrix {
             get {
-                return cameraMatrix;
-            }
-            set {
-                cameraMatrix = value;
+                return gameCamera.CameraMatrix;
             }
         }
 
@@ -59,11 +57,7 @@ namespace SuperDragonBall
         {
             get
             {
-                return projectionMatrix;
-            }
-            set
-            {
-                projectionMatrix = value;
+                return gameCamera.ProjectionMatrix;
             }
         }
 
@@ -125,12 +119,6 @@ namespace SuperDragonBall
                 dLightColor = value;
             }
         }
-        
-        
-        Ship m_kShip;
-        WallManager m_kWallManager;
-        //Wall topWall;
-        Plane m_kPlane;
 
        
 
@@ -208,7 +196,7 @@ namespace SuperDragonBall
         /// <summary>
         /// Draws the gameplay screen.
         /// </summary>
-        public virtual void Draw(GameTime gameTime) { }
+        //public virtual void Draw(GameTime gameTime) { }
 
         #endregion
 

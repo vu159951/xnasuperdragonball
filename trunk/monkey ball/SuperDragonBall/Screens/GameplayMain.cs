@@ -30,10 +30,9 @@ namespace SuperDragonBall
         #region Fields
 
        
-        Ship m_kShip;
-        WallManager m_kWallManager;
-        //Wall topWall;
-        Plane m_kPlane;
+        private Ship m_kShip;
+        private WallManager m_kWallManager;
+        private Plane m_kPlane;
 
 
 
@@ -49,9 +48,8 @@ namespace SuperDragonBall
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-            
-            cameraMatrix = Matrix.CreateLookAt(new Vector3(0.0f, 10.0f, 100.0f), Vector3.Zero, Vector3.UnitY);
-            ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, 1f, 2.0f, 10000f);
+
+            gameCamera = new GameCamera();
 
         }
 
@@ -65,7 +63,6 @@ namespace SuperDragonBall
 
             m_kShip = new Ship(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kShip);
-
 
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);
@@ -81,6 +78,11 @@ namespace SuperDragonBall
         /// </summary>
         public override void UnloadContent()
         {
+            ScreenManager.Game.Components.Remove(m_kShip);
+            ScreenManager.Game.Components.Remove(m_kPlane);
+            m_kWallManager.removeWallComponents();
+            ScreenManager.Game.Components.Remove(m_kWallManager);
+
             base.UnloadContent();
         }
 
@@ -98,9 +100,14 @@ namespace SuperDragonBall
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
+     
+            gameCamera.followBehind(m_kShip);
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
         }
+
+      
 
 
         /// <summary>

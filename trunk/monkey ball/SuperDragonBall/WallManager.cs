@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -25,12 +26,16 @@ namespace SuperDragonBall
       public static float WallBoundsX = 600f;
       public static float WallBoundsY = 600f;
       private GameplayScreen hostScreen;
+      private ArrayList wallCubeList;
+          
 
       public WallManager(Game game, GameplayScreen host)
             : base(game)
         {
             hostScreen = host;   
-          this.game = game;
+            this.game = game;
+            wallCubeList = new ArrayList();
+         
         }
 
         /// <summary>
@@ -43,6 +48,16 @@ namespace SuperDragonBall
 
             base.Initialize();
             buildWall();
+        }
+
+        /// <summary>
+        /// Removes the wall cube components
+        /// </summary>
+        public void removeWallComponents() {
+            foreach (Wall w in wallCubeList)
+            {
+                game.Components.Remove(w);
+            }
         }
 
         /// <summary>
@@ -64,24 +79,28 @@ namespace SuperDragonBall
                 Wall topWall = new Wall(game, hostScreen);
                 topWall.position = new Vector3(i * 20.0f, -WallBoundsY, 0f);
                 game.Components.Add(topWall);
+                wallCubeList.Add(topWall);
             }
             for (int i = (int)-WallBoundsY / 20; i < (int)WallBoundsY / 20; i++)
             {
                 Wall bottomWall = new Wall(game, hostScreen);
                 bottomWall.position = new Vector3(i * 20.0f, WallBoundsY, 0f);
                 game.Components.Add(bottomWall);
+                wallCubeList.Add(bottomWall);
             }
             for (int i = (int)-WallBoundsX / 20; i < (int)WallBoundsX / 20; i++)
             {
                 Wall leftWall = new Wall(game, hostScreen);
                 leftWall.position = new Vector3(-WallBoundsX, i * 20.0f, 0f);
                 game.Components.Add(leftWall);
+                wallCubeList.Add(leftWall);
             }
             for (int i = (int)-WallBoundsX / 20; i < (int)WallBoundsX / 20; i++)
             {
                 Wall rightWall = new Wall(game, hostScreen);
                 rightWall.position = new Vector3(WallBoundsX, i * 20.0f, 0f);
                 game.Components.Add(rightWall);
+                wallCubeList.Add(rightWall);
             }
         }
 

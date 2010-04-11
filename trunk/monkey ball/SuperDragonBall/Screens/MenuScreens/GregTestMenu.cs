@@ -12,7 +12,7 @@ namespace SuperDragonBall
             : base("Greg Unit Tests")
         {
 
-            MenuEntry test1 = new MenuEntry("Test 1");
+            MenuEntry test1 = new MenuEntry("Test Flat Plane");
             MenuEntry test2 = new MenuEntry("Test 2");
       
             MenuEntry exitMenuEntry = new MenuEntry("Back");
