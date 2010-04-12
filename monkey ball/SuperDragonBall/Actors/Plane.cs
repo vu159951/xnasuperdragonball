@@ -11,9 +11,13 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
+using SuperDragonBall.Utils;
 
 namespace SuperDragonBall
 {
+   
+
+
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
@@ -65,6 +69,7 @@ namespace SuperDragonBall
             base.LoadContent();
 
             modifyWorldTransform();
+            // extract mesh data in object space
             Matrix identity = Matrix.Identity;
             MeshDataExtractor.ExtractModelMeshData(model.Meshes[0], ref identity, verticies, TVIndices, modelName, true);
             printExtractedData();
@@ -96,17 +101,30 @@ namespace SuperDragonBall
         }
 
         public bool testCollision(Actor ball) {
-            if (spherePlaneIntersect(ball, this)) {
-                return true;
-            }           
+
+            
+           //temp
+           Vector3[] tempTriangle = { Vector3.Transform(verticies[0], worldTransform), 
+                                      Vector3.Transform(verticies[1], worldTransform), 
+                                      Vector3.Transform(verticies[2], worldTransform) };
+           
+            //for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < TVIndices.Count; i++) {
+                MeshDataExtractor.TriangleVertexIndices currentTVI = TVIndices[i];
+                Vector3[] currentTriangle = {  Vector3.Transform(verticies[currentTVI.I0], worldTransform), 
+                                               Vector3.Transform(verticies[currentTVI.I1], worldTransform), 
+                                               Vector3.Transform(verticies[currentTVI.I2], worldTransform) };
+                if (IntersectHelper.sphereTriangleIntersect(ball.WorldBoundSphere, currentTriangle))
+                {
+                    Console.WriteLine("HIT");
+                    return true;
+                }
+            }
+            Console.WriteLine("MISS");
             return false;
+           
         }
 
-        //(C-P)*n < r 
-        private bool spherePlaneIntersect(Actor ball, Plane p) {
-            return (Vector3.Dot(ball.WorldBoundSphere.Center - p.getPlanePoint(), p.getPlaneNormal())
-                < ball.WorldBoundSphere.Radius);       
-        }
 
         public void printExtractedData() {
             Console.WriteLine("Verticies:");
