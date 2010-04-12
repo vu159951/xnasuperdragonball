@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace Utils
+namespace SuperDragonBall.Utils
 {
 	public delegate void TimerDelegate();
 	public struct TimerInstance
