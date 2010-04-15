@@ -74,6 +74,8 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -84,6 +86,7 @@
     <Compile Include="Actors\Asteroid.cs" />
     <Compile Include="Actors\BallCharacter.cs" />
     <Compile Include="GameCamera.cs" />
+    <Compile Include="UnitTests\ScottTest1.cs" />
     <Compile Include="Utils\IntersectHelper.cs" />
     <Compile Include="Utils\MeshDataExtractor.cs" />
     <Compile Include="Screens\GameplayMain.cs" />
