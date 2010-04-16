@@ -174,12 +174,14 @@ namespace SuperDragonBall
                     effect.Projection = hostScreen.ProjectionMatrix;
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
-
+                    
                     effect.AmbientLightColor = hostScreen.AmbientLightColor;
                     effect.SpecularColor = hostScreen.SpecularColor;
                     effect.SpecularPower = hostScreen.SpecularPower;
                     effect.DirectionalLight0.Direction = hostScreen.DLightDirection;
                     effect.DirectionalLight0.DiffuseColor = hostScreen.DLightColor;
+                    
+                    //effect.TextureEnabled = true;
                 }
                 mesh.Draw();
             }
