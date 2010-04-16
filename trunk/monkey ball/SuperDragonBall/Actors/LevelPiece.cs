@@ -25,9 +25,12 @@ namespace SuperDragonBall
     public class LevelPiece : Actor
     {
         private Quaternion originalRot;
-        private float rotX, rotZ;
+        private float m_absoluteRotX, m_absoluteRotZ;
+        private float m_rotX, m_rotZ;
         // a function of player position relative to the origin of the plane
-        private Vector3 rotationOffset;
+        private Vector3 m_rotationOffset;
+        //the rotation of the level piece independent of player movement
+        private Quaternion m_localRotation;
 
         //data extracted from the mesh
         private List<Vector3> verticies;
@@ -41,14 +44,16 @@ namespace SuperDragonBall
             modelName = assetName;
             position = new Vector3(0f, 0f, 0f);
             //scale = 50;
-            rotX = 0;
-            rotZ = 0;
+            m_rotX = 0;
+            m_rotZ = 0;
+            m_absoluteRotX = 0;
+            m_absoluteRotZ = 0;
             //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
             quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);
             originalRot = quat;
             TVIndices = new List<MeshDataExtractor.TriangleVertexIndices>();
             verticies = new List<Vector3>();
-            rotationOffset = Vector3.Zero;
+            m_rotationOffset = Vector3.Zero;
             //effect.TextureEnabled = true;
 
 
@@ -83,7 +88,8 @@ namespace SuperDragonBall
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-            this.quat = originalRot * Quaternion.CreateFromRotationMatrix(Matrix.CreateFromYawPitchRoll(0, rotX, rotZ));
+            this.quat = originalRot * Quaternion.CreateFromRotationMatrix(Matrix.CreateFromYawPitchRoll(0, 
+                m_rotX, m_rotZ));
             base.Update(gameTime);
         }
 
@@ -92,10 +98,11 @@ namespace SuperDragonBall
         /// </summary>
         protected override void modifyWorldTransform()
         {
-            Matrix rom = Matrix.CreateTranslation(rotationOffset);
-            Matrix rom2 = Matrix.CreateTranslation(-rotationOffset);
             m_changed = false;
-            worldTransform = Matrix.CreateScale(m_scale) * rom * Matrix.CreateFromQuaternion(m_quat) * rom2 * Matrix.CreateTranslation(m_position);
+            Matrix rom = Matrix.CreateTranslation(m_rotationOffset);
+            Matrix rom2 = Matrix.CreateTranslation(-m_rotationOffset);
+            Matrix tiltOffset = rom * Matrix.CreateFromQuaternion(m_quat) * rom2;
+            worldTransform = Matrix.CreateScale(m_scale) * Matrix.CreateFromQuaternion(m_localRotation) * tiltOffset * Matrix.CreateTranslation(m_position);
             WorldBounds.Center = m_position;
             WorldBounds.Radius = ModelBounds.Radius * m_scale;
 
@@ -183,14 +190,23 @@ namespace SuperDragonBall
 
         public float RotX
         {
-            get { return rotX; }
-            set { rotX = value; }
+            get { return m_rotX; }
+            set { m_rotX = value; }
         }
 
         public float RotZ
         {
-            get { return rotZ; }
-            set { rotZ = value; }
+            get { return m_rotZ; }
+            set { m_rotZ = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotX">In radians</param>
+        /// <param name="rotZ">In radians</param>
+        public void setLocalRotation(float pRotX, float pRotZ) {
+            m_localRotation = originalRot * Quaternion.CreateFromYawPitchRoll(0, pRotX, pRotZ);
         }
 
 
@@ -207,7 +223,7 @@ namespace SuperDragonBall
         /// <param name="playerPosition"></param>
         public void setRotationOffset(Vector3 playerPosition)
         {
-            rotationOffset = this.position - playerPosition;
+            m_rotationOffset = this.position - playerPosition;
         }
 
 
