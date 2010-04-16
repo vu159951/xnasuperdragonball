@@ -76,14 +76,15 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Add(m_kWallManager);
 
             //make a few planes
-            LevelPiece currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
+            LevelPiece currentPlane;
+            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
             currentPlane.scale = 15;
             currentPlane.position += new Vector3(0f, -10f, 0);
             planes.Add(currentPlane);
 
             currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
-            currentPlane.scale = 15;
-            currentPlane.position += new Vector3(250f, -10f, -300f);
+            currentPlane.scale = 10;
+            currentPlane.position += new Vector3(200f, -10f, -300f);
             currentPlane.setLocalRotation(0, (float) Math.PI / 18);
             planes.Add(currentPlane);
 
@@ -92,6 +93,21 @@ namespace SuperDragonBall
             currentPlane.position += new Vector3(-250f, -10f, -200f);
             currentPlane.setLocalRotation(0.123f, -(float)Math.PI / 18);
             planes.Add(currentPlane);
+
+            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
+            currentPlane.scale = 5;
+            currentPlane.position += new Vector3(-220f, 10f, 80f);
+            planes.Add(currentPlane);
+
+            //moving level piece
+            MovingLevelPiece movingPlane;
+            //50 is a good movement speed
+            movingPlane = new MovingLevelPiece(ScreenManager.Game, this, "checker_plane", new Vector3(0, 100f, 0f), 50);
+            movingPlane.scale = 5;
+            movingPlane.position += new Vector3(0f, 0f, -200f);
+            //CRITICAL!!!
+            movingPlane.OriginalPosition = movingPlane.position;
+            planes.Add(movingPlane);
 
             foreach (LevelPiece p in planes)
             {
@@ -169,24 +185,25 @@ namespace SuperDragonBall
 
         }
 
+        /// <summary>
+        /// Collision resolution. Kind of a hack.
+        /// Called from the Update function
+        /// Tweak numbers until the feel is "right"
+        /// </summary>
+        /// <param name="pushAway">The normalized vector that the ball should be pushed away</param>
+        /// <param name="timeDelta"></param>
         private void respondToCollision(Vector3 pushAway, float timeDelta)
         {
-
             //Vector3 v3 = m_kPlane.getPlaneNormal();
             Vector3 vDiff = player.velocity;
             vDiff.X += pushAway.X * 10;
             vDiff.Z += pushAway.Z * 10;
+            if (vDiff.Y < -50) {
+                vDiff.Y /= 1.5f;
+            }
             vDiff.Y += pushAway.Y;
-            vDiff.Y -= (gravityVec.Y * timeDelta);
+            vDiff.Y -= (gravityVec.Y * timeDelta) * 2;
             player.velocity = vDiff;
-
-            //temporary collision resolution
-            //player.velocity += v3;
-
-            //player.position += new Vector3(0, 5, 0);
-            //Vector3 stop = player.velocity;
-            //stop.Y = 0;
-            //player.velocity = stop;
         }
 
         /// <summary>

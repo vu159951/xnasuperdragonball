@@ -140,6 +140,13 @@ namespace SuperDragonBall
 
         }
 
+        /// <summary>
+        /// Collision resolution. Kind of a hack.
+        /// Called from the Update function
+        /// Tweak numbers until the feel is "right"
+        /// </summary>
+        /// <param name="pushAway">The normalized vector that the ball should be pushed away</param>
+        /// <param name="timeDelta"></param>
         private void respondToCollision(Vector3 pushAway, float timeDelta) {
 
             //Vector3 v3 = m_kPlane.getPlaneNormal();
