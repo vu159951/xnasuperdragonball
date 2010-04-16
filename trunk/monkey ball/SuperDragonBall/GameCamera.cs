@@ -14,6 +14,8 @@ namespace SuperDragonBall
         private Matrix cameraMatrix;
         private Matrix projectionMatrix;
         private Vector3 facing;
+        private Quaternion cameraQuat;
+        private Vector3 m_kCameraPosition;
 
 
         public GameCamera() {
@@ -21,6 +23,7 @@ namespace SuperDragonBall
             facing = new Vector3(0.0f, 10.0f, 100.0f);
             cameraMatrix = Matrix.CreateLookAt(facing, Vector3.Zero, Vector3.UnitY);
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, 1f, 2.0f, 10000f);
+            cameraQuat = Quaternion.Identity;
            
         }
 
@@ -30,9 +33,11 @@ namespace SuperDragonBall
         /// </summary>
         /// <param name="actor"></param>
         public void followBehind(Actor actor) {
+            
             Vector3 camPos = new Vector3(0f, 50.0f, 60.0f);
             camPos = (Vector3.Transform(camPos, Matrix.CreateFromQuaternion(actor.quat)));
             camPos += actor.position;
+            m_kCameraPosition = camPos;
             Vector3 camUp = new Vector3(0, 1, 0);
             camUp = Vector3.Transform(camUp, Matrix.CreateFromQuaternion(actor.quat));
 
@@ -40,6 +45,21 @@ namespace SuperDragonBall
 
             facing = actor.position - camPos;
         }
+
+        public void ManualCameraRotation(float rotation, Vector3 positionToRotateAround)
+        {
+            Vector3 camPos = new Vector3((float)Math.Cos(rotation) * 60f, 50.0f, (float)Math.Sin(rotation) * 60f);
+            camPos += positionToRotateAround;
+            m_kCameraPosition = camPos;
+            Vector3 camUp = new Vector3(0, 1, 0);
+            
+
+            cameraMatrix = Matrix.CreateLookAt(camPos, positionToRotateAround, camUp);
+
+            facing = positionToRotateAround - camPos;
+        }
+
+        
 
 
         /// <summary>
@@ -67,7 +87,10 @@ namespace SuperDragonBall
                 return facing;
             }
         }
-
+        public Vector3 GetCameraPosition()
+        {
+            return m_kCameraPosition;
+        }
 
 
     }

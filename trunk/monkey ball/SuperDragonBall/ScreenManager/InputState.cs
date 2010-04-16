@@ -131,6 +131,24 @@ namespace SuperDragonBall
         }
 
 
+        //<summary>
+        //Camera movement
+        //</summary>
+        public bool IsADown
+        {
+            get
+            {
+                return IsNewKeyPress(Keys.A) || IsKeyHeld(Keys.A);
+            }
+        }
+
+        public bool IsDDown
+        {
+            get
+            {
+                return IsNewKeyPress(Keys.D) || IsKeyHeld(Keys.D);
+            }
+        }
 
 
         /// <summary>
