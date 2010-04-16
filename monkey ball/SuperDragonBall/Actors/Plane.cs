@@ -38,9 +38,9 @@ namespace SuperDragonBall
             : base(game, host)
         {
             // TODO: Construct any child components here
-            modelName = "level5";
+            modelName = "checker_plane";
             position = new Vector3(0f, 0f, 0f);
-            scale = 50;
+            //scale = 50;
             rotX = 0;
             rotZ = 0;
             //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
