@@ -146,7 +146,8 @@ namespace SuperDragonBall
             Vector3 vDiff = player.velocity;
             vDiff.X += pushAway.X * 10;
             vDiff.Z += pushAway.Z * 10;
-            vDiff.Y += pushAway.Y - (gravityVec.Y * timeDelta);
+            vDiff.Y += pushAway.Y;
+            vDiff.Y -= (gravityVec.Y * timeDelta);
             player.velocity = vDiff;
 
             //temporary collision resolution
