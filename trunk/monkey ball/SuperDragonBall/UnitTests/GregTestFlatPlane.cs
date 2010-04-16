@@ -67,7 +67,7 @@ namespace SuperDragonBall
             base.LoadContent();
 
             player = new BallCharacter(ScreenManager.Game, this);
-            player.position = new Vector3(0f, 25f, 0f);
+            player.position = new Vector3(10f, 25f, 0f);
             ScreenManager.Game.Components.Add(player);
 
 
@@ -76,7 +76,7 @@ namespace SuperDragonBall
 
             m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
             m_kPlane.scale = 15;
-            m_kPlane.position += new Vector3(0, -10f, 0);
+            m_kPlane.position += new Vector3(150f, -10f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);
             
           

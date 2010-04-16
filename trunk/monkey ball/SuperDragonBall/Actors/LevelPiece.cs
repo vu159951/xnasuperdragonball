@@ -40,7 +40,7 @@ namespace SuperDragonBall
             // TODO: Construct any child components here
             modelName = assetName;
             position = new Vector3(0f, 0f, 0f);
-            scale = 50;
+            //scale = 50;
             rotX = 0;
             rotZ = 0;
             //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
@@ -105,23 +105,50 @@ namespace SuperDragonBall
         {
             //the normalized direction that the actor should be pushed away
             Vector3 pushAwayDir = Vector3.Zero;
-            //for (int i = 0; i < 1; i++) {
+            
+            
             for (int i = 0; i < TVIndices.Count; i++)
             {
                 MeshDataExtractor.TriangleVertexIndices currentTVI = TVIndices[i];
+                
+                /*
+                Vector3[] currentTriangle = { Vector3.Zero, Vector3.Zero, Vector3.Zero };
+                currentTriangle[0] = new Vector3(verticies[currentTVI.I0].X, verticies[currentTVI.I0].Y, verticies[currentTVI.I0].Z);
+                currentTriangle[1] = new Vector3(verticies[currentTVI.I1].X, verticies[currentTVI.I1].Y, verticies[currentTVI.I1].Z);
+                currentTriangle[2] = new Vector3(verticies[currentTVI.I2].X, verticies[currentTVI.I2].Y, verticies[currentTVI.I2].Z);
+                currentTriangle[0] = Vector3.Transform(currentTriangle[0], worldTransform);
+                currentTriangle[1] = Vector3.Transform(currentTriangle[1], worldTransform);
+                currentTriangle[2] = Vector3.Transform(currentTriangle[2], worldTransform);
+                
+                */
+                /*
+                Vector3 v0 = verticies[currentTVI.I0];
+                Vector3 v1 = verticies[currentTVI.I1];
+                Vector3 v2 = verticies[currentTVI.I2];
+                v0 *= m_scale;
+                v1 *= m_scale;
+                v2 *= m_scale;
+                Vector3[] currentTriangle = {  v0, v1, v2 };
+                */
+                
                 Vector3[] currentTriangle = {  Vector3.Transform(verticies[currentTVI.I0], worldTransform), 
                                                Vector3.Transform(verticies[currentTVI.I1], worldTransform), 
                                                Vector3.Transform(verticies[currentTVI.I2], worldTransform) };
+                
                 if (IntersectHelper.sphereTriangleIntersect(ball.WorldBoundSphere, currentTriangle))
                 {
-                    Console.WriteLine("HIT");
+                    Console.WriteLine("HIT " + i);
                     pushAwayDir += getTriangleNormal(currentTriangle);
                     //return true;
                 }
             }
-            Console.WriteLine("MISS");
-            if (pushAwayDir != Vector3.Zero) {
+
+            if (pushAwayDir != Vector3.Zero)
+            {
                 pushAwayDir.Normalize();
+            }
+            else {
+                Console.WriteLine("MISS");
             }
             return pushAwayDir;
             //return false;
@@ -166,21 +193,6 @@ namespace SuperDragonBall
             set { rotZ = value; }
         }
 
-        /// <summary>
-        /// Gets the face normal of the first triangle in the mesh
-        /// </summary>
-        /// <returns></returns>
-        public Vector3 getPlaneNormal()
-        {
-            Vector3 v0 = Vector3.Transform(verticies[0], worldTransform);
-            Vector3 v1 = Vector3.Transform(verticies[1], worldTransform);
-            Vector3 v2 = Vector3.Transform(verticies[2], worldTransform);
-            Vector3 va = v0 - v1;
-            Vector3 vb = v1 - v2;
-            Vector3 n = Vector3.Cross(vb, va);
-            n.Normalize();
-            return n;
-        }
 
         //returns an arbitrary point on the plane
         public Vector3 getPlanePoint()

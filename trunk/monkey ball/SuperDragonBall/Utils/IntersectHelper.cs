@@ -90,7 +90,12 @@ namespace SuperDragonBall.Utils
                 {
                     return true;
                 }
-                else {
+                else if (!bInside[0] && !bInside[1] && !bInside[2])
+                {
+                    return true;
+                }
+                else
+                {
                     return false;
                 }
                 

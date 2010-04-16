@@ -87,11 +87,12 @@
     <Compile Include="Actors\BallCharacter.cs" />
     <Compile Include="Actors\LevelPiece.cs" />
     <Compile Include="GameCamera.cs" />
+    <Compile Include="UnitTests\GregTestMultiPlanes.cs" />
     <Compile Include="UnitTests\ScottTest1.cs" />
     <Compile Include="Utils\IntersectHelper.cs" />
     <Compile Include="Utils\MeshDataExtractor.cs" />
     <Compile Include="Screens\GameplayMain.cs" />
-    <Compile Include="UnitTests\GregTest2.cs" />
+    <Compile Include="UnitTests\GregTestPlaneWithHoles.cs" />
     <Compile Include="UnitTests\GregTestFlatPlane.cs" />
     <Compile Include="Actors\Plane.cs" />
     <Compile Include="Screens\MenuScreens\JesseTestMenu.cs" />
