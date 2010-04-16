@@ -62,6 +62,7 @@ namespace SuperDragonBall
             worldTransform = new Matrix();
             worldTransform = Matrix.Identity;
 
+            // DO NOT ADJUST SCALE IN A CONSTRUCTOR
             m_scale = 1.0f;
             m_position = new Vector3(0.0f, 0.0f, 0.0f);
             m_quat = Quaternion.Identity;
@@ -127,7 +128,7 @@ namespace SuperDragonBall
             this.quat *= Quaternion.CreateFromAxisAngle(rotationAxis, rotationVelocity * timeDelta);
 
             // for all actors in the game
-            worldBoarder();
+            //worldBoarder();
 
             base.Update(gameTime);
         }

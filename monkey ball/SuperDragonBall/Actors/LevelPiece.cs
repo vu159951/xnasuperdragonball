@@ -25,7 +25,7 @@ namespace SuperDragonBall
     public class LevelPiece : Actor
     {
         private Quaternion originalRot;
-        private float m_absoluteRotX, m_absoluteRotZ;
+       
         private float m_rotX, m_rotZ;
         // a function of player position relative to the origin of the plane
         private Vector3 m_rotationOffset;
@@ -43,11 +43,10 @@ namespace SuperDragonBall
             // TODO: Construct any child components here
             modelName = assetName;
             position = new Vector3(0f, 0f, 0f);
+            // DO NOT ADJUST SCALE IN A CONSTRUCTOR
             //scale = 50;
             m_rotX = 0;
             m_rotZ = 0;
-            m_absoluteRotX = 0;
-            m_absoluteRotZ = 0;
             //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
             quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);
             originalRot = quat;
