@@ -32,6 +32,7 @@ namespace SuperDragonBall
         //data extracted from the mesh
         private List<Vector3> verticies;
         private List<MeshDataExtractor.TriangleVertexIndices> TVIndices;
+        //public const Vector3 OriginalFacing
 
         public Plane(Game game, GameplayScreen host)
             : base(game, host)
