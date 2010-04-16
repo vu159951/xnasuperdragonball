@@ -190,16 +190,21 @@ namespace SuperDragonBall
             m_kLookingDir.Y = 0f;
             m_kLookingDir.Normalize();
             //m_kLookingDir = new Vector3(-1f, 0, 0);
+
+            //The axis are flipped from what would be expected
+            //If you want to go forward/backwards, you need to switch Z and X
+            //If you want to go Left/Right you keep Z and X consistent
             if (input.IsKeyHeld(Keys.Up))
             {
 
-                m_kPlane.RotX += ((float)Math.PI / 9) * m_kLookingDir.Z;
+                m_kPlane.RotX +=  ((float)Math.PI / 9) * m_kLookingDir.Z;
                 m_kPlane.RotZ += -((float)Math.PI / 9) * m_kLookingDir.X;
+                
             }
             if (input.IsKeyHeld(Keys.Down))
             {
                 m_kPlane.RotX += -((float)Math.PI / 9) * m_kLookingDir.Z;
-                m_kPlane.RotZ += ((float)Math.PI / 9) * m_kLookingDir.X;
+                m_kPlane.RotZ +=  ((float)Math.PI / 9) * m_kLookingDir.X;
             }
             if (input.IsKeyHeld(Keys.Left))
             {
@@ -208,10 +213,21 @@ namespace SuperDragonBall
             }
             if (input.IsKeyHeld(Keys.Right))
             {
-                m_kPlane.RotX += ((float)Math.PI / 9) * m_kLookingDir.X;
-                m_kPlane.RotZ += ((float)Math.PI / 9) * m_kLookingDir.Z;
+                m_kPlane.RotX +=  ((float)Math.PI / 9) * m_kLookingDir.X;
+                m_kPlane.RotZ +=  ((float)Math.PI / 9) * m_kLookingDir.Z;
             }
 
+            /*
+            //for gamepad input (untested!!)
+            //for forward/backward movement
+            GamePadState gamePadState = input.CurrentGamePadStates[0];
+            m_kPlane.RotX += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.Y;
+            m_kPlane.RotZ += -((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.Y;
+
+            //for Left/Right movement
+            m_kPlane.RotX += -((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.X;
+            m_kPlane.RotZ += -((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.X;
+            */
 
             m_kPlane.setRotationOffset(player.position);
 
