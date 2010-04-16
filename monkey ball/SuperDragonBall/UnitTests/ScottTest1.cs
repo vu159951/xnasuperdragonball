@@ -34,7 +34,7 @@ namespace SuperDragonBall
         BallCharacter player;
         WallManager m_kWallManager;
         //Wall topWall;
-        Plane m_kPlane;
+        LevelPiece m_kPlane;
         float manualCameraRotation;
 
         protected Vector3 gravityVec;
@@ -56,7 +56,8 @@ namespace SuperDragonBall
 
             gameCamera = new GameCamera();
             gravityVec = new Vector3(0, -100, 0);
-            manualCameraRotation = 0.0f;
+            manualCameraRotation = 0f;
+           
 
         }
 
@@ -76,10 +77,11 @@ namespace SuperDragonBall
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);
 
-            m_kPlane = new Plane(ScreenManager.Game, this);
+            m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
             m_kPlane.scale = 15;
             m_kPlane.position += new Vector3(0, -10f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);
+
 
 
         }
@@ -115,12 +117,14 @@ namespace SuperDragonBall
             float timeDelta = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
 
             player.velocity += gravityVec * timeDelta;
-            //gameCamera.followBehind(player);
+           // gameCamera.followBehind(player);
 
-            if (m_kPlane.testCollision(player))
+            //test for collision
+            Vector3 pushAway = m_kPlane.testCollision(player);
+            if (pushAway != Vector3.Zero)
             {
                 player.CollidedWithStage = true;
-                respondToCollision();
+                respondToCollision(pushAway, timeDelta);
             }
             else
             {
@@ -135,27 +139,30 @@ namespace SuperDragonBall
                 player.netForce = Vector3.Zero;
             }
 
-            Vector3 planeFacing=m_kPlane.GetWorldFacing();
-           // planeFacing *= 1;
+
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
         }
 
-        private void respondToCollision()
+        private void respondToCollision(Vector3 pushAway, float timeDelta)
         {
 
-            Vector3 v3 = m_kPlane.getPlaneNormal();
+            //Vector3 v3 = m_kPlane.getPlaneNormal();
             Vector3 vDiff = player.velocity;
-            vDiff.X += v3.X * 10;
-            vDiff.Z += v3.Z * 10;
+            vDiff.X += pushAway.X * 10;
+            vDiff.Z += pushAway.Z * 10;
+            vDiff.Y += pushAway.Y;
+            vDiff.Y -= (gravityVec.Y * timeDelta);
             player.velocity = vDiff;
 
             //temporary collision resolution
-            player.velocity += v3;
+            //player.velocity += v3;
+
             //player.position += new Vector3(0, 5, 0);
-            Vector3 stop = player.velocity;
-            stop.Y = 0;
-            player.velocity = stop;
+            //Vector3 stop = player.velocity;
+            //stop.Y = 0;
+            //player.velocity = stop;
         }
 
         /// <summary>
@@ -179,14 +186,14 @@ namespace SuperDragonBall
 
             m_kPlane.RotX = 0;
             m_kPlane.RotZ = 0;
-            Vector3 m_kLookingDir =player.position - gameCamera.GetCameraPosition();
+            Vector3 m_kLookingDir = player.position - gameCamera.GetCameraPosition();
             m_kLookingDir.Y = 0f;
-            m_kLookingDir.Normalize(); 
-            
+            m_kLookingDir.Normalize();
+            //m_kLookingDir = new Vector3(-1f, 0, 0);
             if (input.IsKeyHeld(Keys.Up))
             {
-               
-                m_kPlane.RotX += ((float)Math.PI / 9)*m_kLookingDir.Z;
+
+                m_kPlane.RotX += ((float)Math.PI / 9) * m_kLookingDir.Z;
                 m_kPlane.RotZ += -((float)Math.PI / 9) * m_kLookingDir.X;
             }
             if (input.IsKeyHeld(Keys.Down))
@@ -196,26 +203,28 @@ namespace SuperDragonBall
             }
             if (input.IsKeyHeld(Keys.Left))
             {
-                m_kPlane.RotZ += (float)Math.PI / 9;
+                m_kPlane.RotX += -((float)Math.PI / 9) * m_kLookingDir.X;
+                m_kPlane.RotZ += -((float)Math.PI / 9) * m_kLookingDir.Z;
             }
             if (input.IsKeyHeld(Keys.Right))
             {
-                m_kPlane.RotZ += -(float)Math.PI / 9;
+                m_kPlane.RotX += ((float)Math.PI / 9) * m_kLookingDir.X;
+                m_kPlane.RotZ += ((float)Math.PI / 9) * m_kLookingDir.Z;
             }
 
 
             m_kPlane.setRotationOffset(player.position);
 
             //Manually changing the camera rotation based on user input
-            
+
 
             if (input.IsADown)
             {
-                manualCameraRotation -= (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+                manualCameraRotation += (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
             }
             if (input.IsDDown)
             {
-                manualCameraRotation += (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+                manualCameraRotation -= (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
             }
 
             gameCamera.ManualCameraRotation(manualCameraRotation, player.position);
