@@ -34,7 +34,7 @@ namespace SuperDragonBall
         BallCharacter player;
         WallManager m_kWallManager;
         //Wall topWall;
-        Plane m_kPlane;
+        LevelPiece m_kPlane;
 
         protected Vector3 gravityVec;
 
@@ -74,7 +74,7 @@ namespace SuperDragonBall
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);
 
-            m_kPlane = new Plane(ScreenManager.Game, this);
+            m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
             m_kPlane.scale = 15;
             m_kPlane.position += new Vector3(0, -10f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);
@@ -115,10 +115,12 @@ namespace SuperDragonBall
             player.velocity += gravityVec * timeDelta;
             gameCamera.followBehind(player);
 
-            if (m_kPlane.testCollision(player))
+            //test for collision
+            Vector3 pushAway = m_kPlane.testCollision(player);
+            if (pushAway != Vector3.Zero)
             {
                 player.CollidedWithStage = true;
-                respondToCollision();
+                respondToCollision(pushAway, timeDelta);
             }
             else
             {
@@ -138,20 +140,22 @@ namespace SuperDragonBall
 
         }
 
-        private void respondToCollision() {
-       
-            Vector3 v3 = m_kPlane.getPlaneNormal();
+        private void respondToCollision(Vector3 pushAway, float timeDelta) {
+
+            //Vector3 v3 = m_kPlane.getPlaneNormal();
             Vector3 vDiff = player.velocity;
-            vDiff.X += v3.X * 10;
-            vDiff.Z += v3.Z * 10;
+            vDiff.X += pushAway.X * 10;
+            vDiff.Z += pushAway.Z * 10;
+            vDiff.Y += pushAway.Y - (gravityVec.Y * timeDelta);
             player.velocity = vDiff;
 
             //temporary collision resolution
-            player.velocity += v3;
+            //player.velocity += v3;
+            
             //player.position += new Vector3(0, 5, 0);
-            Vector3 stop = player.velocity;
-            stop.Y = 0;
-            player.velocity = stop;
+            //Vector3 stop = player.velocity;
+            //stop.Y = 0;
+            //player.velocity = stop;
         }
 
         /// <summary>
