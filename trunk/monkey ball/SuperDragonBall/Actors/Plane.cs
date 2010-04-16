@@ -37,7 +37,7 @@ namespace SuperDragonBall
             : base(game, host)
         {
             // TODO: Construct any child components here
-            modelName = "checker_plane";
+            modelName = "level5";
             position = new Vector3(0f, 0f, 0f);
             scale = 50;
             rotX = 0;

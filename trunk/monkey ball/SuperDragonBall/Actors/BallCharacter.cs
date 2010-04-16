@@ -14,7 +14,7 @@ namespace SuperDragonBall
         public BallCharacter(Game game, GameplayScreen host) : base(game, host)
         {
             modelName = "testBallThing";
-            m_scale = 5;
+            m_scale = 2;
 
             //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
             quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);
