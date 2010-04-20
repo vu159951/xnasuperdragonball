@@ -13,7 +13,7 @@ namespace SuperDragonBall
         {
 
             MenuEntry test1 = new MenuEntry("Camera Test 1");
-            MenuEntry test2 = new MenuEntry("Test 2");
+            MenuEntry test2 = new MenuEntry("Level Data Test");
 
             MenuEntry exitMenuEntry = new MenuEntry("Back");
 
@@ -43,7 +43,7 @@ namespace SuperDragonBall
         /// </summary>
         void LaunchTest2(object sender, EventArgs e)
         {
-            // LoadingScreen.Load(ScreenManager, true, new GameplayScreen());
+             LoadingScreen.Load(ScreenManager, true, new ScottTest2());
         }
 
 

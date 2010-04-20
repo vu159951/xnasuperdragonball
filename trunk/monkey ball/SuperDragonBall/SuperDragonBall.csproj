@@ -85,9 +85,12 @@
     <Compile Include="Actors\Actor.cs" />
     <Compile Include="Actors\Asteroid.cs" />
     <Compile Include="Actors\BallCharacter.cs" />
+    <Compile Include="Actors\LevelDataTest.cs" />
+    <Compile Include="Actors\LevelData.cs" />
     <Compile Include="Actors\LevelPiece.cs" />
     <Compile Include="Actors\MovingLevelPiece.cs" />
     <Compile Include="GameCamera.cs" />
+    <Compile Include="UnitTests\ScottTest2.cs" />
     <Compile Include="UnitTests\GregTestMultiPlanes.cs" />
     <Compile Include="UnitTests\ScottTest1.cs" />
     <Compile Include="Utils\IntersectHelper.cs" />
