@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace SuperDragonBall
 {
-    class BallCharacter: Actor
+    public class BallCharacter: Actor
     {
         private bool collidedWithStage;
         private Vector3 damping;
