@@ -36,7 +36,7 @@ namespace SuperDragonBall
         public const int SPEED_UP = 5;
 
         protected ContentManager contentManager;
-        protected static string modelName;
+        protected string modelName;
         protected Utils.Timer timer;
         protected Matrix[] bones;
 
@@ -89,7 +89,7 @@ namespace SuperDragonBall
         public override void Initialize()
         {
             // TODO: Add your initialization code here
-
+            
             base.Initialize();
         }
 

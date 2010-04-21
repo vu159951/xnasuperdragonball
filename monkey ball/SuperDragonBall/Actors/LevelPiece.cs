@@ -111,8 +111,7 @@ namespace SuperDragonBall
         {
             //the normalized direction that the actor should be pushed away
             Vector3 pushAwayDir = Vector3.Zero;
-            
-            
+
             for (int i = 0; i < TVIndices.Count; i++)
             {
                 MeshDataExtractor.TriangleVertexIndices currentTVI = TVIndices[i];

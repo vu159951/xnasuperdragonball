@@ -39,8 +39,9 @@ namespace SuperDragonBall
         //Wall topWall;
         //LevelPiece m_kPlane;
 
-        public LevelDataTest level1;
+        public LevelData level1;
         List<LevelPiece> planes;
+        bool firstLevel = true;
 
 
 
@@ -69,7 +70,14 @@ namespace SuperDragonBall
         public override void LoadContent()
         {
             base.LoadContent();
-            level1 = new LevelDataTest(ScreenManager.Game, this);
+            if (firstLevel)
+            {
+                level1 = new LevelDataTest(ScreenManager.Game, this);
+            }
+            else
+            {
+                level1 = new SimpleLevel(ScreenManager.Game, this);
+            }
             player = new BallCharacter(ScreenManager.Game, this);
             player.position = level1.startingLocation;
             ScreenManager.Game.Components.Add(player);
@@ -89,10 +97,15 @@ namespace SuperDragonBall
         public override void UnloadContent()
         {
             ScreenManager.Game.Components.Remove(player);
-           
+            //foreach (LevelPiece p in planes)
+            //{
+            //    ScreenManager.Game.Components.Remove(p);
+            //}
+            //ScreenManager.Game.Components.Remove(level1);
+            level1.UnloadContent();
             m_kWallManager.removeWallComponents();
             ScreenManager.Game.Components.Remove(m_kWallManager);
-
+            firstLevel = !firstLevel;
             base.UnloadContent();
         }
 
@@ -113,7 +126,11 @@ namespace SuperDragonBall
             gameCamera.followBehind(player);
 
             level1.MovePlayer(player, gameTime);
-
+            if (level1.IsCollidingWithGoal(player))
+            {
+                UnloadContent();
+                LoadContent();
+            }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
         }
