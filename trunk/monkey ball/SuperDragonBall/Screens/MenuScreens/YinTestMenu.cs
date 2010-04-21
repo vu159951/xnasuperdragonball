@@ -35,7 +35,7 @@ namespace SuperDragonBall
         /// </summary>
         void LaunchTest1(object sender, EventArgs e)
         {
-            // LoadingScreen.Load(ScreenManager, true, new GameplayScreen());
+             LoadingScreen.Load(ScreenManager, true, new YinTest1());
         }
 
         /// <summary>
