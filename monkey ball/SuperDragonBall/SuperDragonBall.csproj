@@ -90,6 +90,7 @@
     <Compile Include="Actors\LevelPiece.cs" />
     <Compile Include="Actors\MovingLevelPiece.cs" />
     <Compile Include="GameCamera.cs" />
+    <Compile Include="UnitTests\YinTest2.cs" />
     <Compile Include="UnitTests\ScottTest2.cs" />
     <Compile Include="UnitTests\GregTestMultiPlanes.cs" />
     <Compile Include="UnitTests\ScottTest1.cs" />
