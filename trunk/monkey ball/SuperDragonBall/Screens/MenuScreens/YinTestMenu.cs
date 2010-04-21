@@ -12,8 +12,8 @@ namespace SuperDragonBall
             : base("Yin Unit Tests")
         {
 
-            MenuEntry test1 = new MenuEntry("Test 1");
-            MenuEntry test2 = new MenuEntry("Test 2");
+            MenuEntry test1 = new MenuEntry("Multifaced Checker Plane");
+            MenuEntry test2 = new MenuEntry("Single Face Checker Plane");
 
             MenuEntry exitMenuEntry = new MenuEntry("Back");
 
@@ -43,7 +43,7 @@ namespace SuperDragonBall
         /// </summary>
         void LaunchTest2(object sender, EventArgs e)
         {
-            // LoadingScreen.Load(ScreenManager, true, new GameplayScreen());
+            LoadingScreen.Load(ScreenManager, true, new YinTest2());
         }
 
 
