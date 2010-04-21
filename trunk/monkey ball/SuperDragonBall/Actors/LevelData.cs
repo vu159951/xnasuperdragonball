@@ -25,6 +25,7 @@ namespace SuperDragonBall.Actors
         protected List<LevelPiece> planes;
         protected Vector3 gravityVec;
         public Vector3 startingLocation;
+        protected GoalObject goal;
 
         public LevelData(Game game, GameplayScreen host)
             : base(game, host)
@@ -93,6 +94,18 @@ namespace SuperDragonBall.Actors
             }
         }
 
+        public Boolean IsCollidingWithGoal(BallCharacter player)
+        {
+            if (goal != null)
+            {
+                if (goal.WorldBoundSphere.Intersects(player.WorldBoundSphere))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Collision resolution. Kind of a hack.
         /// Called from the Update function
@@ -123,6 +136,24 @@ namespace SuperDragonBall.Actors
                 p.RotZ = RotZ;
                 p.setRotationOffset(playerPosition);
             }
+
+            if (goal != null)
+            {
+                goal.RotX = RotX;
+                goal.RotZ = RotZ;
+                goal.setRotationOffset(playerPosition);
+            }
+        }
+
+        protected override void UnloadContent()
+        {
+            Console.WriteLine("test unload");
+            foreach (LevelPiece lp in planes)
+            {
+                Game.Components.Remove(lp);
+            }
+            Game.Components.Remove(goal);
+            base.UnloadContent();
         }
 
 

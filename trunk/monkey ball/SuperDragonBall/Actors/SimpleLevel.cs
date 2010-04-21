@@ -18,9 +18,9 @@ namespace SuperDragonBall.Actors
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class LevelDataTest : LevelData
+    public class SimpleLevel : LevelData
     {
-        public LevelDataTest(Game game, GameplayScreen host)
+        public SimpleLevel(Game game, GameplayScreen host)
             : base(game, host)
         {
 
@@ -32,37 +32,12 @@ namespace SuperDragonBall.Actors
             currentPlane.position += new Vector3(0f, -10f, 0);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(game, host, "checker_plane");
-            currentPlane.scale = 10;
-            currentPlane.position += new Vector3(200f, -10f, -300f);
-            currentPlane.setLocalRotation(0, (float)Math.PI / 18);
-            planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(game, host, "checker_plane");
-            currentPlane.scale = 10;
-            currentPlane.position += new Vector3(-250f, -10f, -200f);
-            currentPlane.setLocalRotation(0.123f, -(float)Math.PI / 18);
-            planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(game, host, "checker_plane");
-            currentPlane.scale = 5;
-            currentPlane.position += new Vector3(-220f, 10f, 80f);
-            planes.Add(currentPlane);
 
-            
-
-            //moving level piece
-            MovingLevelPiece movingPlane;
-            //50 is a good movement speed
-            movingPlane = new MovingLevelPiece(game, host, "checker_plane", new Vector3(0, 100f, 0f), 50);
-            movingPlane.scale = 5;
-            movingPlane.position += new Vector3(0f, 0f, -200f);
-            //CRITICAL!!!
-            movingPlane.OriginalPosition = movingPlane.position;
-            planes.Add(movingPlane);
 
             goal = new GoalObject(game, host);
-            goal.position += new Vector3(0, 10, -50);
+            goal.position += new Vector3(0, 10, -20);
             goal.scale = 5;
             game.Components.Add(goal);
 
@@ -71,7 +46,7 @@ namespace SuperDragonBall.Actors
                 game.Components.Add(p);
             }
 
-            
+
 
         }
 
