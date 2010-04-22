@@ -64,12 +64,12 @@ namespace SuperDragonBall.Actors
             goal = new GoalObject(game, host);
             goal.position += new Vector3(0, 10, -50);
             goal.scale = 5;
-            game.Components.Add(goal);
+            //game.Components.Add(goal);
 
-            foreach (LevelPiece p in planes)
-            {
-                game.Components.Add(p);
-            }
+            //foreach (LevelPiece p in planes)
+            //{
+            //    game.Components.Add(p);
+            //}
 
             
 

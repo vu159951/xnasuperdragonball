@@ -144,16 +144,32 @@ namespace SuperDragonBall.Actors
                 goal.setRotationOffset(playerPosition);
             }
         }
-
+        public void startLevel(Game game)
+        {
+            foreach (LevelPiece p in planes)
+            {
+                game.Components.Add(p);
+            }
+            game.Components.Add(goal);
+        }
         protected override void UnloadContent()
         {
+           
             Console.WriteLine("test unload");
-            foreach (LevelPiece lp in planes)
-            {
-                Game.Components.Remove(lp);
-            }
-            Game.Components.Remove(goal);
+          
+           
             base.UnloadContent();
+            
+        }
+
+        public void clearLevel(Game game)
+        {
+             foreach (LevelPiece lp in planes)
+            {
+                game.Components.Remove(lp);
+            }
+             game.Components.Remove(goal);
+            
         }
 
 
