@@ -39,9 +39,11 @@ namespace SuperDragonBall
         //Wall topWall;
         //LevelPiece m_kPlane;
 
-        public LevelData level1;
-        List<LevelPiece> planes;
+        public LevelData activeLevel;
+        //List<LevelPiece> planes;
         bool firstLevel = true;
+        private int currentLevel = 0;
+        private List<LevelData> LevelList;
 
 
 
@@ -57,8 +59,8 @@ namespace SuperDragonBall
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-
             gameCamera = new GameCamera();
+            LevelList = new List<LevelData>();
             
             
         }
@@ -70,16 +72,15 @@ namespace SuperDragonBall
         public override void LoadContent()
         {
             base.LoadContent();
-            if (firstLevel)
-            {
-                level1 = new LevelDataTest(ScreenManager.Game, this);
-            }
-            else
-            {
-                level1 = new SimpleLevel(ScreenManager.Game, this);
-            }
+
+
+            LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
+            activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
+            activeLevel.startLevel(ScreenManager.Game);
+
             player = new BallCharacter(ScreenManager.Game, this);
-            player.position = level1.startingLocation;
+            player.position = activeLevel.startingLocation;
             ScreenManager.Game.Components.Add(player);
 
 
@@ -97,15 +98,12 @@ namespace SuperDragonBall
         public override void UnloadContent()
         {
             ScreenManager.Game.Components.Remove(player);
-            //foreach (LevelPiece p in planes)
-            //{
-            //    ScreenManager.Game.Components.Remove(p);
-            //}
-            //ScreenManager.Game.Components.Remove(level1);
-            level1.UnloadContent();
+            activeLevel.clearLevel(ScreenManager.Game);
+            ScreenManager.Game.Components.Remove(activeLevel);
             m_kWallManager.removeWallComponents();
             ScreenManager.Game.Components.Remove(m_kWallManager);
-            firstLevel = !firstLevel;
+            currentLevel++;
+            currentLevel = currentLevel % LevelList.Count;
             base.UnloadContent();
         }
 
@@ -125,8 +123,8 @@ namespace SuperDragonBall
         {
             gameCamera.followBehind(player);
 
-            level1.MovePlayer(player, gameTime);
-            if (level1.IsCollidingWithGoal(player))
+            activeLevel.MovePlayer(player, gameTime);
+            if (activeLevel.IsCollidingWithGoal(player))
             {
                 UnloadContent();
                 LoadContent();
@@ -182,7 +180,7 @@ namespace SuperDragonBall
                 RotZ += -(float)Math.PI / 9;
             }
 
-            level1.setRotation(RotX, RotZ, player.position);
+            activeLevel.setRotation(RotX, RotZ, player.position);
             /*
             //OLD SHIP FUNCTIONS
             player.rotationVelocity = 0;
