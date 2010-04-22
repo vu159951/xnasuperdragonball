@@ -76,16 +76,19 @@ namespace SuperDragonBall
 
             LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
             LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
-            activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
-            activeLevel.startLevel(ScreenManager.Game);
-
-            player = new BallCharacter(ScreenManager.Game, this);
-            player.position = activeLevel.startingLocation;
-            ScreenManager.Game.Components.Add(player);
-
+            //add in any other levels here
 
             m_kWallManager = new WallManager(ScreenManager.Game, this);
-            ScreenManager.Game.Components.Add(m_kWallManager);
+
+            //sets up the level
+            SwitchToNextLevel();
+            
+
+           
+
+
+            
+           
 
             
 
@@ -102,9 +105,24 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Remove(activeLevel);
             m_kWallManager.removeWallComponents();
             ScreenManager.Game.Components.Remove(m_kWallManager);
+           
+            base.UnloadContent();
+        }
+
+        public void SwitchToNextLevel()
+        {
+            activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
+            activeLevel.startLevel(ScreenManager.Game);
+
+            player = new BallCharacter(ScreenManager.Game, this);
+            player.position = activeLevel.startingLocation;
+            ScreenManager.Game.Components.Add(player);
+
+            ScreenManager.Game.Components.Add(m_kWallManager);
+
             currentLevel++;
             currentLevel = currentLevel % LevelList.Count;
-            base.UnloadContent();
+
         }
 
 
@@ -127,7 +145,7 @@ namespace SuperDragonBall
             if (activeLevel.IsCollidingWithGoal(player))
             {
                 UnloadContent();
-                LoadContent();
+                SwitchToNextLevel();
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
