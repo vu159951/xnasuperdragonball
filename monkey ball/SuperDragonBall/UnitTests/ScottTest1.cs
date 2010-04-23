@@ -233,7 +233,6 @@ namespace SuperDragonBall
 
             //Manually changing the camera rotation based on user input
 
-
             if (input.IsADown)
             {
                 manualCameraRotation += (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;

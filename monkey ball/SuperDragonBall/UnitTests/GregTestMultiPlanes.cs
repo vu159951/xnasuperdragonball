@@ -39,7 +39,8 @@ namespace SuperDragonBall
         List<LevelPiece> planes;
         protected Vector3 gravityVec;
         protected Vector3 m_kLookingDir;
-
+        float manualCameraRotation;
+        
 
         #endregion
 
@@ -56,6 +57,7 @@ namespace SuperDragonBall
 
             gameCamera = new GameCamera();
             gravityVec = new Vector3(0, -100, 0);
+            manualCameraRotation = 0f;
             planes = new List<LevelPiece>();
         }
 
@@ -229,27 +231,52 @@ namespace SuperDragonBall
                 ScreenManager.AddScreen(new PauseMenuScreen());
             }
 
+            /*
+            //Manually changing the camera rotation based on user input
+            if (input.IsADown)
+            {
+                manualCameraRotation += (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+            }
+            if (input.IsDDown)
+            {
+                manualCameraRotation -= (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+            }
+
+            //camera rotation for 360 controller
+            GamePadState gamePadState = input.CurrentGamePadStates[0];
+            manualCameraRotation += (float)Math.PI / 4 * gamePadState.ThumbSticks.Right.X * timeDelta * 5;
+            gameCamera.ManualCameraRotation(manualCameraRotation, player.position);
+            */
+
             foreach (LevelPiece p in planes)
             {
                 p.RotX = 0;
                 p.RotZ = 0;
+                //The axis are flipped from what would be expected
+                //If you want to go forward/backwards, you need to switch Z and X
+                //If you want to go Left/Right you keep Z and X consistent
                 if (input.IsKeyHeld(Keys.Up))
                 {
-                    p.RotX += -(float)Math.PI / 9;
+                    p.RotX += ((float)Math.PI / 9) * m_kLookingDir.Z;
+                    p.RotZ += -((float)Math.PI / 9) * m_kLookingDir.X;
                 }
                 if (input.IsKeyHeld(Keys.Down))
                 {
-                    p.RotX += (float)Math.PI / 9;
+                    p.RotX += -((float)Math.PI / 9) * m_kLookingDir.Z;
+                    p.RotZ += ((float)Math.PI / 9) * m_kLookingDir.X;
                 }
                 if (input.IsKeyHeld(Keys.Left))
                 {
-                    p.RotZ += (float)Math.PI / 9;
+                    p.RotX += -((float)Math.PI / 9) * m_kLookingDir.X;
+                    p.RotZ += -((float)Math.PI / 9) * m_kLookingDir.Z;
                 }
                 if (input.IsKeyHeld(Keys.Right))
                 {
-                    p.RotZ += -(float)Math.PI / 9;
+                    p.RotX += ((float)Math.PI / 9) * m_kLookingDir.X;
+                    p.RotZ += ((float)Math.PI / 9) * m_kLookingDir.Z;
                 }
               
+                
                 //for forward/backward movement
                 GamePadState gamePadState = input.CurrentGamePadStates[0];
                 p.RotX += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.Y;
@@ -258,8 +285,10 @@ namespace SuperDragonBall
                 //for Left/Right movement
                 p.RotX += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.X;
                 p.RotZ += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.X;
+                
 
                 p.setRotationOffset(player.position);
+
             }
 
          
