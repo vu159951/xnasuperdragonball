@@ -34,11 +34,11 @@ namespace SuperDragonBall
         BallCharacter player;
         WallManager m_kWallManager;
         //Wall topWall;
-        //LevelPiece m_kPlane;
+       
 
         List<LevelPiece> planes;
         protected Vector3 gravityVec;
-
+        protected Vector3 m_kLookingDir;
 
 
         #endregion
@@ -75,26 +75,28 @@ namespace SuperDragonBall
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);
 
+            String assetName = "checker_plane_3";
+
             //make a few planes
             LevelPiece currentPlane;
-            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
+            currentPlane = new LevelPiece(ScreenManager.Game, this, assetName);
             currentPlane.scale = 15;
             currentPlane.position += new Vector3(0f, -10f, 0);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
+            currentPlane = new LevelPiece(ScreenManager.Game, this, assetName);
             currentPlane.scale = 10;
             currentPlane.position += new Vector3(200f, -10f, -300f);
             currentPlane.setLocalRotation(0, (float) Math.PI / 18);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
+            currentPlane = new LevelPiece(ScreenManager.Game, this, assetName);
             currentPlane.scale = 10;
             currentPlane.position += new Vector3(-250f, -10f, -200f);
             currentPlane.setLocalRotation(0.123f, -(float)Math.PI / 18);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
+            currentPlane = new LevelPiece(ScreenManager.Game, this, assetName);
             currentPlane.scale = 5;
             currentPlane.position += new Vector3(-220f, 10f, 80f);
             planes.Add(currentPlane);
@@ -102,7 +104,7 @@ namespace SuperDragonBall
             //moving level piece
             MovingLevelPiece movingPlane;
             //50 is a good movement speed
-            movingPlane = new MovingLevelPiece(ScreenManager.Game, this, "checker_plane", new Vector3(0, 100f, 0f), 50);
+            movingPlane = new MovingLevelPiece(ScreenManager.Game, this, assetName, new Vector3(0, 100f, 0f), 50);
             movingPlane.scale = 5;
             movingPlane.position += new Vector3(0f, 0f, -200f);
             //CRITICAL!!!
@@ -179,7 +181,10 @@ namespace SuperDragonBall
                 player.netForce = Vector3.Zero;
             }
 
-
+            //realign camera position
+            m_kLookingDir = player.position - gameCamera.GetCameraPosition();
+            m_kLookingDir.Y = 0f;
+            m_kLookingDir.Normalize();
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
@@ -244,33 +249,20 @@ namespace SuperDragonBall
                 {
                     p.RotZ += -(float)Math.PI / 9;
                 }
+              
+                //for forward/backward movement
+                GamePadState gamePadState = input.CurrentGamePadStates[0];
+                p.RotX += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.Y;
+                p.RotZ += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.Y;
 
+                //for Left/Right movement
+                p.RotX += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.X;
+                p.RotZ += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.X;
 
                 p.setRotationOffset(player.position);
             }
 
-            /*
-            //OLD SHIP FUNCTIONS
-            player.rotationVelocity = 0;
-            if (input.ShipTurnLeft)
-            {
-                player.rotationVelocity += 3;
-            }
-            if (input.ShipTurnRight)
-            {
-                player.rotationVelocity += -3;
-            }
-            Vector3 thrust = Vector3.Zero;
-            if (input.ShipMove)
-            {
-                thrust += 3500f * player.directionVec;
-            }
-            if (input.ReverseThrust)
-            {
-                thrust += -3500f * player.directionVec;
-            }
-            player.netForce = thrust;
-            */
+         
         }
 
         /// <summary>
