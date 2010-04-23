@@ -100,37 +100,40 @@ namespace SuperDragonBall
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-            timer.Update(gameTime);
-
-            float timeDelta = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
-
-
-            if (bPhysicsDriven)
+            if (!PauseMenuScreen.IsPaused)
             {
-                m_velocity += vAcceleration * timeDelta / 2.0f;
-                m_position += m_velocity * timeDelta;
-                vAcceleration = vForce / fMass;
-                m_velocity += vAcceleration * timeDelta / 2.0f;
+                timer.Update(gameTime);
 
-                if (m_velocity.Length() > fTerminalVelocity)
+                float timeDelta = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+
+
+                if (bPhysicsDriven)
                 {
-                    m_velocity *= fTerminalVelocity / m_velocity.Length();
+                    m_velocity += vAcceleration * timeDelta / 2.0f;
+                    m_position += m_velocity * timeDelta;
+                    vAcceleration = vForce / fMass;
+                    m_velocity += vAcceleration * timeDelta / 2.0f;
+
+                    if (m_velocity.Length() > fTerminalVelocity)
+                    {
+                        m_velocity *= fTerminalVelocity / m_velocity.Length();
+                    }
                 }
+                else
+                {
+                    //do it the previous way
+                    //add velocity to position
+                    this.position += m_velocity * timeDelta * SPEED_UP;
+                }
+
+                //rotate around axis            
+                this.quat *= Quaternion.CreateFromAxisAngle(rotationAxis, rotationVelocity * timeDelta);
+
+                // for all actors in the game
+                //worldBoarder();
+
+                base.Update(gameTime);
             }
-            else
-            {
-                //do it the previous way
-                //add velocity to position
-                this.position += m_velocity * timeDelta * SPEED_UP;
-            }
-
-            //rotate around axis            
-            this.quat *= Quaternion.CreateFromAxisAngle(rotationAxis, rotationVelocity * timeDelta);
-
-            // for all actors in the game
-            //worldBoarder();
-
-            base.Update(gameTime);
         }
 
         protected override void LoadContent()
