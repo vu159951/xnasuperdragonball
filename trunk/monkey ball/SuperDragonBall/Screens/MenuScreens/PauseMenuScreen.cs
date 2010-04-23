@@ -21,7 +21,7 @@ namespace SuperDragonBall
     class PauseMenuScreen : MenuScreen
     {
         #region Initialization
-
+        public static bool IsPaused=false;
 
         /// <summary>
         /// Constructor.
@@ -32,7 +32,7 @@ namespace SuperDragonBall
             // Flag that there is no need for the game to transition
             // off when the pause menu is on top of it.
             IsPopup = true;
-
+            IsPaused = true;
             // Create our menu entries.
             MenuEntry resumeGameMenuEntry = new MenuEntry("Resume Game");
             MenuEntry quitGameMenuEntry = new MenuEntry("Quit Game");
@@ -76,6 +76,12 @@ namespace SuperDragonBall
         {
             LoadingScreen.Load(ScreenManager, false, new BackgroundScreen(),
                                                      new MainMenuScreen());
+        }
+
+        protected override void OnCancel()
+        {
+            IsPaused = false;
+            base.OnCancel();
         }
 
 

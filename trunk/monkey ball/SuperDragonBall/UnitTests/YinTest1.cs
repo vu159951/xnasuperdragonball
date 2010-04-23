@@ -30,8 +30,8 @@ namespace SuperDragonBall
     {
         #region Fields
 
-
-        BallCharacter player;
+        DragonBall player;
+        //BallCharacter player;
         WallManager m_kWallManager;
         //Wall topWall;
         LevelPiece m_kPlane;
@@ -66,17 +66,19 @@ namespace SuperDragonBall
         {
             base.LoadContent();
 
-            player = new BallCharacter(ScreenManager.Game, this);
-            player.position = new Vector3(10f, 25f, 0f);
+            //player = new BallCharacter(ScreenManager.Game, this);
+            player = new DragonBall(ScreenManager.Game, this);
+            player.position = new Vector3(0f, 0f, 0f);
+            player.scale *= 2;
             ScreenManager.Game.Components.Add(player);
 
 
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);
 
-            m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane_2");
+            m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane_3");
             m_kPlane.scale = 15;
-            m_kPlane.position += new Vector3(50f, -10f, 0);
+            m_kPlane.position += new Vector3(0f, 0f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);
 
 
