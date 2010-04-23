@@ -139,15 +139,19 @@ namespace SuperDragonBall
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-            gameCamera.followBehind(player);
-
-            activeLevel.MovePlayer(player, gameTime);
-            if (activeLevel.IsCollidingWithGoal(player))
+            if (IsActive)
             {
-                UnloadContent();
-                SwitchToNextLevel();
+                gameCamera.followBehind(player);
+
+                activeLevel.MovePlayer(player, gameTime);
+                if (activeLevel.IsCollidingWithGoal(player))
+                {
+                    UnloadContent();
+                    SwitchToNextLevel();
+                }
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+            
 
         }
 
