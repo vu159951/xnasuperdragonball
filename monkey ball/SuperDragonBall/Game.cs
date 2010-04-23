@@ -28,6 +28,7 @@ namespace SuperDragonBall
         GraphicsDeviceManager graphics;
         ScreenManager screenManager;
         public Utils.FrameRateCounter m_kFrameRate;
+        
 
         //screen width/height
         public static int SCREEN_WIDTH = 1024;
@@ -78,6 +79,8 @@ namespace SuperDragonBall
 
             m_kFrameRate = new Utils.FrameRateCounter(this, new Vector2(700.0f, 600.0f));
             Components.Add(m_kFrameRate);
+
+            
 
             // For testing purposes, let's disable fixed time step and vsync.
             // non-fixed timestep is damned irritating

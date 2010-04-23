@@ -85,6 +85,7 @@
     <Compile Include="Actors\Actor.cs" />
     <Compile Include="Actors\Asteroid.cs" />
     <Compile Include="Actors\BallCharacter.cs" />
+    <Compile Include="Actors\DragonBall.cs" />
     <Compile Include="Actors\GoalObject.cs" />
     <Compile Include="Actors\LevelDataTest.cs" />
     <Compile Include="Actors\LevelData.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="UnitTests\GregTestMultiPlanes.cs" />
     <Compile Include="UnitTests\ScottTest1.cs" />
     <Compile Include="UnitTests\YinTest1.cs" />
+    <Compile Include="Utils\CountdownTimer.cs" />
     <Compile Include="Utils\IntersectHelper.cs" />
     <Compile Include="Utils\MeshDataExtractor.cs" />
     <Compile Include="Screens\GameplayMain.cs" />

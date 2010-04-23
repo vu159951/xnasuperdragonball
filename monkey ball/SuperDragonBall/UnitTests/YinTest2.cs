@@ -30,8 +30,9 @@ namespace SuperDragonBall
     {
         #region Fields
 
-
-        BallCharacter player;
+        public Utils.CountdownTimer m_kCountdownTimer;
+        DragonBall player;
+        //BallCharacter player;
         WallManager m_kWallManager;
         //Wall topWall;
         LevelPiece m_kPlane;
@@ -56,6 +57,8 @@ namespace SuperDragonBall
             gameCamera = new GameCamera();
             gravityVec = new Vector3(0, -100, 0);
 
+            
+
         }
 
 
@@ -66,8 +69,13 @@ namespace SuperDragonBall
         {
             base.LoadContent();
 
-            player = new BallCharacter(ScreenManager.Game, this);
-            player.position = new Vector3(10f, 25f, 0f);
+            m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(500.0f, 50.0f));
+            ScreenManager.Game.Components.Add(m_kCountdownTimer);
+
+            player = new DragonBall(ScreenManager.Game, this);
+            //player = new BallCharacter(ScreenManager.Game, this);
+            player.position = new Vector3(0f, 0f, 0f);
+            player.scale *= 3;
             ScreenManager.Game.Components.Add(player);
 
 
@@ -110,34 +118,37 @@ namespace SuperDragonBall
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-            float timeDelta = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
-
-            player.velocity += gravityVec * timeDelta;
-            gameCamera.followBehind(player);
-
-            //test for collision
-            Vector3 pushAway = m_kPlane.testCollision(player);
-            if (pushAway != Vector3.Zero)
+            if (IsActive)
             {
-                player.CollidedWithStage = true;
-                respondToCollision(pushAway, timeDelta);
+                float timeDelta = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+
+                player.velocity += gravityVec * timeDelta;
+                gameCamera.followBehind(player);
+
+                //test for collision
+                Vector3 pushAway = m_kPlane.testCollision(player);
+                if (pushAway != Vector3.Zero)
+                {
+                    player.CollidedWithStage = true;
+                    respondToCollision(pushAway, timeDelta);
+                }
+                else
+                {
+                    player.CollidedWithStage = false;
+                }
+
+                //reset player position when fallen off
+                if (player.position.Y < -100)
+                {
+                    player.position = new Vector3(0f, 25f, 0f);
+                    player.velocity = Vector3.Zero;
+                    player.netForce = Vector3.Zero;
+                }
+               
             }
-            else
-            {
-                player.CollidedWithStage = false;
-            }
-
-            //reset player position when fallen off
-            if (player.position.Y < -100)
-            {
-                player.position = new Vector3(0f, 25f, 0f);
-                player.velocity = Vector3.Zero;
-                player.netForce = Vector3.Zero;
-            }
-
-
-
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+
+           
 
         }
 
