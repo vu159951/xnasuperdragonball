@@ -37,7 +37,7 @@ namespace SuperDragonBall
         LevelPiece m_kPlane;
 
         protected Vector3 gravityVec;
-
+        protected Vector3 m_kLookingDir;
 
 
         #endregion
@@ -74,7 +74,7 @@ namespace SuperDragonBall
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);
 
-            m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
+            m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane_3");
             m_kPlane.scale = 15;
             m_kPlane.position += new Vector3(150f, -10f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);
@@ -133,7 +133,11 @@ namespace SuperDragonBall
                 player.velocity = Vector3.Zero;
                 player.netForce = Vector3.Zero;
             }
-        
+            
+            //realign camera position
+            m_kLookingDir = player.position - gameCamera.GetCameraPosition();
+            m_kLookingDir.Y = 0f;
+            m_kLookingDir.Normalize();
 
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
@@ -186,7 +190,8 @@ namespace SuperDragonBall
 
            
             m_kPlane.RotX = 0;
-            m_kPlane.RotZ = 0;
+            m_kPlane.RotZ = 0;      
+
             if(input.IsKeyHeld(Keys.Up)) {
                 m_kPlane.RotX += -(float)Math.PI / 9;
             }
@@ -203,32 +208,19 @@ namespace SuperDragonBall
                 m_kPlane.RotZ += -(float)Math.PI / 9;
             }
 
-      
+            
+           //for gamepad input (untested!!)
+           //for forward/backward movement
+           GamePadState gamePadState = input.CurrentGamePadStates[0];
+           m_kPlane.RotX += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.Y;
+           m_kPlane.RotZ += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.Y;
+
+           //for Left/Right movement
+           m_kPlane.RotX += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.X;
+           m_kPlane.RotZ += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.X;
+           
             m_kPlane.setRotationOffset(player.position);
 
-            
-            /*
-            //OLD SHIP FUNCTIONS
-            player.rotationVelocity = 0;
-            if (input.ShipTurnLeft)
-            {
-                player.rotationVelocity += 3;
-            }
-            if (input.ShipTurnRight)
-            {
-                player.rotationVelocity += -3;
-            }
-            Vector3 thrust = Vector3.Zero;
-            if (input.ShipMove)
-            {
-                thrust += 3500f * player.directionVec;
-            }
-            if (input.ReverseThrust)
-            {
-                thrust += -3500f * player.directionVec;
-            }
-            player.netForce = thrust;
-            */
         }
 
         /// <summary>
