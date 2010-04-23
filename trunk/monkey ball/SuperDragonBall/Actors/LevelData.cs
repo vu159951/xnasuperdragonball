@@ -20,7 +20,7 @@ namespace SuperDragonBall.Actors
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public abstract class LevelData : Actor
+    public abstract class LevelData : GameComponent 
     {
         protected List<LevelPiece> planes;
         protected Vector3 gravityVec;
@@ -28,7 +28,7 @@ namespace SuperDragonBall.Actors
         protected GoalObject goal;
 
         public LevelData(Game game, GameplayScreen host)
-            : base(game, host)
+            : base(game)
         {
 
             gravityVec = new Vector3(0, -100, 0);
@@ -152,13 +152,13 @@ namespace SuperDragonBall.Actors
             }
             game.Components.Add(goal);
         }
-        protected override void UnloadContent()
+        protected void UnloadContent()
         {
            
             Console.WriteLine("test unload");
           
            
-            base.UnloadContent();
+           // base.UnloadContent();
             
         }
 
