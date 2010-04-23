@@ -13,6 +13,8 @@ namespace SuperDragonBall.Utils
         private SpriteBatch m_kSpriteBatch;
         private SpriteFont m_kFont;
         private Vector2 m_vPosition;
+
+        //Change the time to count down from here
         private const int countTime = 30;
 
         private float currentTime = 0;
