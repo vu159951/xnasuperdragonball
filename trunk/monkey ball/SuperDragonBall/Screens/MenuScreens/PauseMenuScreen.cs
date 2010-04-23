@@ -44,6 +44,7 @@ namespace SuperDragonBall
             // Add entries to the menu.
             MenuEntries.Add(resumeGameMenuEntry);
             MenuEntries.Add(quitGameMenuEntry);
+            
         }
 
 
