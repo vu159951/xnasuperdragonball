@@ -27,7 +27,7 @@ namespace SuperDragonBall.Actors
             startingLocation = new Vector3(10f, 25f, 0f);
             //make a few planes
             LevelPiece currentPlane;
-            currentPlane = new LevelPiece(game, host, "checker_plane");
+            currentPlane = new LevelPiece(game, host, "checker_plane_3");
             currentPlane.scale = 15;
             currentPlane.position += new Vector3(0f, -10f, 0);
             planes.Add(currentPlane);
