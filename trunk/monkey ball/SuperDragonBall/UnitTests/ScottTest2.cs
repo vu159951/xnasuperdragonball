@@ -41,7 +41,6 @@ namespace SuperDragonBall
 
         public LevelData activeLevel;
         //List<LevelPiece> planes;
-        bool firstLevel = true;
         private int currentLevel = 0;
         private List<LevelData> LevelList;
 

@@ -16,6 +16,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
+
+using SuperDragonBall.Actors;
+using SuperDragonBall.Utils;
+
 #endregion
 
 namespace SuperDragonBall
@@ -27,16 +31,18 @@ namespace SuperDragonBall
     /// </summary>
     class GameplayMain : GameplayScreen
     {
-       #region Fields
+        #region Fields
 
 
-        BallCharacter player;
+        public BallCharacter player;
         WallManager m_kWallManager;
         //Wall topWall;
         //LevelPiece m_kPlane;
 
-        List<LevelPiece> planes;
-        protected Vector3 gravityVec;
+        public LevelData activeLevel;
+        //List<LevelPiece> planes;
+        private int currentLevel = 0;
+        private List<LevelData> LevelList;
 
 
 
@@ -52,10 +58,10 @@ namespace SuperDragonBall
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-
             gameCamera = new GameCamera();
-            gravityVec = new Vector3(0, -100, 0);
-            planes = new List<LevelPiece>();
+            LevelList = new List<LevelData>();
+
+
         }
 
 
@@ -66,52 +72,24 @@ namespace SuperDragonBall
         {
             base.LoadContent();
 
-            player = new BallCharacter(ScreenManager.Game, this);
-            player.position = new Vector3(10f, 25f, 0f);
-            ScreenManager.Game.Components.Add(player);
 
+            LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
+            //add in any other levels here
 
             m_kWallManager = new WallManager(ScreenManager.Game, this);
-            ScreenManager.Game.Components.Add(m_kWallManager);
 
-            //make a few planes
-            LevelPiece currentPlane;
-            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
-            currentPlane.scale = 15;
-            currentPlane.position += new Vector3(0f, -10f, 0);
-            planes.Add(currentPlane);
+            //sets up the level
+            SwitchToNextLevel();
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
-            currentPlane.scale = 10;
-            currentPlane.position += new Vector3(200f, -10f, -300f);
-            currentPlane.setLocalRotation(0, (float) Math.PI / 18);
-            planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
-            currentPlane.scale = 10;
-            currentPlane.position += new Vector3(-250f, -10f, -200f);
-            currentPlane.setLocalRotation(0.123f, -(float)Math.PI / 18);
-            planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
-            currentPlane.scale = 5;
-            currentPlane.position += new Vector3(-220f, 10f, 80f);
-            planes.Add(currentPlane);
 
-            //moving level piece
-            MovingLevelPiece movingPlane;
-            //50 is a good movement speed
-            movingPlane = new MovingLevelPiece(ScreenManager.Game, this, "checker_plane", new Vector3(0, 100f, 0f), 50);
-            movingPlane.scale = 5;
-            movingPlane.position += new Vector3(0f, 0f, -200f);
-            //CRITICAL!!!
-            movingPlane.OriginalPosition = movingPlane.position;
-            planes.Add(movingPlane);
 
-            foreach (LevelPiece p in planes)
-            {
-                ScreenManager.Game.Components.Add(p);
-            }
+
+
+
+
 
         }
 
@@ -122,14 +100,28 @@ namespace SuperDragonBall
         public override void UnloadContent()
         {
             ScreenManager.Game.Components.Remove(player);
-            foreach (LevelPiece p in planes)
-            {
-                ScreenManager.Game.Components.Remove(p);
-            }
+            activeLevel.clearLevel(ScreenManager.Game);
+            ScreenManager.Game.Components.Remove(activeLevel);
             m_kWallManager.removeWallComponents();
             ScreenManager.Game.Components.Remove(m_kWallManager);
 
             base.UnloadContent();
+        }
+
+        public void SwitchToNextLevel()
+        {
+            activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
+            activeLevel.startLevel(ScreenManager.Game);
+
+            player = new BallCharacter(ScreenManager.Game, this);
+            player.position = activeLevel.startingLocation;
+            ScreenManager.Game.Components.Add(player);
+
+            ScreenManager.Game.Components.Add(m_kWallManager);
+
+            currentLevel++;
+            currentLevel = currentLevel % LevelList.Count;
+
         }
 
 
@@ -146,41 +138,19 @@ namespace SuperDragonBall
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-            float timeDelta = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
-
-            player.velocity += gravityVec * timeDelta;
-            gameCamera.followBehind(player);
-
-            //test for collision
-            Vector3 pushAway = Vector3.Zero;
-
-            foreach (LevelPiece p in planes)
+            if (IsActive)
             {
-                pushAway += p.testCollision(player);
-            }
-           
-            if (pushAway != Vector3.Zero)
-            {
-                pushAway.Normalize();
-                player.CollidedWithStage = true;
-                respondToCollision(pushAway, timeDelta);
-            }
-            else
-            {
-                player.CollidedWithStage = false;
-            }
+                gameCamera.followBehind(player);
 
-            //reset player position when fallen off
-            if (player.position.Y < -100)
-            {
-                player.position = new Vector3(0f, 25f, 0f);
-                player.velocity = Vector3.Zero;
-                player.netForce = Vector3.Zero;
+                activeLevel.MovePlayer(player, gameTime);
+                if (activeLevel.IsCollidingWithGoal(player))
+                {
+                    UnloadContent();
+                    SwitchToNextLevel();
+                }
             }
-
-
-
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+
 
         }
 
@@ -191,19 +161,7 @@ namespace SuperDragonBall
         /// </summary>
         /// <param name="pushAway">The normalized vector that the ball should be pushed away</param>
         /// <param name="timeDelta"></param>
-        private void respondToCollision(Vector3 pushAway, float timeDelta)
-        {
-            //Vector3 v3 = m_kPlane.getPlaneNormal();
-            Vector3 vDiff = player.velocity;
-            vDiff.X += pushAway.X * 10;
-            vDiff.Z += pushAway.Z * 10;
-            if (vDiff.Y < -50) {
-                vDiff.Y /= 1.5f;
-            }
-            vDiff.Y += pushAway.Y;
-            vDiff.Y -= (gravityVec.Y * timeDelta) * 2;
-            player.velocity = vDiff;
-        }
+
 
         /// <summary>
         /// Lets the game respond to player input. Unlike the Update method,
@@ -223,31 +181,27 @@ namespace SuperDragonBall
                 ScreenManager.AddScreen(new PauseMenuScreen());
             }
 
-            foreach (LevelPiece p in planes)
+
+            float RotX = 0;
+            float RotZ = 0;
+            if (input.IsKeyHeld(Keys.Up))
             {
-                p.RotX = 0;
-                p.RotZ = 0;
-                if (input.IsKeyHeld(Keys.Up))
-                {
-                    p.RotX += -(float)Math.PI / 9;
-                }
-                if (input.IsKeyHeld(Keys.Down))
-                {
-                    p.RotX += (float)Math.PI / 9;
-                }
-                if (input.IsKeyHeld(Keys.Left))
-                {
-                    p.RotZ += (float)Math.PI / 9;
-                }
-                if (input.IsKeyHeld(Keys.Right))
-                {
-                    p.RotZ += -(float)Math.PI / 9;
-                }
-
-
-                p.setRotationOffset(player.position);
+                RotX += -(float)Math.PI / 9;
+            }
+            if (input.IsKeyHeld(Keys.Down))
+            {
+                RotX += (float)Math.PI / 9;
+            }
+            if (input.IsKeyHeld(Keys.Left))
+            {
+                RotZ += (float)Math.PI / 9;
+            }
+            if (input.IsKeyHeld(Keys.Right))
+            {
+                RotZ += -(float)Math.PI / 9;
             }
 
+            activeLevel.setRotation(RotX, RotZ, player.position);
             /*
             //OLD SHIP FUNCTIONS
             player.rotationVelocity = 0;
