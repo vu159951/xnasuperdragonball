@@ -36,9 +36,10 @@ namespace SuperDragonBall
 
 
         public BallCharacter player;
-        WallManager m_kWallManager;
+        //WallManager m_kWallManager;
         //Wall topWall;
         //LevelPiece m_kPlane;
+        protected Vector3 m_kLookingDir;
 
         public LevelData activeLevel;
         //List<LevelPiece> planes;
@@ -76,24 +77,18 @@ namespace SuperDragonBall
             base.LoadContent();
 
             player = new BallCharacter(ScreenManager.Game, this);
+            LevelList.Add((LevelData)new Level1(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
             LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
             LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
             LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
             //add in any other levels here
 
-            m_kWallManager = new WallManager(ScreenManager.Game, this);
+            //m_kWallManager = new WallManager(ScreenManager.Game, this);
 
             //sets up the level
             SwitchToNextLevel();
-
-
-
-
-
-
-
-
-
 
         }
 
@@ -106,8 +101,8 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Remove(player);
             activeLevel.clearLevel(ScreenManager.Game);
             ScreenManager.Game.Components.Remove(activeLevel);
-            m_kWallManager.removeWallComponents();
-            ScreenManager.Game.Components.Remove(m_kWallManager);
+            //m_kWallManager.removeWallComponents();
+            //ScreenManager.Game.Components.Remove(m_kWallManager);
 
             base.UnloadContent();
         }
@@ -121,7 +116,7 @@ namespace SuperDragonBall
             player.position = activeLevel.startingLocation;
             ScreenManager.Game.Components.Add(player);
 
-            ScreenManager.Game.Components.Add(m_kWallManager);
+            //ScreenManager.Game.Components.Add(m_kWallManager);
 
             currentLevel++;
             currentLevel = currentLevel % LevelList.Count;
@@ -156,7 +151,14 @@ namespace SuperDragonBall
                 {
                     score++;
                 }
+
+                //realign camera position
+                m_kLookingDir = player.position - gameCamera.GetCameraPosition();
+                m_kLookingDir.Y = 0f;
+                m_kLookingDir.Normalize();
             }
+
+
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
 
@@ -209,29 +211,17 @@ namespace SuperDragonBall
                 RotZ += -(float)Math.PI / 9;
             }
 
+            //for forward/backward movement
+            GamePadState gamePadState = input.CurrentGamePadStates[0];
+            RotX += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.Y;
+            RotZ += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.Y;
+
+            //for Left/Right movement
+            RotX += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.X;
+            RotZ += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.X;
+
             activeLevel.setRotation(RotX, RotZ, player.position);
-            /*
-            //OLD SHIP FUNCTIONS
-            player.rotationVelocity = 0;
-            if (input.ShipTurnLeft)
-            {
-                player.rotationVelocity += 3;
-            }
-            if (input.ShipTurnRight)
-            {
-                player.rotationVelocity += -3;
-            }
-            Vector3 thrust = Vector3.Zero;
-            if (input.ShipMove)
-            {
-                thrust += 3500f * player.directionVec;
-            }
-            if (input.ReverseThrust)
-            {
-                thrust += -3500f * player.directionVec;
-            }
-            player.netForce = thrust;
-            */
+           
         }
 
         /// <summary>

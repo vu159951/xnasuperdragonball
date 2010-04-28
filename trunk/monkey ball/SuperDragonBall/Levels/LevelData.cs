@@ -35,6 +35,7 @@ namespace SuperDragonBall.Levels
             gravityVec = new Vector3(0, -100, 0);
             planes = new List<CollisionLevelPiece>();
             collectables = new List<Collectable>();
+            startingLocation = Vector3.Zero;
         }
 
         /// <summary>
@@ -68,11 +69,16 @@ namespace SuperDragonBall.Levels
 
             //test for collision
             Vector3 pushAway = Vector3.Zero;
+            Vector3 movingPlaneVel = Vector3.Zero;
             if (planes.Count != 0)
             {
                 foreach (CollisionLevelPiece p in planes)
                 {
-                    pushAway += p.testCollision(player);
+                    Vector3 result = p.testCollision(player);
+                    pushAway += result;
+                    if (result != Vector3.Zero && p is MovingLevelPiece) {
+                        movingPlaneVel += ((MovingLevelPiece)p).MoveVelocity / 20;
+                    }
                 }
             }
 
@@ -80,7 +86,7 @@ namespace SuperDragonBall.Levels
             {
                 pushAway.Normalize();
                 player.CollidedWithStage = true;
-                respondToCollision(pushAway, timeDelta, player);
+                respondToCollision(pushAway, movingPlaneVel, timeDelta, player);
             }
             else
             {
@@ -88,9 +94,9 @@ namespace SuperDragonBall.Levels
             }
 
             //reset player position when fallen off
-            if (player.position.Y < -100)
+            if (player.position.Y < -250)
             {
-                player.position = new Vector3(0f, 25f, 0f);
+                player.position = startingLocation;
                 player.velocity = Vector3.Zero;
                 player.netForce = Vector3.Zero;
             }
@@ -123,7 +129,6 @@ namespace SuperDragonBall.Levels
             {
                 holder.CollectedYet = true;
                 game.Components.Remove(holder);
-
                 return true;
             }
             return false;
@@ -135,10 +140,11 @@ namespace SuperDragonBall.Levels
         /// </summary>
         /// <param name="pushAway">The normalized vector that the ball should be pushed away</param>
         /// <param name="timeDelta"></param>
-        private void respondToCollision(Vector3 pushAway, float timeDelta, BallCharacter player)
+        private void respondToCollision(Vector3 pushAway, Vector3 movingPlaneVel, float timeDelta, BallCharacter player)
         {
             //Vector3 v3 = m_kPlane.getPlaneNormal();
             Vector3 vDiff = player.velocity;
+            vDiff += movingPlaneVel;
             vDiff.X += pushAway.X * 10;
             vDiff.Z += pushAway.Z * 10;
             if (vDiff.Y < -50)

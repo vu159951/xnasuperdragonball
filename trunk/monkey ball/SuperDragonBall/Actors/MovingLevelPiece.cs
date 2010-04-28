@@ -24,9 +24,9 @@ namespace SuperDragonBall
     /// </summary>
     public class MovingLevelPiece : CollisionLevelPiece
     {
-        private Vector3 originalPosition;
         //a vector that describes where the piece should move to and from
         private Vector3 m_movement;
+        private Vector3 m_currentMovement;
         private Vector3 m_moveVelocity;
 
         public MovingLevelPiece(Game game, GameplayScreen host, String assetName, Vector3 pMovement, float pMoveSpeed)
@@ -41,8 +41,7 @@ namespace SuperDragonBall
             }
             //50 is a good number, fyi
             m_moveVelocity *= pMoveSpeed;
-
-
+            m_currentMovement = Vector3.Zero;
         }
       
 
@@ -55,22 +54,21 @@ namespace SuperDragonBall
             float timeDelta = (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
 
             //determine if I need to switch velocity direction
-            if (Math.Abs(position.LengthSquared() - originalPosition.LengthSquared()) > m_movement.LengthSquared()) {
+            if(m_currentMovement.LengthSquared() >= m_movement.LengthSquared())
+            {
+                m_currentMovement = Vector3.Zero;
                 m_moveVelocity *= -1;
             } 
                 
             // update the level piece position in the direction of its movement vector
             position += m_moveVelocity * timeDelta;
+            m_currentMovement += m_moveVelocity * timeDelta;
 
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// Original Position cannot be defined correctly at construction time
-        /// </summary>
-        public Vector3 OriginalPosition {
-            set { originalPosition = value; }
+        public Vector3 MoveVelocity {
+            get { return m_moveVelocity; }
         }
-
     }
 }

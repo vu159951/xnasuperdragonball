@@ -70,8 +70,7 @@ namespace SuperDragonBall
         }
 
         protected override void UnloadContent()
-        {
-          
+        {       
             base.UnloadContent();
         }
 
