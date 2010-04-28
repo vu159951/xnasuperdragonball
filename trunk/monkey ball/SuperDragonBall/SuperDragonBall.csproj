@@ -96,6 +96,7 @@
     <Compile Include="Actors\MovingLevelPiece.cs" />
     <Compile Include="Levels\SimpleLevel.cs" />
     <Compile Include="GameCamera.cs" />
+    <Compile Include="UnitTests\JesseTest1.cs" />
     <Compile Include="UnitTests\YinTest2.cs" />
     <Compile Include="UnitTests\ScottTest2.cs" />
     <Compile Include="UnitTests\GregTestMultiPlanes.cs" />
