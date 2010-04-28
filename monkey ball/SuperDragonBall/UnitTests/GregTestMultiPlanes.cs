@@ -205,7 +205,8 @@ namespace SuperDragonBall
             Vector3 vDiff = player.velocity;
             vDiff.X += pushAway.X * 10;
             vDiff.Z += pushAway.Z * 10;
-            if (vDiff.Y < -50) {
+            if (vDiff.Y < -50) 
+            {
                 vDiff.Y /= 1.5f;
             }
             vDiff.Y += pushAway.Y;
