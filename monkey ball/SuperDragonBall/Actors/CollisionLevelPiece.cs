@@ -71,6 +71,7 @@ namespace SuperDragonBall
 
         protected override void UnloadContent()
         {
+            Game.Components.Remove(nonCollideAsset);
             base.UnloadContent();
         }
 

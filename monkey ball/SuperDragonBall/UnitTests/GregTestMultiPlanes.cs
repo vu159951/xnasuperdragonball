@@ -109,8 +109,6 @@ namespace SuperDragonBall
             movingPlane = new MovingLevelPiece(ScreenManager.Game, this, assetName, new Vector3(0, 100f, 0f), 50);
             movingPlane.scale = 5;
             movingPlane.position += new Vector3(0f, 0f, -200f);
-            //CRITICAL!!!
-            movingPlane.OriginalPosition = movingPlane.position;
             planes.Add(movingPlane);
 
             foreach (LevelPiece p in planes)

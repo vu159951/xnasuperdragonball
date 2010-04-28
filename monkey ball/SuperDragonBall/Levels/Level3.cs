@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -18,58 +18,54 @@ namespace SuperDragonBall.Levels
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class LevelDataTest : LevelData
+    public class Level3 : LevelData
     {
-        public LevelDataTest(Game game, GameplayScreen host)
+        public Level3(Game game, GameplayScreen host)
             : base(game, host)
         {
 
-            startingLocation = new Vector3(10f, 25f, 0f);
+            startingLocation = new Vector3(10f, 35f, 0f);
             //make a few planes
             CollisionLevelPiece currentPlane;
             currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
             currentPlane.scale = 15;
-            currentPlane.position += new Vector3(0f, -10f, 0);
+            currentPlane.position += new Vector3(0f, 0f, 0);
             planes.Add(currentPlane);
 
             currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
-            currentPlane.scale = 10;
-            currentPlane.position += new Vector3(200f, -10f, -300f);
-            currentPlane.setLocalRotation(0, (float)Math.PI / 18);
+            currentPlane.scale = 15;
+            currentPlane.position += new Vector3(0f, 0f, -360f);
             planes.Add(currentPlane);
-
-            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
-            currentPlane.scale = 10;
-            currentPlane.position += new Vector3(-250f, -10f, -200f);
-            currentPlane.setLocalRotation(0.123f, -(float)Math.PI / 18);
-            planes.Add(currentPlane);
-
-            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
-            currentPlane.scale = 5;
-            currentPlane.position += new Vector3(-220f, 10f, 80f);
-            planes.Add(currentPlane);
-
-            
 
             //moving level piece
             MovingLevelPiece movingPlane;
-            //50 is a good movement speed
-            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(0, 100f, 0f), 50);
-            movingPlane.scale = 5;
-            movingPlane.position += new Vector3(0f, 0f, -250f);
+            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(0, -500f, 0), 80f);
+            movingPlane.scale = 15;
+            movingPlane.position += new Vector3(0f, 400f, -360f);
             planes.Add(movingPlane);
 
+            //wall
+            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
+            currentPlane.scale = 15;
+            currentPlane.position += new Vector3(0f, 160f, -550f);
+            currentPlane.setLocalRotation((float)Math.PI / 2, 0);
+            planes.Add(currentPlane);
+
+            //cloud above wall
+            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
+            currentPlane.scale = 15;
+            currentPlane.position += new Vector3(0f, 300f, -730f);
+            planes.Add(currentPlane);
+
+
+            //goal
             goal = new GoalObject(game, host);
-            goal.position += new Vector3(0, 10, -50);
-            goal.scale = 5;
-            //game.Components.Add(goal);
+            goal.position += new Vector3(0, 300, -730);
+            goal.scale = 15;
 
-            //foreach (LevelPiece p in planes)
-            //{
-            //    game.Components.Add(p);
-            //}
 
-            
+
+
 
         }
 

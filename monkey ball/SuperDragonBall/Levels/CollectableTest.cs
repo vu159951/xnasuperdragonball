@@ -57,8 +57,6 @@ namespace SuperDragonBall.Levels
             movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(0, 100f, 0f), 50);
             movingPlane.scale = 5;
             movingPlane.position += new Vector3(0f, 0f, -250f);
-            //CRITICAL!!!
-            movingPlane.OriginalPosition = movingPlane.position;
             planes.Add(movingPlane);
 
             goal = new GoalObject(game, host);
