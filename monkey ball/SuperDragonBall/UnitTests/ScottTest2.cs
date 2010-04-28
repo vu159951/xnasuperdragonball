@@ -36,6 +36,7 @@ namespace SuperDragonBall
 
 
         public BallCharacter player;
+        public int score;
         WallManager m_kWallManager;
         //Wall topWall;
         //LevelPiece m_kPlane;
@@ -61,6 +62,7 @@ namespace SuperDragonBall
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             gameCamera = new GameCamera();
             LevelList = new List<LevelData>();
+            score = 0;
             
             
         }
@@ -76,6 +78,7 @@ namespace SuperDragonBall
 
             LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
             LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
             //add in any other levels here
 
             m_kWallManager = new WallManager(ScreenManager.Game, this);
@@ -83,15 +86,6 @@ namespace SuperDragonBall
             //sets up the level
             SwitchToNextLevel();
             
-
-           
-
-
-            
-           
-
-            
-
         }
 
 
@@ -148,6 +142,10 @@ namespace SuperDragonBall
                 {
                     UnloadContent();
                     SwitchToNextLevel();
+                }
+                if (activeLevel.IsCollidingWithCollectable(player,ScreenManager.Game))
+                {
+                    score++;
                 }
             }
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
