@@ -79,5 +79,10 @@ namespace SuperDragonBall.Utils
         {
             currentTime = countTime;
         }
+
+        public int getRemainingTime()
+        {
+            return (int)currentTime;
+        }
     }
 }

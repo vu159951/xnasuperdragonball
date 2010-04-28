@@ -35,6 +35,7 @@ namespace SuperDragonBall
         #region Fields
 
         public Utils.CountdownTimer m_kCountdownTimer;
+        public Utils.ScoreKeeper m_kScoreKeeper;
         public BallCharacter player;
         //WallManager m_kWallManager;
         //Wall topWall;
@@ -82,10 +83,10 @@ namespace SuperDragonBall
             player = new BallCharacter(ScreenManager.Game, this);
             LevelList.Add((LevelData)new Level1(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
-            //LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
-            //LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
-            //LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
-           // LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
             //add in any other levels here
 
             //m_kWallManager = new WallManager(ScreenManager.Game, this);
@@ -107,6 +108,7 @@ namespace SuperDragonBall
             //m_kWallManager.removeWallComponents();
             //ScreenManager.Game.Components.Remove(m_kWallManager);
             ScreenManager.Game.Components.Remove(m_kCountdownTimer);
+            ScreenManager.Game.Components.Remove(m_kScoreKeeper);
 
             base.UnloadContent();
         }
@@ -121,9 +123,11 @@ namespace SuperDragonBall
             
             player.position = activeLevel.startingLocation;
             ScreenManager.Game.Components.Add(player);
-            m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(500.0f, 50.0f));
+            m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(875.0f, 20.0f));
+            m_kScoreKeeper = new Utils.ScoreKeeper(ScreenManager.Game, new Vector2(20f, 20f));
+            m_kScoreKeeper.setScore(score);
             ScreenManager.Game.Components.Add(m_kCountdownTimer);
-            //ScreenManager.Game.Components.Add(m_kWallManager);
+            ScreenManager.Game.Components.Add(m_kScoreKeeper);
 
             
 
@@ -138,8 +142,11 @@ namespace SuperDragonBall
 
             player.position = activeLevel.startingLocation;
             ScreenManager.Game.Components.Add(player);
-            m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(500.0f, 50.0f));
+            m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(875.0f, 20.0f));
+            m_kScoreKeeper = new Utils.ScoreKeeper(ScreenManager.Game, new Vector2(20f, 20f));
+            m_kScoreKeeper.setScore(score);
             ScreenManager.Game.Components.Add(m_kCountdownTimer);
+            ScreenManager.Game.Components.Add(m_kScoreKeeper);
 
         }
 
@@ -170,8 +177,12 @@ namespace SuperDragonBall
                 if (activeLevel.IsCollidingWithCollectable(player, ScreenManager.Game))
                 {
                     score++;
+                    m_kScoreKeeper.setScore(score);
                 }
-
+                if (m_kCountdownTimer.getRemainingTime() == 0)
+                {
+                    RestartLevel();
+                }
                 //realign camera position
                 m_kLookingDir = player.position - gameCamera.GetCameraPosition();
                 m_kLookingDir.Y = 0f;
