@@ -75,6 +75,7 @@ namespace SuperDragonBall
         /// </summary>
         void ConfirmQuitMessageBoxAccepted(object sender, EventArgs e)
         {
+            IsPaused = false;
             LoadingScreen.Load(ScreenManager, false, new BackgroundScreen(),
                                                      new MainMenuScreen());
         }
