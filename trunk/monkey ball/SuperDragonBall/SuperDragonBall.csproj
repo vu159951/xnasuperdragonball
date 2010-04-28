@@ -117,6 +117,7 @@
     <Compile Include="Screens\MenuScreens\GregTestMenu.cs" />
     <Compile Include="Screens\MenuScreens\UnitTestMenuScreen.cs" />
     <Compile Include="Screens\MenuScreens\YinTestMenu.cs" />
+    <Compile Include="Utils\ScoreKeeper.cs" />
     <Compile Include="WallManager.cs" />
     <Compile Include="Actors\Missile.cs" />
     <Compile Include="Game.cs" />
