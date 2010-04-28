@@ -87,11 +87,11 @@
     <Compile Include="Actors\BallCharacter.cs" />
     <Compile Include="Actors\DragonBall.cs" />
     <Compile Include="Actors\GoalObject.cs" />
-    <Compile Include="Actors\LevelDataTest.cs" />
-    <Compile Include="Actors\LevelData.cs" />
+    <Compile Include="Levels\LevelDataTest.cs" />
+    <Compile Include="Levels\LevelData.cs" />
     <Compile Include="Actors\LevelPiece.cs" />
     <Compile Include="Actors\MovingLevelPiece.cs" />
-    <Compile Include="Actors\SimpleLevel.cs" />
+    <Compile Include="Levels\SimpleLevel.cs" />
     <Compile Include="GameCamera.cs" />
     <Compile Include="UnitTests\YinTest2.cs" />
     <Compile Include="UnitTests\ScottTest2.cs" />
