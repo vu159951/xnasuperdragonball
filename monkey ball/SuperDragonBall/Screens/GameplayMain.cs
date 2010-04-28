@@ -73,7 +73,7 @@ namespace SuperDragonBall
         {
             base.LoadContent();
 
-
+            player = new BallCharacter(ScreenManager.Game, this);
             LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
             LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
             //add in any other levels here
@@ -114,7 +114,7 @@ namespace SuperDragonBall
             activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
             activeLevel.startLevel(ScreenManager.Game);
 
-            player = new BallCharacter(ScreenManager.Game, this);
+            
             player.position = activeLevel.startingLocation;
             ScreenManager.Game.Components.Add(player);
 

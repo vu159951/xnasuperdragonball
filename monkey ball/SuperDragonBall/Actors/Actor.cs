@@ -132,8 +132,9 @@ namespace SuperDragonBall
                 // for all actors in the game
                 //worldBoarder();
 
-                base.Update(gameTime);
+                
             }
+            base.Update(gameTime);
         }
 
         protected override void LoadContent()
