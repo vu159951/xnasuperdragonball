@@ -100,6 +100,7 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Remove(m_kPlane);
             m_kWallManager.removeWallComponents();
             ScreenManager.Game.Components.Remove(m_kWallManager);
+            ScreenManager.Game.Components.Remove(m_kCountdownTimer);
 
             base.UnloadContent();
         }
