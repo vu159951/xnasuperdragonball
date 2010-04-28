@@ -88,6 +88,7 @@
     <Compile Include="Actors\Collectable.cs" />
     <Compile Include="Actors\DragonBall.cs" />
     <Compile Include="Actors\GoalObject.cs" />
+    <Compile Include="Actors\LevelPieceAsset.cs" />
     <Compile Include="Levels\CollectableTest.cs" />
     <Compile Include="Levels\LevelDataTest.cs" />
     <Compile Include="Levels\LevelData.cs" />

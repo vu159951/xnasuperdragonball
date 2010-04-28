@@ -13,8 +13,10 @@ namespace SuperDragonBall
 
         public BallCharacter(Game game, GameplayScreen host) : base(game, host)
         {
-            modelName = "testBallThing";
-            m_scale = 5;
+            //modelName = "testBallThing";
+            modelName = "DragonBall";
+            //modelName = "cloud_1";
+            m_scale = 15;
 
             //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
             quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);

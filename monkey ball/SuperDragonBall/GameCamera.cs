@@ -22,7 +22,7 @@ namespace SuperDragonBall
             //default camera orientation
             facing = new Vector3(0.0f, 10.0f, 100.0f);
             cameraMatrix = Matrix.CreateLookAt(facing, Vector3.Zero, Vector3.UnitY);
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2, 1f, 2.0f, 10000f);
+            projectionMatrix = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2f, 4/3f, 2.0f, 10000f);
             cameraQuat = Quaternion.Identity;
            
         }
@@ -34,7 +34,7 @@ namespace SuperDragonBall
         /// <param name="actor"></param>
         public void followBehind(Actor actor) {
             
-            Vector3 camPos = new Vector3(0f, 50.0f, 60.0f);
+            Vector3 camPos = new Vector3(0f, 80.0f, 80.0f);
             camPos = (Vector3.Transform(camPos, Matrix.CreateFromQuaternion(actor.quat)));
             camPos += actor.position;
             m_kCameraPosition = camPos;
