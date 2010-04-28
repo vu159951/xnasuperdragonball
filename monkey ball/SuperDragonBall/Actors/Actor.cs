@@ -51,6 +51,38 @@ namespace SuperDragonBall
 
         protected GameplayScreen hostScreen;
 
+        //Cel Shader enable property
+        private bool _enableCelShading = false;
+        public bool enableCelShading
+        {
+            get
+            {
+                return _enableCelShading;
+            }
+            set
+            {
+                _enableCelShading = value;
+            }
+        }
+
+        //Cel Shader Effect objects
+        private Effect celLightingEffect;
+        private EffectParameter projectionParameter;
+        private EffectParameter viewParameter;
+        private EffectParameter worldParameter;
+        private EffectParameter lightColorParameter;
+        private EffectParameter lightDirectionParameter;
+        //private EffectParameter ambientColorParameter;
+        private EffectParameter EyePositionParameter;
+        private EffectParameter LightPositionParameter;
+
+        /// Data fields corresponding to the cel shader effect paramters
+        private Matrix world, view, projection;
+        private Vector3 diffuseLightDirection;
+        private Vector4 diffuseLightColor;
+        private Vector4 ambientLightColor;
+        private Vector3 eyePosition;
+
         public Actor(Game game, GameplayScreen host)
             : base(game)
         {
@@ -79,7 +111,6 @@ namespace SuperDragonBall
             vForce = Vector3.Zero;
             vAcceleration = Vector3.Zero;
             bPhysicsDriven = false;
-
         }
 
         /// <summary>
@@ -89,7 +120,7 @@ namespace SuperDragonBall
         public override void Initialize()
         {
             // TODO: Add your initialization code here
-            
+
             base.Initialize();
         }
 
@@ -132,9 +163,29 @@ namespace SuperDragonBall
                 // for all actors in the game
                 //worldBoarder();
 
-                
+                //Cel Shading
+                //Set the light direction to a fixed value.
+                //This will place the light source behind, to the right, and above the user.
+                diffuseLightDirection = new Vector3(-2.0f, 2, 0f);
+                //ensure the light direction is normalized, or
+                //the shader will give some weird results
+                //diffuseLightDirection.Normalize();
+
+                //set the color of the diffuse light
+                diffuseLightColor = Color.White.ToVector4();
+
+                //The built-in camera class provides the view matrix
+                //view = camera.ViewMatrix;
+                view = hostScreen.CameraMatrix;
+
+                //eyePosition = camera.Position;
+                eyePosition = hostScreen.GetCameraPosition();
+                //LightPosition = new Vector3(50, 50, 50);
+                //LightPosition.Normalize();
+
+
+                base.Update(gameTime);
             }
-            base.Update(gameTime);
         }
 
         protected override void LoadContent()
@@ -146,8 +197,23 @@ namespace SuperDragonBall
             {
                 ModelBounds = BoundingSphere.CreateMerged(ModelBounds,
             mesh.BoundingSphere);
-                
             }
+
+            //Cel Shading
+            celLightingEffect = contentManager.Load<Effect>("Cel");
+            GetEffectParameters();
+
+            //Calculate the projection properties first on any 
+            //load callback.  That way if the window gets resized,
+            //the perspective matrix is updated accordingly
+            float aspectRatio = (float)GraphicsDevice.Viewport.Width /
+                (float)GraphicsDevice.Viewport.Height;
+            float fov = MathHelper.PiOver4 * aspectRatio * 3 / 4;
+
+            //projection = Matrix.CreatePerspectiveFieldOfView(fov,
+            //    aspectRatio, .1f, 1000f);
+            projection = hostScreen.ProjectionMatrix;
+
             base.LoadContent();
         }
 
@@ -170,25 +236,42 @@ namespace SuperDragonBall
             GraphicsDevice.RenderState.DepthBufferEnable = true;
             model.CopyAbsoluteBoneTransformsTo(bones);
 
-            foreach (ModelMesh mesh in model.Meshes)
+            if (_enableCelShading)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                //Cel shading
+                projectionParameter.SetValue(projection);
+                viewParameter.SetValue(view);
+                worldParameter.SetValue(world);
+                lightColorParameter.SetValue(diffuseLightColor);
+                lightDirectionParameter.SetValue(diffuseLightDirection);
+                //LightPositionParameter.SetValue(LightPosition);
+                EyePositionParameter.SetValue(eyePosition);
+
+                DrawSampleMesh(model);
+            }
+            else
+            {
+
+                foreach (ModelMesh mesh in model.Meshes)
                 {
-                    effect.World = bones[mesh.ParentBone.Index] * worldTransform;
-                    effect.View = hostScreen.CameraMatrix;
-                    effect.Projection = hostScreen.ProjectionMatrix;
-                    effect.EnableDefaultLighting();
-                    effect.PreferPerPixelLighting = true;
-                    
-                    effect.AmbientLightColor = hostScreen.AmbientLightColor;
-                    effect.SpecularColor = hostScreen.SpecularColor;
-                    effect.SpecularPower = hostScreen.SpecularPower;
-                    effect.DirectionalLight0.Direction = hostScreen.DLightDirection;
-                    effect.DirectionalLight0.DiffuseColor = hostScreen.DLightColor;
-                    
-                    //effect.TextureEnabled = true;
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.World = bones[mesh.ParentBone.Index] * worldTransform;
+                        effect.View = hostScreen.CameraMatrix;
+                        effect.Projection = hostScreen.ProjectionMatrix;
+                        effect.EnableDefaultLighting();
+                        effect.PreferPerPixelLighting = true;
+
+                        effect.AmbientLightColor = hostScreen.AmbientLightColor;
+                        effect.SpecularColor = hostScreen.SpecularColor;
+                        effect.SpecularPower = hostScreen.SpecularPower;
+                        effect.DirectionalLight0.Direction = hostScreen.DLightDirection;
+                        effect.DirectionalLight0.DiffuseColor = hostScreen.DLightColor;
+
+                        //effect.TextureEnabled = true;
+                    }
+                    mesh.Draw();
                 }
-                mesh.Draw();
             }
 
             base.Draw(gameTime);
@@ -374,9 +457,93 @@ namespace SuperDragonBall
             return worldTransform.Forward;
         }
 
-      
+        /// <summary>
+        /// This function obtains EffectParameter objects from the Effect objects.
+        /// The EffectParameters are handles to the values in the shaders and are
+        /// effectively how your C# code and your shader code communicate.
+        /// </summary>
+        private void GetEffectParameters()
+        {
+            worldParameter = celLightingEffect.Parameters["world"];
+            viewParameter = celLightingEffect.Parameters["view"];
+            projectionParameter = celLightingEffect.Parameters["projection"];
+            lightColorParameter = celLightingEffect.Parameters["lightColor"];
+            lightDirectionParameter = celLightingEffect.Parameters["LightDirection"];
+            EyePositionParameter = celLightingEffect.Parameters["EyePosition"];
+            LightPositionParameter = celLightingEffect.Parameters["LightPosition"];
+        }
 
-        
+        /// <summary>
+        /// Example 1.6
+        /// 
+        /// Draws a sample mesh using a single effect with a single technique.
+        /// This pattern is very common in simple effect usage.
+        /// </summary>
+        /// <param name="sampleMesh"></param>
+        public void DrawSampleMesh(Model sampleMesh)
+        {
+            if (sampleMesh == null)
+                return;
+
+            foreach (ModelMesh mesh in sampleMesh.Meshes)
+            {
+                
+                worldParameter.SetValue(bones[mesh.ParentBone.Index] * worldTransform);
+                lightColorParameter.SetValue(new Vector4(hostScreen.SpecularColor, 1.0f));
+                foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                {
+                    //our sample meshes only contain a single part, so we don't need to bother
+                    //looping over the ModelMesh and ModelMeshPart collections. If the meshes
+                    //were more complex, we would repeat all the following code for each part
+                    //  ModelMesh mesh = sampleMesh.Meshes[0];
+                    //  ModelMeshPart meshPart = mesh.MeshParts[0];
+
+                    //set the vertex source to the mesh's vertex buffer
+                    GraphicsDevice.Vertices[0].SetSource(
+                        mesh.VertexBuffer, meshPart.StreamOffset, meshPart.VertexStride);
+
+                    //set the vertex delclaration
+                    GraphicsDevice.VertexDeclaration = meshPart.VertexDeclaration;
+
+                    //set the current index buffer to the sample mesh's index buffer
+                    GraphicsDevice.Indices = mesh.IndexBuffer;
+
+                    //figure out which effect we're using currently
+                    Effect effect = celLightingEffect;
+
+
+                    //at this point' we're ready to begin drawing
+                    //To start using any effect, you must call Effect.Begin
+                    //to start using the current technique (set in LoadGraphicsContent)
+                    effect.Begin(SaveStateMode.None);
+
+                    //now we loop through the passes in the teqnique, drawing each
+                    //one in order
+                    for (int i = 0; i < effect.CurrentTechnique.Passes.Count; i++)
+                    {
+                        //EffectPass.Begin will update the device to
+                        //begin using the state information defined in the current pass
+                        effect.CurrentTechnique.Passes[i].Begin();
+
+                        //sampleMesh contains all of the information required to draw
+                        //the current mesh
+                        GraphicsDevice.DrawIndexedPrimitives(
+                            PrimitiveType.TriangleList, meshPart.BaseVertex, 0,
+                            meshPart.NumVertices, meshPart.StartIndex, meshPart.PrimitiveCount);
+
+                        //EffectPass.End must be called when the effect is no longer needed
+                        effect.CurrentTechnique.Passes[i].End();
+                    }
+
+                    //Likewise, Effect.End will end the current technique
+                    effect.End();
+                }
+            }
+        }
+
+
+
+
 
         /*
         public Vector3 GetWorldPosition() {

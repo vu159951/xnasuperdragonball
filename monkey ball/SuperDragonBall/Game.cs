@@ -25,7 +25,7 @@ namespace SuperDragonBall
     {
         #region Fields
 
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         ScreenManager screenManager;
         public Utils.FrameRateCounter m_kFrameRate;
         
@@ -64,7 +64,6 @@ namespace SuperDragonBall
             Content.RootDirectory = "Content";
 
             graphics = new GraphicsDeviceManager(this);
-
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
 
@@ -86,6 +85,10 @@ namespace SuperDragonBall
             // non-fixed timestep is damned irritating
             IsFixedTimeStep = true;
             graphics.SynchronizeWithVerticalRetrace = false;
+
+            //For cel shading
+            graphics.MinimumVertexShaderProfile = ShaderProfile.VS_2_0;
+            graphics.MinimumPixelShaderProfile = ShaderProfile.PS_2_0;
         }
 
 

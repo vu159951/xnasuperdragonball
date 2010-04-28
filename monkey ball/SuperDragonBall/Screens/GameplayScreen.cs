@@ -120,6 +120,10 @@ namespace SuperDragonBall
             }
         }
 
+        public Vector3 GetCameraPosition()
+        {
+            return gameCamera.GetCameraPosition();
+        }
        
 
         #endregion
