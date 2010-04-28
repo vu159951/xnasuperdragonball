@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using SuperDragonBall.Utils;
+using SuperDragonBall.Actors;
 #endregion
 
 namespace SuperDragonBall
@@ -35,6 +36,7 @@ namespace SuperDragonBall
         WallManager m_kWallManager;
         //Wall topWall;
         LevelPiece m_kPlane;
+        Collectable c;
 
         protected Vector3 gravityVec;
 
@@ -76,7 +78,13 @@ namespace SuperDragonBall
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);
 
-            m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane_3");
+            c = new Collectable(ScreenManager.Game, this);
+            c.scale = 10;
+            c.position += new Vector3(0f, 0f, 0f);
+            
+            ScreenManager.Game.Components.Add(c);
+
+            m_kPlane = new LevelPiece(ScreenManager.Game, this, "sky_sphere");
             m_kPlane.scale = 15;
             m_kPlane.position += new Vector3(0f, 0f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);
