@@ -86,6 +86,7 @@
     <Compile Include="Actors\Asteroid.cs" />
     <Compile Include="Actors\BallCharacter.cs" />
     <Compile Include="Actors\Collectable.cs" />
+    <Compile Include="Actors\CollisionLevelPiece.cs" />
     <Compile Include="Actors\DragonBall.cs" />
     <Compile Include="Actors\GoalObject.cs" />
     <Compile Include="Actors\LevelPieceAsset.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="Actors\MovingLevelPiece.cs" />
     <Compile Include="Levels\SimpleLevel.cs" />
     <Compile Include="GameCamera.cs" />
-    <Compile Include="UnitTests\JesseTest1.cs" />
     <Compile Include="UnitTests\YinTest2.cs" />
     <Compile Include="UnitTests\ScottTest2.cs" />
     <Compile Include="UnitTests\GregTestMultiPlanes.cs" />

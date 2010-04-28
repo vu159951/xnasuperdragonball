@@ -26,25 +26,25 @@ namespace SuperDragonBall.Levels
 
             startingLocation = new Vector3(10f, 25f, 0f);
             //make a few planes
-            LevelPiece currentPlane;
-            currentPlane = new LevelPiece(game, host, "checker_plane_3");
+            CollisionLevelPiece currentPlane;
+            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
             currentPlane.scale = 15;
             currentPlane.position += new Vector3(0f, -10f, 0);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(game, host, "checker_plane_3");
+            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
             currentPlane.scale = 10;
             currentPlane.position += new Vector3(200f, -10f, -300f);
             currentPlane.setLocalRotation(0, (float)Math.PI / 18);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(game, host, "checker_plane_3");
+            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
             currentPlane.scale = 10;
             currentPlane.position += new Vector3(-250f, -10f, -200f);
             currentPlane.setLocalRotation(0.123f, -(float)Math.PI / 18);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(game, host, "checker_plane_3");
+            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
             currentPlane.scale = 5;
             currentPlane.position += new Vector3(-220f, 10f, 80f);
             planes.Add(currentPlane);

@@ -22,79 +22,28 @@ namespace SuperDragonBall
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class LevelPieceAsset : Actor
+    public class LevelPieceAsset : LevelPiece
     {
-        private Quaternion originalRot;
-       
-        private float m_rotX, m_rotZ;
-        // a function of player position relative to the origin of the plane
-        private Vector3 m_rotationOffset;
-        //the rotation of the level piece independent of player movement
-        private Quaternion m_localRotation;
 
         public LevelPieceAsset(Game game, GameplayScreen host, String assetName)
-            : base(game, host)
+            : base(game, host, assetName)
         {
-            // TODO: Construct any child components here
-            modelName = assetName;
-            position = new Vector3(0f, 0f, 0f);
-            // DO NOT ADJUST SCALE IN A CONSTRUCTOR
-            //scale = 50;
-            m_rotX = 0;
-            m_rotZ = 0;
-            //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
-            quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);
-            originalRot = quat;
-            m_rotationOffset = Vector3.Zero;
-            //effect.TextureEnabled = true;
-
-
+          
         }
 
         /// <summary>
-        /// Allows the game component to update itself.
+        /// Match the local rotation of the host
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public override void Update(GameTime gameTime)
-        {
-            // TODO: Add your update code here
-            this.quat = originalRot * Quaternion.CreateFromRotationMatrix(Matrix.CreateFromYawPitchRoll(0, 
-                m_rotX, m_rotZ));
-            base.Update(gameTime);
+        public void matchLocalRotation(Quaternion hostLocalRotation) {
+            m_localRotation = hostLocalRotation;
         }
 
         /// <summary>
-        /// Plane rotation is dependent on player postion
+        /// Match the offfset position of the host
         /// </summary>
-        protected override void modifyWorldTransform()
+        public void matchRotationOffset(Vector3 hostOffset)
         {
-            m_changed = false;
-            Matrix rom = Matrix.CreateTranslation(m_rotationOffset);
-            Matrix rom2 = Matrix.CreateTranslation(-m_rotationOffset);
-            Matrix tiltOffset = rom * Matrix.CreateFromQuaternion(m_quat) * rom2;
-            worldTransform = Matrix.CreateScale(m_scale) * Matrix.CreateFromQuaternion(m_localRotation) * tiltOffset * Matrix.CreateTranslation(m_position);
-            WorldBounds.Center = m_position;
-            WorldBounds.Radius = ModelBounds.Radius * m_scale;
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="rotX">In radians</param>
-        /// <param name="rotZ">In radians</param>
-        public void setLocalRotation(float pRotX, float pRotZ) {
-            m_localRotation = originalRot * Quaternion.CreateFromYawPitchRoll(0, pRotX, pRotZ);
-        }
-
-        /// <summary>
-        /// Used to keep the plane rotating around the player's postion
-        /// Should be set every time the player's postion changes
-        /// </summary>
-        /// <param name="playerPosition"></param>
-        public void setRotationOffset(Vector3 playerPosition)
-        {
-            m_rotationOffset = this.position - playerPosition;
+            m_rotationOffset = hostOffset;
         }
 
 

@@ -34,7 +34,7 @@ namespace SuperDragonBall
         BallCharacter player;
         WallManager m_kWallManager;
         //Wall topWall;
-        LevelPiece m_kPlane;
+        CollisionLevelPiece m_kPlane;
         float manualCameraRotation;
 
         protected Vector3 gravityVec;
@@ -77,7 +77,7 @@ namespace SuperDragonBall
             m_kWallManager = new WallManager(ScreenManager.Game, this);
             ScreenManager.Game.Components.Add(m_kWallManager);
 
-            m_kPlane = new LevelPiece(ScreenManager.Game, this, "checker_plane");
+            m_kPlane = new CollisionLevelPiece(ScreenManager.Game, this, "checker_plane_3");
             m_kPlane.scale = 15;
             m_kPlane.position += new Vector3(0, -10f, 0);
             ScreenManager.Game.Components.Add(m_kPlane);

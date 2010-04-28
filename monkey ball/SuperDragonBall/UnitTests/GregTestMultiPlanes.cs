@@ -159,7 +159,7 @@ namespace SuperDragonBall
             //test for collision
             Vector3 pushAway = Vector3.Zero;
 
-            foreach (LevelPiece p in planes)
+            foreach (CollisionLevelPiece p in planes)
             {
                 pushAway += p.testCollision(player);
             }

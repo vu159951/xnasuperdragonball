@@ -22,7 +22,7 @@ namespace SuperDragonBall.Levels
     /// </summary>
     public abstract class LevelData : GameComponent 
     {
-        protected List<LevelPiece> planes;
+        protected List<CollisionLevelPiece> planes;
         protected Vector3 gravityVec;
         public Vector3 startingLocation;
         protected GoalObject goal;
@@ -33,7 +33,7 @@ namespace SuperDragonBall.Levels
         {
 
             gravityVec = new Vector3(0, -100, 0);
-            planes = new List<LevelPiece>();
+            planes = new List<CollisionLevelPiece>();
             collectables = new List<Collectable>();
         }
 
@@ -70,7 +70,7 @@ namespace SuperDragonBall.Levels
             Vector3 pushAway = Vector3.Zero;
             if (planes.Count != 0)
             {
-                foreach (LevelPiece p in planes)
+                foreach (CollisionLevelPiece p in planes)
                 {
                     pushAway += p.testCollision(player);
                 }
@@ -174,7 +174,7 @@ namespace SuperDragonBall.Levels
         }
         public void startLevel(Game game)
         {
-            foreach (LevelPiece p in planes)
+            foreach (CollisionLevelPiece p in planes)
             {
                 game.Components.Add(p);
             }
@@ -197,8 +197,9 @@ namespace SuperDragonBall.Levels
 
         public void clearLevel(Game game)
         {
-             foreach (LevelPiece lp in planes)
+            foreach (CollisionLevelPiece lp in planes)
             {
+                lp.removeAsset();
                 game.Components.Remove(lp);
             }
              foreach (Collectable collect in collectables)

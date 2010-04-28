@@ -200,8 +200,8 @@ namespace SuperDragonBall
             }
 
             //Cel Shading
-            celLightingEffect = contentManager.Load<Effect>("Cel");
-            GetEffectParameters();
+           // celLightingEffect = contentManager.Load<Effect>("Cel");
+           // GetEffectParameters();
 
             //Calculate the projection properties first on any 
             //load callback.  That way if the window gets resized,
