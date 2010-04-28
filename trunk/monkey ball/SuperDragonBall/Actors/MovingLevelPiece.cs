@@ -22,7 +22,7 @@ namespace SuperDragonBall
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class MovingLevelPiece : LevelPiece
+    public class MovingLevelPiece : CollisionLevelPiece
     {
         private Vector3 originalPosition;
         //a vector that describes where the piece should move to and from
