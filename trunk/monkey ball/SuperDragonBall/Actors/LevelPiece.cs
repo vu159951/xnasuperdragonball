@@ -37,6 +37,9 @@ namespace SuperDragonBall
         private List<MeshDataExtractor.TriangleVertexIndices> TVIndices;
         //public const Vector3 OriginalFacing
 
+        //the non-colliding asset of the the level piece
+        private LevelPieceAsset nonCollideAsset;
+
         public LevelPiece(Game game, GameplayScreen host, String assetName)
             : base(game, host)
         {
@@ -55,7 +58,7 @@ namespace SuperDragonBall
             m_rotationOffset = Vector3.Zero;
             //effect.TextureEnabled = true;
 
-
+            nonCollideAsset = new LevelPieceAsset(game, host, "cloud_1");
         }
 
         /// <summary>
@@ -78,6 +81,8 @@ namespace SuperDragonBall
             Matrix identity = Matrix.Identity;
             MeshDataExtractor.ExtractModelMeshData(model.Meshes[0], ref identity, verticies, TVIndices, modelName, true);
             printExtractedData();
+
+            
         }
 
         /// <summary>
@@ -89,6 +94,10 @@ namespace SuperDragonBall
             // TODO: Add your update code here
             this.quat = originalRot * Quaternion.CreateFromRotationMatrix(Matrix.CreateFromYawPitchRoll(0, 
                 m_rotX, m_rotZ));
+            nonCollideAsset.quat = this.quat;
+            nonCollideAsset.position = this.position;
+            nonCollideAsset.scale = this.scale;
+
             base.Update(gameTime);
         }
 
@@ -142,7 +151,7 @@ namespace SuperDragonBall
                 
                 if (IntersectHelper.sphereTriangleIntersect(ball.WorldBoundSphere, currentTriangle))
                 {
-                    Console.WriteLine("HIT " + i);
+                    //Console.WriteLine("HIT " + i);
                     pushAwayDir += getTriangleNormal(currentTriangle);
                     //return true;
                 }
@@ -153,7 +162,7 @@ namespace SuperDragonBall
                 pushAwayDir.Normalize();
             }
             else {
-                Console.WriteLine("MISS");
+                //Console.WriteLine("MISS");
             }
             return pushAwayDir;
             //return false;
