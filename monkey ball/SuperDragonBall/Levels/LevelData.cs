@@ -182,7 +182,9 @@ namespace SuperDragonBall.Levels
         {
             foreach (CollisionLevelPiece p in planes)
             {
+                p.addAsset(game);
                 game.Components.Add(p);
+                
             }
             foreach (Collectable collect in collectables)
             {

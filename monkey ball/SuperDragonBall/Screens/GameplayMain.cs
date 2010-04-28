@@ -34,7 +34,7 @@ namespace SuperDragonBall
     {
         #region Fields
 
-
+        public Utils.CountdownTimer m_kCountdownTimer;
         public BallCharacter player;
         //WallManager m_kWallManager;
         //Wall topWall;
@@ -43,8 +43,9 @@ namespace SuperDragonBall
 
         public LevelData activeLevel;
         //List<LevelPiece> planes;
-        private int currentLevel = 0;
+        private int currentLevel = -1;
         private List<LevelData> LevelList;
+        
         int score;
 
 
@@ -64,7 +65,9 @@ namespace SuperDragonBall
             gameCamera = new GameCamera();
             LevelList = new List<LevelData>();
             score = 0;
-
+            dLightColor = new Vector3(.7f, .7f, 0f);
+            dLightDirection = Vector3.Normalize(new Vector3(0f, -1f, -(float)Math.Sqrt(2)));
+            specularColor = new Vector3(.17f, .10f, .33f);
 
         }
 
@@ -79,10 +82,10 @@ namespace SuperDragonBall
             player = new BallCharacter(ScreenManager.Game, this);
             LevelList.Add((LevelData)new Level1(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
+            //LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
+            //LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
+            //LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
+           // LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
             //add in any other levels here
 
             //m_kWallManager = new WallManager(ScreenManager.Game, this);
@@ -103,23 +106,40 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Remove(activeLevel);
             //m_kWallManager.removeWallComponents();
             //ScreenManager.Game.Components.Remove(m_kWallManager);
+            ScreenManager.Game.Components.Remove(m_kCountdownTimer);
 
             base.UnloadContent();
         }
 
         public void SwitchToNextLevel()
         {
+            currentLevel++;
+            currentLevel = currentLevel % LevelList.Count;
             activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
             activeLevel.startLevel(ScreenManager.Game);
 
             
             player.position = activeLevel.startingLocation;
             ScreenManager.Game.Components.Add(player);
-
+            m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(500.0f, 50.0f));
+            ScreenManager.Game.Components.Add(m_kCountdownTimer);
             //ScreenManager.Game.Components.Add(m_kWallManager);
 
-            currentLevel++;
-            currentLevel = currentLevel % LevelList.Count;
+            
+
+        }
+
+        public void RestartLevel()
+        {
+            UnloadContent();
+            activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
+            activeLevel.startLevel(ScreenManager.Game);
+
+
+            player.position = activeLevel.startingLocation;
+            ScreenManager.Game.Components.Add(player);
+            m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(500.0f, 50.0f));
+            ScreenManager.Game.Components.Add(m_kCountdownTimer);
 
         }
 

@@ -34,7 +34,7 @@ namespace SuperDragonBall
         /// <param name="actor"></param>
         public void followBehind(Actor actor) {
             
-            Vector3 camPos = new Vector3(0f, 80.0f, 80.0f);
+            Vector3 camPos = new Vector3(0f, 120.0f, 120.0f);
             camPos = (Vector3.Transform(camPos, Matrix.CreateFromQuaternion(actor.quat)));
             camPos += actor.position;
             m_kCameraPosition = camPos;

@@ -66,7 +66,6 @@ namespace SuperDragonBall
             Matrix identity = Matrix.Identity;
             MeshDataExtractor.ExtractModelMeshData(model.Meshes[0], ref identity, verticies, TVIndices, modelName, true);
             printExtractedData();
-            Game.Components.Add(nonCollideAsset);
         }
 
         protected override void UnloadContent()
@@ -80,6 +79,12 @@ namespace SuperDragonBall
         /// </summary>
         public void removeAsset() {
             Game.Components.Remove(nonCollideAsset);
+        }
+
+        //needed for the levels to work again for a second playthrough
+        public void addAsset(Game game)
+        {
+            game.Components.Add(nonCollideAsset);
         }
 
         /// <summary>
