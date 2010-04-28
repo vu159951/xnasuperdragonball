@@ -26,6 +26,7 @@ namespace SuperDragonBall.Levels
         protected Vector3 gravityVec;
         public Vector3 startingLocation;
         protected GoalObject goal;
+        protected List<Collectable> collectables;
 
         public LevelData(Game game, GameplayScreen host)
             : base(game)
@@ -33,6 +34,7 @@ namespace SuperDragonBall.Levels
 
             gravityVec = new Vector3(0, -100, 0);
             planes = new List<LevelPiece>();
+            collectables = new List<Collectable>();
         }
 
         /// <summary>
@@ -106,6 +108,26 @@ namespace SuperDragonBall.Levels
             return false;
         }
 
+        public Boolean IsCollidingWithCollectable(BallCharacter player, Game game)
+        {
+            Collectable holder = null;
+            foreach (Collectable collect in collectables)
+            {
+                if (!collect.CollectedYet && collect.WorldBoundSphere.Intersects(player.WorldBoundSphere))
+                {
+                    holder = collect;
+                    break;
+                }
+            }
+            if (null != holder)
+            {
+                holder.CollectedYet = true;
+                game.Components.Remove(holder);
+
+                return true;
+            }
+            return false;
+        }
         /// <summary>
         /// Collision resolution. Kind of a hack.
         /// Called from the Update function
@@ -137,6 +159,12 @@ namespace SuperDragonBall.Levels
                 p.setRotationOffset(playerPosition);
             }
 
+            foreach (Collectable collect in collectables)
+            {
+                collect.RotX = RotX;
+                collect.RotZ = RotZ;
+                collect.setRotationOffset(playerPosition);
+            }
             if (goal != null)
             {
                 goal.RotX = RotX;
@@ -149,6 +177,11 @@ namespace SuperDragonBall.Levels
             foreach (LevelPiece p in planes)
             {
                 game.Components.Add(p);
+            }
+            foreach (Collectable collect in collectables)
+            {
+                game.Components.Add(collect);
+                collect.CollectedYet = false;
             }
             game.Components.Add(goal);
         }
@@ -168,6 +201,10 @@ namespace SuperDragonBall.Levels
             {
                 game.Components.Remove(lp);
             }
+             foreach (Collectable collect in collectables)
+             {
+                 game.Components.Remove(collect);
+             }
              game.Components.Remove(goal);
             
         }
