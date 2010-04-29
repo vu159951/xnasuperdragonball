@@ -102,9 +102,9 @@ namespace SuperDragonBall.Utils
 			else if (m_fCurrentFrameRate < 30.0f)
                 DrawColor = Color.Yellow;
            
-			m_kSpriteBatch.DrawString(m_kFont, "Average FPS: " + m_fCurrentFrameRate.ToString("f3"), m_vPosition, DrawColor);
-            m_kSpriteBatch.DrawString(m_kFont, "Highest FPS: " + m_fHighestFrameRate.ToString("f3"), new Vector2(m_vPosition.X,m_vPosition.Y+20), DrawColor);
-            m_kSpriteBatch.DrawString(m_kFont, "Lowest FPS: " + m_fLowestFrameRate.ToString("f3"), new Vector2(m_vPosition.X, m_vPosition.Y + 40), DrawColor);
+//			m_kSpriteBatch.DrawString(m_kFont, "Average FPS: " + m_fCurrentFrameRate.ToString("f3"), m_vPosition, DrawColor);
+//          m_kSpriteBatch.DrawString(m_kFont, "Highest FPS: " + m_fHighestFrameRate.ToString("f3"), new Vector2(m_vPosition.X,m_vPosition.Y+20), DrawColor);
+//          m_kSpriteBatch.DrawString(m_kFont, "Lowest FPS: " + m_fLowestFrameRate.ToString("f3"), new Vector2(m_vPosition.X, m_vPosition.Y + 40), DrawColor);
             m_kSpriteBatch.End();
 
         }
