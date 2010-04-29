@@ -20,10 +20,11 @@ namespace SuperDragonBall.Actors
     public class GoalObject : LevelPiece
     {
         public GoalObject(Game game, GameplayScreen host)
-            : base(game, host, "cube")
+            : base(game, host, "goalShen")
         {
             //modelName = "cube";
             // TODO: Construct any child components here
+            m_localRotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), -(float)Math.PI/2);
         }
 
         /// <summary>
@@ -33,6 +34,7 @@ namespace SuperDragonBall.Actors
         public override void Initialize()
         {
             // TODO: Add your initialization code here
+            
 
             base.Initialize();
         }
@@ -46,6 +48,17 @@ namespace SuperDragonBall.Actors
             // TODO: Add your update code here
 
             base.Update(gameTime);
+        }
+
+        protected override void modifyWorldTransform()
+        {
+            base.modifyWorldTransform();
+            Vector3 Pos = new Vector3(scale*1f, scale*1.0f, scale*13.0f);
+            Pos = (Vector3.Transform(Pos, Matrix.CreateFromQuaternion(quat)));
+            Pos+=position;
+            WorldBounds.Center = Pos;
+            WorldBounds.Radius = 2*scale;
+
         }
     }
 }
