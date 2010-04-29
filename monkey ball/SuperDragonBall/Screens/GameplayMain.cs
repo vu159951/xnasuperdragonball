@@ -44,7 +44,10 @@ namespace SuperDragonBall
         public LevelData activeLevel;
         //List<LevelPiece> planes;
         private int currentLevel = 0;
-        //private List<LevelData> LevelList;
+        //modify this to increse the number of levels
+        private int TOTAL_LEVELS = 5;
+
+     
         private SkySphere sky;
 
         private float manualCameraRotation;
@@ -52,8 +55,8 @@ namespace SuperDragonBall
         private const Boolean IsTesting = false; //Use this to turn off automatic level restart when the timer runs out
         
         int score;
-        private int TOTAL_LEVELS = 5;
 
+       
 
 
         #endregion
@@ -68,6 +71,7 @@ namespace SuperDragonBall
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
+            
             gameCamera = new GameCamera();
             //LevelList = new List<LevelData>();
             score = 0;
@@ -88,17 +92,6 @@ namespace SuperDragonBall
             base.LoadContent();
             sky = new SkySphere(ScreenManager.Game, this);
             player = new BallCharacter(ScreenManager.Game, this);
-           // LevelList.Add((LevelData)new Level1(ScreenManager.Game, this));
-           // LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
-           // LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
-           // LevelList.Add((LevelData)new Level4(ScreenManager.Game, this));
-           // LevelList.Add((LevelData)new Level5(ScreenManager.Game, this));
-          //  LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
-           // LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
-           // LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
-            //add in any other levels here
-
-            //m_kWallManager = new WallManager(ScreenManager.Game, this);
 
             //sets up the level
             SwitchToNextLevel();

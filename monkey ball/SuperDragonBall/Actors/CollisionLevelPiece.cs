@@ -99,6 +99,9 @@ namespace SuperDragonBall
             nonCollideAsset.quat = this.quat;
             nonCollideAsset.position = this.position;
             nonCollideAsset.scale = this.scale;
+            nonCollideAsset.ScaleX = this.m_fScaleX;
+            nonCollideAsset.ScaleY = this.m_fScaleY;
+            nonCollideAsset.ScaleZ = this.m_fScaleZ;
             nonCollideAsset.matchRotationOffset(m_rotationOffset);
             nonCollideAsset.matchLocalRotation(m_localRotation);
            

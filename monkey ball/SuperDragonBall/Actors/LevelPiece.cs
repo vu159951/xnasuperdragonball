@@ -30,17 +30,28 @@ namespace SuperDragonBall
 
         public float ScaleX {
             get { return m_fScaleX; }
-            set { m_fScaleX = value; }
+            set 
+            { 
+                m_fScaleX = value;
+                m_changed = true;
+            }
         }
         public float ScaleY
         {
             get { return m_fScaleY; }
-            set { m_fScaleY = value; }
+            set { 
+                m_fScaleY = value;
+                m_changed = true;
+            }
         }
         public float ScaleZ
         {
             get { return m_fScaleZ; }
-            set { m_fScaleZ = value; }
+            set
+            {
+                m_fScaleZ = value;
+                m_changed = true;
+            }
         }
 
         private float m_rotX, m_rotZ;
@@ -117,7 +128,8 @@ namespace SuperDragonBall
             Matrix rom = Matrix.CreateTranslation(m_rotationOffset);
             Matrix rom2 = Matrix.CreateTranslation(-m_rotationOffset);
             Matrix tiltOffset = rom * Matrix.CreateFromQuaternion(m_quat) * rom2;
-            worldTransform = Matrix.CreateScale(m_scale*m_fScaleX, m_scale*m_fScaleY, m_scale*m_fScaleZ) * Matrix.CreateFromQuaternion(m_localRotation) * tiltOffset * Matrix.CreateTranslation(m_position);
+            worldTransform = Matrix.CreateScale(m_scale*m_fScaleX, m_scale*m_fScaleY, m_scale*m_fScaleZ) 
+                * Matrix.CreateFromQuaternion(m_localRotation) * tiltOffset * Matrix.CreateTranslation(m_position);
             WorldBounds.Center = m_position;
             WorldBounds.Radius = ModelBounds.Radius * m_scale;
 
