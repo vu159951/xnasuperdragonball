@@ -32,10 +32,12 @@ namespace SuperDragonBall.Levels
             currentPlane.position += new Vector3(0f, 0f, 0);
             planes.Add(currentPlane);
 
+            /*
             currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
             currentPlane.scale = 15;
             currentPlane.position += new Vector3(0f, 0f, -360f);
             planes.Add(currentPlane);
+            */
 
             //moving level piece
             MovingLevelPiece movingPlane;
@@ -64,7 +66,8 @@ namespace SuperDragonBall.Levels
             goal.scale = 15;
 
 
-
+            //death bound for this level
+            m_fDeathBound = -250f;
 
 
         }

@@ -27,6 +27,11 @@ namespace SuperDragonBall.Levels
         public Vector3 startingLocation;
         protected GoalObject goal;
         protected List<Collectable> collectables;
+        protected float m_fDeathBound;
+
+        public float DeathBound { 
+            get { return m_fDeathBound; }
+        }
 
         public LevelData(Game game, GameplayScreen host)
             : base(game)
@@ -36,6 +41,8 @@ namespace SuperDragonBall.Levels
             planes = new List<CollisionLevelPiece>();
             collectables = new List<Collectable>();
             startingLocation = Vector3.Zero;
+            //default value
+            m_fDeathBound = 0;
         }
 
         /// <summary>
@@ -93,13 +100,7 @@ namespace SuperDragonBall.Levels
                 player.CollidedWithStage = false;
             }
 
-            //reset player position when fallen off
-            if (player.position.Y < -250)
-            {
-                player.position = startingLocation;
-                player.velocity = Vector3.Zero;
-                player.netForce = Vector3.Zero;
-            }
+            
         }
 
         public Boolean IsCollidingWithGoal(BallCharacter player)
@@ -145,8 +146,8 @@ namespace SuperDragonBall.Levels
             //Vector3 v3 = m_kPlane.getPlaneNormal();
             Vector3 vDiff = player.velocity;
             vDiff += movingPlaneVel;
-            vDiff.X += pushAway.X * 10;
-            vDiff.Z += pushAway.Z * 10;
+            vDiff.X += pushAway.X * 20;
+            vDiff.Z += pushAway.Z * 20;
             if (vDiff.Y < -50)
             {
                 vDiff.Y /= 1.5f;
