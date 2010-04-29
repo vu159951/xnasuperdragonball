@@ -90,6 +90,7 @@ namespace SuperDragonBall
             LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level4(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new Level5(ScreenManager.Game, this));
           //  LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
            // LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
            // LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));

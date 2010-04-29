@@ -16,7 +16,7 @@ namespace SuperDragonBall
             //modelName = "testBallThing";
             modelName = "DragonBall";
             //modelName = "cloud_1";
-            m_scale = 15;
+            scale = 15;
 
             //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
             quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);
