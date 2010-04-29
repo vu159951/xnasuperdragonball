@@ -24,15 +24,17 @@ namespace SuperDragonBall.Levels
             : base(game, host)
         {
 
-            startingLocation = new Vector3(1f, 35f, 1f);
+            startingLocation = new Vector3(1f, 905f, 1f);
             //make a few planes
 
             CollisionLevelPiece currentPlane;
             currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
-            currentPlane.scale = 15;
-            currentPlane.position += new Vector3(0f, 0f, 0);
+            currentPlane.scale = 50;
+            currentPlane.position += new Vector3(0f, 880f, 0);
+            currentPlane.setLocalRotation(MathHelper.ToRadians(35), 0);
             planes.Add(currentPlane);
 
+            /*
             MovingLevelPiece movingPlane;
             movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(300, 0f, 0), 85f);
             movingPlane.scale = 15;
@@ -53,7 +55,7 @@ namespace SuperDragonBall.Levels
             movingPlane.scale = 15;
             movingPlane.position += new Vector3(150f, 0f, -1440f);
             planes.Add(movingPlane);
-
+            */
 
 
             //goal

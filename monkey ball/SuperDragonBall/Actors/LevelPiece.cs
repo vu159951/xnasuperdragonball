@@ -25,7 +25,24 @@ namespace SuperDragonBall
     public class LevelPiece : Actor
     {
         private Quaternion originalRot;
-       
+
+        protected float m_fScaleX, m_fScaleY, m_fScaleZ;
+
+        public float ScaleX {
+            get { return m_fScaleX; }
+            set { m_fScaleX = value; }
+        }
+        public float ScaleY
+        {
+            get { return m_fScaleY; }
+            set { m_fScaleY = value; }
+        }
+        public float ScaleZ
+        {
+            get { return m_fScaleZ; }
+            set { m_fScaleZ = value; }
+        }
+
         private float m_rotX, m_rotZ;
         // a function of player position relative to the origin of the plane
         protected Vector3 m_rotationOffset;
@@ -48,6 +65,10 @@ namespace SuperDragonBall
             m_rotationOffset = Vector3.Zero;
             //effect.TextureEnabled = true;
             m_localRotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
+
+            m_fScaleX = 1.0f;
+            m_fScaleY = 1.0f;
+            m_fScaleZ = 1.0f;
 
         }
 
@@ -96,7 +117,7 @@ namespace SuperDragonBall
             Matrix rom = Matrix.CreateTranslation(m_rotationOffset);
             Matrix rom2 = Matrix.CreateTranslation(-m_rotationOffset);
             Matrix tiltOffset = rom * Matrix.CreateFromQuaternion(m_quat) * rom2;
-            worldTransform = Matrix.CreateScale(m_scale) * Matrix.CreateFromQuaternion(m_localRotation) * tiltOffset * Matrix.CreateTranslation(m_position);
+            worldTransform = Matrix.CreateScale(m_scale*m_fScaleX, m_scale*m_fScaleY, m_scale*m_fScaleZ) * Matrix.CreateFromQuaternion(m_localRotation) * tiltOffset * Matrix.CreateTranslation(m_position);
             WorldBounds.Center = m_position;
             WorldBounds.Radius = ModelBounds.Radius * m_scale;
 
