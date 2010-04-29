@@ -46,6 +46,9 @@ namespace SuperDragonBall
         //List<LevelPiece> planes;
         private int currentLevel = -1;
         private List<LevelData> LevelList;
+
+
+        private const Boolean IsTesting = false; //Use this to turn off automatic level restart when the timer runs out
         
         int score;
 
@@ -84,6 +87,7 @@ namespace SuperDragonBall
             LevelList.Add((LevelData)new Level1(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
+            LevelList.Add((LevelData)new Level4(ScreenManager.Game, this));
             LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
             LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
             LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
@@ -179,7 +183,7 @@ namespace SuperDragonBall
                     score++;
                     m_kScoreKeeper.setScore(score);
                 }
-                if (m_kCountdownTimer.getRemainingTime() == 0)
+                if (m_kCountdownTimer.getRemainingTime() == 0 && !IsTesting)
                 {
                     RestartLevel();
                 }

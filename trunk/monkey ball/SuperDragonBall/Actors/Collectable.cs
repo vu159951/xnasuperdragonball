@@ -23,9 +23,11 @@ namespace SuperDragonBall.Actors
     {
         public bool CollectedYet;
         public Collectable(Game game, GameplayScreen host)
-            : base(game, host,"cube")
+            : base(game, host,"star")
         {
             CollectedYet = false;
+            scale = 5;
+            m_localRotation =Quaternion.CreateFromAxisAngle(new Vector3(0,1,0),(float)Math.PI/2);
             //modelName = "Asteroid";
         }
 
@@ -47,8 +49,9 @@ namespace SuperDragonBall.Actors
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-
+           
             base.Update(gameTime);
         }
+           
     }
 }
