@@ -43,8 +43,8 @@ namespace SuperDragonBall
 
         public LevelData activeLevel;
         //List<LevelPiece> planes;
-        private int currentLevel = -1;
-        private List<LevelData> LevelList;
+        private int currentLevel = 0;
+        //private List<LevelData> LevelList;
         private SkySphere sky;
 
 
@@ -67,7 +67,7 @@ namespace SuperDragonBall
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             gameCamera = new GameCamera();
-            LevelList = new List<LevelData>();
+            //LevelList = new List<LevelData>();
             score = 0;
             dLightColor = new Vector3(.7f, .7f, 0f);
             dLightDirection = Vector3.Normalize(new Vector3(0f, -1f, -(float)Math.Sqrt(2)));
@@ -86,11 +86,11 @@ namespace SuperDragonBall
             base.LoadContent();
             sky = new SkySphere(ScreenManager.Game, this);
             player = new BallCharacter(ScreenManager.Game, this);
-            LevelList.Add((LevelData)new Level1(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new Level4(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new Level5(ScreenManager.Game, this));
+           // LevelList.Add((LevelData)new Level1(ScreenManager.Game, this));
+           // LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
+           // LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
+           // LevelList.Add((LevelData)new Level4(ScreenManager.Game, this));
+           // LevelList.Add((LevelData)new Level5(ScreenManager.Game, this));
           //  LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
            // LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
            // LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
@@ -124,12 +124,44 @@ namespace SuperDragonBall
         public void SwitchToNextLevel()
         {
             currentLevel++;
-            currentLevel = currentLevel % LevelList.Count;
-            activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
+            if (currentLevel > 5) {
+                currentLevel = 1;
+            }
+            //currentLevel = currentLevel % LevelList.Count;
+            //activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
+            //activeLevel.startLevel(ScreenManager.Game);
+
+            if (activeLevel != null)
+            {
+                
+                activeLevel.clearLevel(ScreenManager.Game);
+                activeLevel = null;
+            }
+            switch (currentLevel) { 
+                case 1:
+                    activeLevel = new Level1(ScreenManager.Game, this);
+                    break;
+                case 2:
+                    activeLevel = new Level2(ScreenManager.Game, this);
+                    break;
+                case 3:
+                    activeLevel = new Level3(ScreenManager.Game, this);
+                    break;
+                case 4:
+                    activeLevel = new Level4(ScreenManager.Game, this);
+                    break;
+                case 5:
+                    activeLevel = new Level5(ScreenManager.Game, this);
+                    break;
+                default:
+                    break;                    
+            }
             activeLevel.startLevel(ScreenManager.Game);
 
             
             player.position = activeLevel.startingLocation;
+            player.velocity = Vector3.Zero;
+            player.netForce = Vector3.Zero;
             ScreenManager.Game.Components.Add(player);
             m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(875.0f, 20.0f));
             m_kScoreKeeper = new Utils.ScoreKeeper(ScreenManager.Game, new Vector2(20f, 20f));
@@ -145,11 +177,13 @@ namespace SuperDragonBall
         public void RestartLevel()
         {
             UnloadContent();
-            activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
+            //activeLevel = (LevelData)LevelList.ToArray()[currentLevel];
             activeLevel.startLevel(ScreenManager.Game);
 
-
             player.position = activeLevel.startingLocation;
+            player.velocity = Vector3.Zero;
+            player.netForce = Vector3.Zero;
+
             ScreenManager.Game.Components.Add(player);
             m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(875.0f, 20.0f));
             m_kScoreKeeper = new Utils.ScoreKeeper(ScreenManager.Game, new Vector2(20f, 20f));
@@ -179,6 +213,16 @@ namespace SuperDragonBall
                 gameCamera.followBehind(player);
 
                 activeLevel.MovePlayer(player, gameTime);
+                
+                //fell off the stage
+                //reset player position when fallen off
+                if (player.position.Y < activeLevel.DeathBound)
+                {
+                    RestartLevel();
+                }
+
+
+                //hit the goal
                 if (activeLevel.IsCollidingWithGoal(player))
                 {
                     UnloadContent();

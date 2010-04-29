@@ -61,7 +61,8 @@ namespace SuperDragonBall.Levels
             goal.scale = 15;
 
 
-
+            //death bound for this level
+            m_fDeathBound = -150f;
 
 
         }

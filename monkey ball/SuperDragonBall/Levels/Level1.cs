@@ -47,9 +47,8 @@ namespace SuperDragonBall.Levels
             goal.position += new Vector3(0, 20, -720);
             goal.scale = 15;
 
-
-
-
+            //death bound for this level
+            m_fDeathBound = -150f;
 
         }
 
@@ -62,6 +61,16 @@ namespace SuperDragonBall.Levels
             // TODO: Add your initialization code here
 
             base.Initialize();
+        }
+
+        protected void UnloadContent()
+        {
+
+            Console.WriteLine("test unload");
+
+
+            // base.UnloadContent();
+
         }
 
         /// <summary>

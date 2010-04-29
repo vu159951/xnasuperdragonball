@@ -63,7 +63,8 @@ namespace SuperDragonBall.Levels
 
             //collectables
 
-
+            //death bound for this level
+            m_fDeathBound = -250f;
 
 
 

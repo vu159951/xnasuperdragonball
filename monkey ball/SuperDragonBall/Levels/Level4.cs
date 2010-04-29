@@ -225,8 +225,9 @@ namespace SuperDragonBall.Levels
             goal.scale = 10;
 
             //collectables
-            
 
+            //death bound for this level
+            m_fDeathBound = -250f;
 
 
 
