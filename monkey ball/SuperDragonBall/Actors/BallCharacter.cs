@@ -26,6 +26,9 @@ namespace SuperDragonBall
             fTerminalVelocity = 450;
             collidedWithStage = false;
             damping = new Vector3(0.99f, 0.99f, 0.99f);
+
+            //rotationAxis = Vector3.Up;
+            rotationVelocity = 1;
            
         }
 
@@ -44,6 +47,17 @@ namespace SuperDragonBall
             {
                 m_velocity.Z = 0f;
             }
+
+            //roll the ball
+            Vector3 ballRotAxis = GetWorldFacing();
+            ballRotAxis.Y = 0;
+            //ballRotAxis = Vector3.Cross(ballRotAxis, Vector3.Up);
+            //rotationAxis = ballRotAxis;
+            rotationVelocity = m_velocity.Length() / 10;
+
+            rotationAxis = new Vector3(0, 1, 0);
+            //rotationVelocity = 10;
+
             base.Update(gameTime);
         }
 
