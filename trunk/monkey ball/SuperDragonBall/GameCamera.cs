@@ -46,17 +46,24 @@ namespace SuperDragonBall
             facing = actor.position - camPos;
         }
 
-        public void ManualCameraRotation(float rotation, Vector3 positionToRotateAround)
+        public void ManualCameraRotation(float rotation, Actor actor)
         {
-            Vector3 camPos = new Vector3((float)Math.Cos(rotation) * 60f, 50.0f, (float)Math.Sin(rotation) * 60f);
-            camPos += positionToRotateAround;
+            //Vector3 camPos = new Vector3(0f, 120.0f, 120.0f);
+            //camPos = (Vector3.Transform(camPos, Matrix.CreateFromQuaternion(actor.quat)));
+            
+            //Vector3 camPos = new Vector3((float)Math.Cos(rotation) * 60f, 50.0f, (float)Math.Sin(rotation) * 60f);
+
+            Vector3 camPos = new Vector3(0f, 120.0f, 120.0f);
+            camPos = Vector3.Transform(camPos, Matrix.CreateRotationY(rotation));
+            
+            camPos += actor.position;
             m_kCameraPosition = camPos;
             Vector3 camUp = new Vector3(0, 1, 0);
             
 
-            cameraMatrix = Matrix.CreateLookAt(camPos, positionToRotateAround, camUp);
+            cameraMatrix = Matrix.CreateLookAt(camPos, actor.position, camUp);
 
-            facing = positionToRotateAround - camPos;
+            facing = actor.position - camPos;
         }
 
         
