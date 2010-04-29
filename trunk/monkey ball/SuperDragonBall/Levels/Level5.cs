@@ -29,9 +29,12 @@ namespace SuperDragonBall.Levels
 
             CollisionLevelPiece currentPlane;
             currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
-            currentPlane.scale = 50;
-            currentPlane.position += new Vector3(0f, 880f, 0);
-            currentPlane.setLocalRotation(MathHelper.ToRadians(35), 0);
+            currentPlane.ScaleX = 30f;
+            currentPlane.ScaleY = 15f;
+            currentPlane.ScaleZ = 60f;
+
+            currentPlane.position += new Vector3(0f, 440f, -400f);
+            currentPlane.setLocalRotation(MathHelper.ToRadians(-30), 0);
             planes.Add(currentPlane);
 
             /*
@@ -60,7 +63,7 @@ namespace SuperDragonBall.Levels
 
             //goal
             goal = new GoalObject(game, host);
-            goal.position += new Vector3(0, 10, -1440);
+            goal.position += new Vector3(0, 300, -1440);
             goal.scale = 10;
 
             //collectables

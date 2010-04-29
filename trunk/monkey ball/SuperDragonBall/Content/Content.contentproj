@@ -215,8 +215,6 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="sdbSplash.jpg">
       <Name>sdbSplash</Name>
       <Importer>TextureImporter</Importer>
