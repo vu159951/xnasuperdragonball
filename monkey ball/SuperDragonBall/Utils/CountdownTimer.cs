@@ -15,13 +15,25 @@ namespace SuperDragonBall.Utils
         private Vector2 m_vPosition;
 
         //Change the time to count down from here
-        private const int countTime = 30;
+        private int countTime = 30;
 
         private float currentTime = 0;
 
         public CountdownTimer(Game game, Vector2 vPosition)
             : base(game)
         {
+            m_kContent = new ContentManager(game.Services);
+            m_kContent.RootDirectory = "Content";
+            currentTime = countTime;
+
+            m_vPosition = vPosition;
+            DrawOrder = 1000;
+        }
+
+        public CountdownTimer(Game game, Vector2 vPosition, int time)
+            :base(game)
+        {
+            countTime = time;
             m_kContent = new ContentManager(game.Services);
             m_kContent.RootDirectory = "Content";
             currentTime = countTime;
