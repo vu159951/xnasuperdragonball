@@ -33,7 +33,6 @@ namespace SuperDragonBall
     class GameplayMain : GameplayScreen
     {
         #region Fields
-
         public Utils.CountdownTimer m_kCountdownTimer;
         public Utils.ScoreKeeper m_kScoreKeeper;
         public BallCharacter player;
@@ -46,6 +45,7 @@ namespace SuperDragonBall
         //List<LevelPiece> planes;
         private int currentLevel = -1;
         private List<LevelData> LevelList;
+        private SkySphere sky;
 
 
         private const Boolean IsTesting = false; //Use this to turn off automatic level restart when the timer runs out
@@ -72,6 +72,8 @@ namespace SuperDragonBall
             dLightColor = new Vector3(.7f, .7f, 0f);
             dLightDirection = Vector3.Normalize(new Vector3(0f, -1f, -(float)Math.Sqrt(2)));
             specularColor = new Vector3(.17f, .10f, .33f);
+            AmbientLightColor = Vector3.Normalize(new Vector3(.25f, .25f, 1f));
+            
 
         }
 
@@ -82,15 +84,15 @@ namespace SuperDragonBall
         public override void LoadContent()
         {
             base.LoadContent();
-
+            sky = new SkySphere(ScreenManager.Game, this);
             player = new BallCharacter(ScreenManager.Game, this);
             LevelList.Add((LevelData)new Level1(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level2(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level3(ScreenManager.Game, this));
             LevelList.Add((LevelData)new Level4(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
-            LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
+          //  LevelList.Add((LevelData)new SimpleLevel(ScreenManager.Game, this));
+           // LevelList.Add((LevelData)new LevelDataTest(ScreenManager.Game, this));
+           // LevelList.Add((LevelData)new CollectableTest(ScreenManager.Game, this));
             //add in any other levels here
 
             //m_kWallManager = new WallManager(ScreenManager.Game, this);
@@ -113,6 +115,7 @@ namespace SuperDragonBall
             //ScreenManager.Game.Components.Remove(m_kWallManager);
             ScreenManager.Game.Components.Remove(m_kCountdownTimer);
             ScreenManager.Game.Components.Remove(m_kScoreKeeper);
+            ScreenManager.Game.Components.Remove(sky);
 
             base.UnloadContent();
         }
@@ -132,6 +135,7 @@ namespace SuperDragonBall
             m_kScoreKeeper.setScore(score);
             ScreenManager.Game.Components.Add(m_kCountdownTimer);
             ScreenManager.Game.Components.Add(m_kScoreKeeper);
+            ScreenManager.Game.Components.Add(sky);
 
             
 
@@ -151,6 +155,7 @@ namespace SuperDragonBall
             m_kScoreKeeper.setScore(score);
             ScreenManager.Game.Components.Add(m_kCountdownTimer);
             ScreenManager.Game.Components.Add(m_kScoreKeeper);
+            ScreenManager.Game.Components.Add(sky);
 
         }
 
