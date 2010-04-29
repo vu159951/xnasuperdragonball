@@ -203,6 +203,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dbzfont.spritefont">
+      <Name>dbzfont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="sdbSplash.jpg">
+      <Name>sdbSplash</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="meshes\sky_sphere_y.fbx">
       <Name>sky_sphere_y</Name>
       <Importer>FbxImporter</Importer>
@@ -210,15 +224,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dbzfont.spritefont">
-      <Name>dbzfont</Name>
-      <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
-    </Compile>
-    <Compile Include="sdbSplash.jpg">
-      <Name>sdbSplash</Name>
+    <Compile Include="meshes\ysky.jpg">
+      <Name>ysky</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="meshes\sky.jpg">
+      <Name>sky</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="meshes\sky_sphere.fbx">
+      <Name>sky_sphere</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v3.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
