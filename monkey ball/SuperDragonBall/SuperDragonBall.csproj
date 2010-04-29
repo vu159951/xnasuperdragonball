@@ -96,6 +96,7 @@
     <Compile Include="Levels\Level2.cs" />
     <Compile Include="Levels\Level3.cs" />
     <Compile Include="Levels\Level4.cs" />
+    <Compile Include="Levels\Level5.cs" />
     <Compile Include="Levels\LevelDataTest.cs" />
     <Compile Include="Levels\LevelData.cs" />
     <Compile Include="Actors\LevelPiece.cs" />
