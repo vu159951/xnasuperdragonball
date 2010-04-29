@@ -47,7 +47,8 @@ namespace SuperDragonBall.Utils
             IGraphicsDeviceService graphicsService = (IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService));
 
             m_kSpriteBatch = new SpriteBatch(graphicsService.GraphicsDevice);
-            m_kFont = m_kContent.Load<SpriteFont>("fpsfont");
+            m_kFont = m_kContent.Load<SpriteFont>("dbzfont");
+            
         }
 
         protected override void UnloadContent()
@@ -79,10 +80,16 @@ namespace SuperDragonBall.Utils
         {
             m_kSpriteBatch.Begin();
 
+           
             // Color this based on the framerate
             Color DrawColor = Color.Yellow;
+            if ((int)currentTime <= 10)
+            {
+                DrawColor = Color.Red;
+            }
 
-            m_kSpriteBatch.DrawString(m_kFont, "Time: " + (int)currentTime, m_vPosition, DrawColor);
+            m_kSpriteBatch.DrawString(m_kFont, "" + (int)currentTime, m_vPosition, DrawColor);
+           
             m_kSpriteBatch.End();
 
         }
