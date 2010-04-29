@@ -45,7 +45,11 @@ namespace SuperDragonBall.Levels
             //goal
             goal = new GoalObject(game, host);
             goal.position += new Vector3(0, 20, -720);
-            goal.scale = 15;
+            goal.scale = 10;
+
+            
+
+            
 
             //death bound for this level
             m_fDeathBound = -100f;
