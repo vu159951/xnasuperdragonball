@@ -243,6 +243,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="meshes\1305.jpg">
+      <Name>1305</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="meshes\goalShen.fbx">
       <Name>goalShen</Name>
       <Importer>FbxImporter</Importer>
