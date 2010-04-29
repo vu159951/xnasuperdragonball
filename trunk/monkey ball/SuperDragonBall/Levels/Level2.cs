@@ -24,35 +24,36 @@ namespace SuperDragonBall.Levels
             : base(game, host)
         {
 
-            startingLocation = new Vector3(10f, 35f, 0f);
+
+            startingLocation = new Vector3(1f, 35f, 1f);
             //make a few planes
+
             CollisionLevelPiece currentPlane;
             currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
             currentPlane.scale = 15;
             currentPlane.position += new Vector3(0f, 0f, 0);
             planes.Add(currentPlane);
 
-            //moving level piece
             MovingLevelPiece movingPlane;
-            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(0, -300f, 0), 80f);
+            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(300, 0f, 0), 85f);
             movingPlane.scale = 15;
-            movingPlane.position += new Vector3(0f, 200f, -360f);
+            movingPlane.position += new Vector3(-150f, 0f, -360f);
             planes.Add(movingPlane);
 
-            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(0, -500f, 0), 80f);
+            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(300, 0f, 0), -85f);
             movingPlane.scale = 15;
-            movingPlane.position += new Vector3(0f, 400f, -720f);
+            movingPlane.position += new Vector3(150f, 0f, -720f);
             planes.Add(movingPlane);
 
-            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(0, -400f, 0), 80f);
+            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(300, 0f, 0), 85f);
             movingPlane.scale = 15;
-            movingPlane.position += new Vector3(0f, 200f, -1080f);
+            movingPlane.position += new Vector3(-150f, 0f, -1080f);
             planes.Add(movingPlane);
 
-            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
-            currentPlane.scale = 15;
-            currentPlane.position += new Vector3(0f, 0f, -1440f);
-            planes.Add(currentPlane);
+            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(300, 0f, 0), -85f);
+            movingPlane.scale = 15;
+            movingPlane.position += new Vector3(150f, 0f, -1440f);
+            planes.Add(movingPlane);
 
 
             //goal
@@ -62,7 +63,7 @@ namespace SuperDragonBall.Levels
 
 
             //death bound for this level
-            m_fDeathBound = -150f;
+            m_fDeathBound = -100f;
 
 
         }
