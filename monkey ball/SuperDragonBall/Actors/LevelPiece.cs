@@ -47,6 +47,7 @@ namespace SuperDragonBall
             originalRot = quat;
             m_rotationOffset = Vector3.Zero;
             //effect.TextureEnabled = true;
+            m_localRotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
 
         }
 
