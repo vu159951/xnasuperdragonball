@@ -242,7 +242,7 @@ namespace SuperDragonBall
                 manualCameraRotation -= (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
             }
 
-            gameCamera.ManualCameraRotation(manualCameraRotation, player.position);
+            gameCamera.ManualCameraRotation(manualCameraRotation, player);
 
             /*
             //OLD SHIP FUNCTIONS

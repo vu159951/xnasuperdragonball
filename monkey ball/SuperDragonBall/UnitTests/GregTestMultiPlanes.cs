@@ -80,25 +80,25 @@ namespace SuperDragonBall
             String assetName = "checker_plane_3";
 
             //make a few planes
-            LevelPiece currentPlane;
-            currentPlane = new LevelPiece(ScreenManager.Game, this, assetName);
+            CollisionLevelPiece currentPlane;
+            currentPlane = new CollisionLevelPiece(ScreenManager.Game, this, assetName);
             currentPlane.scale = 15;
             currentPlane.position += new Vector3(0f, -10f, 0);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, assetName);
+            currentPlane = new CollisionLevelPiece(ScreenManager.Game, this, assetName);
             currentPlane.scale = 10;
             currentPlane.position += new Vector3(200f, -10f, -300f);
             currentPlane.setLocalRotation(0, (float) Math.PI / 18);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, assetName);
+            currentPlane = new CollisionLevelPiece(ScreenManager.Game, this, assetName);
             currentPlane.scale = 10;
             currentPlane.position += new Vector3(-250f, -10f, -200f);
             currentPlane.setLocalRotation(0.123f, -(float)Math.PI / 18);
             planes.Add(currentPlane);
 
-            currentPlane = new LevelPiece(ScreenManager.Game, this, assetName);
+            currentPlane = new CollisionLevelPiece(ScreenManager.Game, this, assetName);
             currentPlane.scale = 5;
             currentPlane.position += new Vector3(-220f, 10f, 80f);
             planes.Add(currentPlane);
@@ -230,7 +230,7 @@ namespace SuperDragonBall
                 ScreenManager.AddScreen(new PauseMenuScreen());
             }
 
-            /*
+            
             //Manually changing the camera rotation based on user input
             if (input.IsADown)
             {
@@ -244,8 +244,8 @@ namespace SuperDragonBall
             //camera rotation for 360 controller
             GamePadState gamePadState = input.CurrentGamePadStates[0];
             manualCameraRotation += (float)Math.PI / 4 * gamePadState.ThumbSticks.Right.X * timeDelta * 5;
-            gameCamera.ManualCameraRotation(manualCameraRotation, player.position);
-            */
+            gameCamera.ManualCameraRotation(manualCameraRotation, player);
+           
 
             foreach (LevelPiece p in planes)
             {
@@ -277,7 +277,7 @@ namespace SuperDragonBall
               
                 
                 //for forward/backward movement
-                GamePadState gamePadState = input.CurrentGamePadStates[0];
+                //GamePadState gamePadState = input.CurrentGamePadStates[0];
                 p.RotX += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.Y;
                 p.RotZ += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.Y;
 

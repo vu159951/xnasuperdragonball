@@ -47,10 +47,12 @@ namespace SuperDragonBall
         //private List<LevelData> LevelList;
         private SkySphere sky;
 
+        private float manualCameraRotation;
 
         private const Boolean IsTesting = false; //Use this to turn off automatic level restart when the timer runs out
         
         int score;
+        private int TOTAL_LEVELS = 5;
 
 
 
@@ -73,7 +75,7 @@ namespace SuperDragonBall
             dLightDirection = Vector3.Normalize(new Vector3(0f, -1f, -(float)Math.Sqrt(2)));
             specularColor = new Vector3(.17f, .10f, .33f);
             AmbientLightColor = Vector3.Normalize(new Vector3(.25f, .25f, 1f));
-            
+            manualCameraRotation = 0f;
 
         }
 
@@ -124,7 +126,7 @@ namespace SuperDragonBall
         public void SwitchToNextLevel()
         {
             currentLevel++;
-            if (currentLevel > 5) {
+            if (currentLevel > TOTAL_LEVELS) {
                 currentLevel = 1;
             }
             //currentLevel = currentLevel % LevelList.Count;
@@ -162,6 +164,7 @@ namespace SuperDragonBall
             player.position = activeLevel.startingLocation;
             player.velocity = Vector3.Zero;
             player.netForce = Vector3.Zero;
+            manualCameraRotation = 0.0f;
             ScreenManager.Game.Components.Add(player);
             m_kCountdownTimer = new Utils.CountdownTimer(ScreenManager.Game, new Vector2(875.0f, 20.0f));
             m_kScoreKeeper = new Utils.ScoreKeeper(ScreenManager.Game, new Vector2(20f, 20f));
@@ -191,7 +194,7 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Add(m_kCountdownTimer);
             ScreenManager.Game.Components.Add(m_kScoreKeeper);
             ScreenManager.Game.Components.Add(sky);
-
+            manualCameraRotation = 0.0f;
         }
 
 
@@ -210,7 +213,7 @@ namespace SuperDragonBall
         {
             if (IsActive)
             {
-                gameCamera.followBehind(player);
+                //gameCamera.followBehind(player);
 
                 activeLevel.MovePlayer(player, gameTime);
                 
@@ -279,27 +282,53 @@ namespace SuperDragonBall
 
             float RotX = 0;
             float RotZ = 0;
+            //The axis are flipped from what would be expected
+            //If you want to go forward/backwards, you need to switch Z and X
+            //If you want to go Left/Right you keep Z and X consistent
             if (input.IsKeyHeld(Keys.Up))
             {
-                RotX += -(float)Math.PI / 9;
+                RotX += ((float)Math.PI / 9) * m_kLookingDir.Z;
+                RotZ += -((float)Math.PI / 9) * m_kLookingDir.X;
             }
             if (input.IsKeyHeld(Keys.Down))
             {
-                RotX += (float)Math.PI / 9;
+                RotX += -((float)Math.PI / 9) * m_kLookingDir.Z;
+                RotZ += ((float)Math.PI / 9) * m_kLookingDir.X;
             }
             if (input.IsKeyHeld(Keys.Left))
             {
-                RotZ += (float)Math.PI / 9;
+                RotX += -((float)Math.PI / 9) * m_kLookingDir.X;
+                RotZ += -((float)Math.PI / 9) * m_kLookingDir.Z;
             }
             if (input.IsKeyHeld(Keys.Right))
             {
-                RotZ += -(float)Math.PI / 9;
+                RotX += ((float)Math.PI / 9) * m_kLookingDir.X;
+                RotZ += ((float)Math.PI / 9) * m_kLookingDir.Z;
             }
 
-            //for forward/backward movement
+
+            //Manually changing the camera rotation based on user input
+            if (input.IsADown)
+            {
+                manualCameraRotation += (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+            }
+            if (input.IsDDown)
+            {
+                manualCameraRotation -= (float)Math.PI / 4 * (float)gameTime.ElapsedGameTime.Ticks / System.TimeSpan.TicksPerMillisecond / 1000;
+            }
+
+            //camera rotation for 360 controller
             GamePadState gamePadState = input.CurrentGamePadStates[0];
+            manualCameraRotation += (float)Math.PI / 4 * gamePadState.ThumbSticks.Right.X * timeDelta * 5;
+            gameCamera.ManualCameraRotation(manualCameraRotation, player);
+
+            //for forward/backward movement
+            //GamePadState gamePadState = input.CurrentGamePadStates[0];
+           // RotX += ((float)Math.PI / 9) * m_kLookingDir.Z;
+           // RotZ += -((float)Math.PI / 9) * m_kLookingDir.X;
+
             RotX += ((float)Math.PI / 9) * m_kLookingDir.Z * gamePadState.ThumbSticks.Left.Y;
-            RotZ += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.Y;
+            RotZ += -((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.Y;
 
             //for Left/Right movement
             RotX += ((float)Math.PI / 9) * m_kLookingDir.X * gamePadState.ThumbSticks.Left.X;

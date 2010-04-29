@@ -19,7 +19,7 @@ namespace SuperDragonBall
             scale = 15;
 
             //quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
-            quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), 0);
+            quat = Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), 0);
 
             fMass = 10;
             bPhysicsDriven = true;
