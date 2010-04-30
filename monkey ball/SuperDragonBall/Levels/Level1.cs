@@ -44,7 +44,7 @@ namespace SuperDragonBall.Levels
             
             //goal
             goal = new GoalObject(game, host);
-            goal.position += new Vector3(0, 20, -720);
+            goal.position += new Vector3(0, 20, -820);
             goal.scale = 10;
 
             
