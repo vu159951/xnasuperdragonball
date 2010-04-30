@@ -16,8 +16,8 @@ Global Settings
     Header File = C:\Users\Yin\Desktop\bgm.h;
     Exclude Category Names = 0;
     Exclude Variable Names = 0;
-    Last Modified Low = 648545518;
-    Last Modified High = 30074881;
+    Last Modified Low = 1416896190;
+    Last Modified High = 30074883;
 
     Category
     {
@@ -227,33 +227,10 @@ Wave Bank
     Compression Preset Name = <none>;
     Xbox Bank Last Modified Low = 0;
     Xbox Bank Last Modified High = 0;
-    PC Bank Last Modified Low = 648575520;
-    PC Bank Last Modified High = 30074881;
-    Bank Last Revised Low = 572831188;
-    Bank Last Revised High = 30074881;
-
-    Wave
-    {
-        Name = bgm;
-        File = bgm.WAV;
-        Build Settings Last Modified Low = 1336759796;
-        Build Settings Last Modified High = 30074878;
-
-        Cache
-        {
-            Format Tag = 0;
-            Channels = 2;
-            Sampling Rate = 8000;
-            Bits Per Sample = 0;
-            Play Region Offset = 46;
-            Play Region Length = 652854;
-            Loop Region Offset = 0;
-            Loop Region Length = 0;
-            File Type = 1;
-            Last Modified Low = 4070241024;
-            Last Modified High = 29966831;
-        }
-    }
+    PC Bank Last Modified Low = 1416916191;
+    PC Bank Last Modified High = 30074883;
+    Bank Last Revised Low = 1339101740;
+    Bank Last Revised High = 30074883;
 
     Wave
     {
@@ -277,6 +254,29 @@ Wave Bank
             Last Modified High = 30074880;
         }
     }
+
+    Wave
+    {
+        Name = bgm;
+        File = bgm.wav;
+        Build Settings Last Modified Low = 1309200030;
+        Build Settings Last Modified High = 30074883;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 2;
+            Sampling Rate = 44100;
+            Bits Per Sample = 1;
+            Play Region Offset = 44;
+            Play Region Length = 30472892;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 365436050;
+            Last Modified High = 30074883;
+        }
+    }
 }
 
 Sound Bank
@@ -286,57 +286,10 @@ Sound Bank
     Windows File = Win\bgm.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
-    Bank Last Modified Low = 648605522;
-    Bank Last Modified High = 30074881;
+    Bank Last Modified Low = 1438067401;
+    Bank Last Modified High = 30074883;
     Header Last Modified High = 0;
     Header Last Modified Low = 0;
-
-    Sound
-    {
-        Name = bgm;
-        Volume = -1200;
-        Pitch = 0;
-        Priority = 0;
-
-        Category Entry
-        {
-            Name = Default;
-        }
-
-        Track
-        {
-            Volume = 0;
-            Use Filter = 0;
-
-            Play Wave Event
-            {
-                Break Loop = 0;
-                Use Speaker Position = 0;
-                Use Center Speaker = 1;
-                New Speaker Position On Loop = 1;
-                Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
-
-                Event Header
-                {
-                    Timestamp = 0;
-                    Relative = 0;
-                    Random Recurrence = 0;
-                    Random Offset = 0;
-                }
-
-                Wave Entry
-                {
-                    Bank Name = bgm;
-                    Bank Index = 0;
-                    Entry Name = bgm;
-                    Entry Index = 0;
-                    Weight = 255;
-                    Weight Min = 0;
-                }
-            }
-        }
-    }
 
     Sound
     {
@@ -377,7 +330,7 @@ Sound Bank
                     Bank Name = bgm;
                     Bank Index = 0;
                     Entry Name = zing;
-                    Entry Index = 1;
+                    Entry Index = 0;
                     Weight = 255;
                     Weight Min = 0;
                 }
@@ -385,23 +338,50 @@ Sound Bank
         }
     }
 
-    Cue
+    Sound
     {
         Name = bgm;
+        Volume = -1200;
+        Pitch = 0;
+        Priority = 0;
 
-        Variation
+        Category Entry
         {
-            Variation Type = 3;
-            Variation Table Type = 1;
-            New Variation on Loop = 0;
+            Name = Default;
         }
 
-        Sound Entry
+        Track
         {
-            Name = bgm;
-            Index = 0;
-            Weight Min = 0;
-            Weight Max = 255;
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaer Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = bgm;
+                    Bank Index = 0;
+                    Entry Name = bgm;
+                    Entry Index = 1;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
         }
     }
 
@@ -419,6 +399,26 @@ Sound Bank
         Sound Entry
         {
             Name = zing;
+            Index = 0;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+    }
+
+    Cue
+    {
+        Name = bgm;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = bgm;
             Index = 1;
             Weight Min = 0;
             Weight Max = 255;

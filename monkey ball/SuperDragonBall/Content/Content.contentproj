@@ -257,13 +257,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\bgm.WAV">
-      <Name>bgm</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Audio\bgm.xap">
       <Name>bgm</Name>
       <Importer>XactImporter</Importer>
@@ -273,6 +266,13 @@
   <ItemGroup>
     <Compile Include="Audio\zing.wav">
       <Name>zing</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\bgm.wav">
+      <Name>bgm</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
