@@ -1,5 +1,5 @@
-Signature = XACT2;
-Version = 16;
+Signature = XACT3;
+Version = 17;
 Content Version = 45;
 Release = March 2009;
 
@@ -235,7 +235,7 @@ Wave Bank
     Wave
     {
         Name = bgm;
-        File = bgm.WAV;
+        File = Dragon Ball Z Wavs\Dragon Ball Z Wavs\Cell (compressed).WAV;
         Build Settings Last Modified Low = 1336759796;
         Build Settings Last Modified High = 30074878;
 

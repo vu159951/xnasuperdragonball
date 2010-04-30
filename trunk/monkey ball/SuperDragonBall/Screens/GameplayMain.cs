@@ -225,6 +225,7 @@ namespace SuperDragonBall
                 if (activeLevel.IsCollidingWithGoal(player))
                 {
                     UnloadContent();
+                    soundbank.PlayCue("zing");
                     SwitchToNextLevel();
                 }
                 if (activeLevel.IsCollidingWithCollectable(player, ScreenManager.Game))
