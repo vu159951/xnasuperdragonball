@@ -43,7 +43,6 @@ namespace SuperDragonBall
        
             nonCollideAsset = new LevelPieceAsset(game, host, "cloud_2");
             //nonCollideAsset = new LevelPieceAsset(game, host, "DragonBall");
-            
         }
 
         /// <summary>

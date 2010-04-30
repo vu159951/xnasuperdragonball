@@ -80,6 +80,12 @@ namespace SuperDragonBall
             m_fScaleX = 1.0f;
             m_fScaleY = 1.0f;
             m_fScaleZ = 1.0f;
+            enableCelShading = true;
+            mixCelWithTexture = false;
+            celLightColor = Color.SkyBlue.ToVector4();
+            outlineThickness = 0.000f;
+            layerTwoSharp = 0.3f;
+            layerTwoContrib = 0.08f;
 
         }
 

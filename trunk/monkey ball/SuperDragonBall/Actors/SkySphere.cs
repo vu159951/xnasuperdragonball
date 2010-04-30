@@ -26,11 +26,15 @@ namespace SuperDragonBall
             quat = Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)Math.PI / 2);
 
             scale = 500;
+            textureName = "ysky";
+            mixCelWithTexture = true;
+            skyCulling = true;
+            //enableCelShading = true;
         }
 
         public override void Update(GameTime gameTime)
         {
-            //base.Update(gameTime);
+            base.Update(gameTime);
         }
 
 
