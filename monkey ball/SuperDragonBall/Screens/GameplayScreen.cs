@@ -46,6 +46,8 @@ namespace SuperDragonBall
         protected AudioEngine audio;
         protected WaveBank wavebank;
         protected SoundBank soundbank;
+        protected SoundEffect soundEffect;
+        
 
         public Matrix CameraMatrix {
             get {
@@ -140,9 +142,19 @@ namespace SuperDragonBall
 
             gameFont = content.Load<SpriteFont>("gamefont");
 
-            audio = new AudioEngine("Content/Sounds.xgs");
-            wavebank = new WaveBank(audio, "Content/XNAsteroids Waves.xwb");
-            soundbank = new SoundBank(audio, "Content/XNAsteroids Cues.xsb");
+            //audio = new AudioEngine("Content/Sounds.xgs");
+            //wavebank = new WaveBank(audio, "Content/XNAsteroids Waves.xwb");
+            //soundbank = new SoundBank(audio, "Content/XNAsteroids Cues.xsb");
+            //soundEffect = content.Load<SoundEffect>("bgm");
+            //engine = new AudioEngine("Content\\Audio\\PlaySound.xgs");
+            //soundBank = new SoundBank(engine, "Content\\Audio\\Sound Bank.xsb");
+            //waveBank = new WaveBank(engine, "Content\\Audio\\Wave Bank.xwb");
+
+            audio = new AudioEngine("Content\\Audio\\bgm.xgs");
+            wavebank = new WaveBank(audio, "Content\\Audio\\bgm.xwb");
+            soundbank = new SoundBank(audio, "Content\\Audio\\bgm.xsb");
+
+            soundbank.PlayCue("bgm");
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a

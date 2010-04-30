@@ -92,6 +92,7 @@ namespace SuperDragonBall
             base.LoadContent();
             sky = new SkySphere(ScreenManager.Game, this);
             player = new BallCharacter(ScreenManager.Game, this);
+            //soundEffect.Play(1.0f, 0.0f, 0.0f, true);
 
             //sets up the level
             SwitchToNextLevel();
@@ -165,6 +166,8 @@ namespace SuperDragonBall
             ScreenManager.Game.Components.Add(m_kCountdownTimer);
             ScreenManager.Game.Components.Add(m_kScoreKeeper);
             ScreenManager.Game.Components.Add(sky);
+
+            
 
             
 
