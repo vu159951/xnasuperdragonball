@@ -25,6 +25,10 @@ namespace SuperDragonBall.Actors
             //modelName = "cube";
             // TODO: Construct any child components here
             m_localRotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), -(float)Math.PI/2);
+            textureName = "1305";
+            mixCelWithTexture = true;
+            celLightColor = Color.Green.ToVector4();
+            enableCelShading = true;
         }
 
         /// <summary>

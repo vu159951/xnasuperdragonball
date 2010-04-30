@@ -75,6 +75,11 @@ namespace SuperDragonBall
         //private EffectParameter ambientColorParameter;
         private EffectParameter EyePositionParameter;
         private EffectParameter LightPositionParameter;
+        private EffectParameter enableTexParameter;
+        private EffectParameter outlineThicknessParameter;
+        private EffectParameter modelTextureParameter;
+        private EffectParameter layerTwoSharpParameter;
+        private EffectParameter layerTwoContribParameter;
 
         /// Data fields corresponding to the cel shader effect paramters
         private Matrix world, view, projection;
@@ -82,6 +87,15 @@ namespace SuperDragonBall
         private Vector4 diffuseLightColor;
         private Vector4 ambientLightColor;
         private Vector3 eyePosition;
+        protected Vector4 celLightColor = new Vector4(0.6f, 0.6f, 0.6f, 1.0f);
+        protected bool mixCelWithTexture = true;
+        protected float outlineThickness = 0.05f;
+        protected Texture2D modelTexture;
+        protected String textureName;
+        protected bool skyCulling = false;
+
+        protected float layerTwoSharp = 0.85f;
+        protected float layerTwoContrib = 0.3f;
 
         public Actor(Game game, GameplayScreen host)
             : base(game)
@@ -166,7 +180,7 @@ namespace SuperDragonBall
                 //Cel Shading
                 //Set the light direction to a fixed value.
                 //This will place the light source behind, to the right, and above the user.
-                diffuseLightDirection = new Vector3(-2.0f, 2, 0f);
+                diffuseLightDirection = new Vector3(1, 1, 0);
                 //ensure the light direction is normalized, or
                 //the shader will give some weird results
                 //diffuseLightDirection.Normalize();
@@ -199,20 +213,23 @@ namespace SuperDragonBall
             mesh.BoundingSphere);
             }
 
-            //Cel Shading
-           // celLightingEffect = contentManager.Load<Effect>("Cel");
-           // GetEffectParameters();
+            if (enableCelShading)
+            {
+                //Cel Shading
+                celLightingEffect = contentManager.Load<Effect>("Cel");
+                GetEffectParameters();
+                if (textureName == null)
+                    textureName = "2031";
+                modelTexture = contentManager.Load<Texture2D>(textureName);
 
-            //Calculate the projection properties first on any 
-            //load callback.  That way if the window gets resized,
-            //the perspective matrix is updated accordingly
-            float aspectRatio = (float)GraphicsDevice.Viewport.Width /
-                (float)GraphicsDevice.Viewport.Height;
-            float fov = MathHelper.PiOver4 * aspectRatio * 3 / 4;
-
-            //projection = Matrix.CreatePerspectiveFieldOfView(fov,
-            //    aspectRatio, .1f, 1000f);
-            projection = hostScreen.ProjectionMatrix;
+                //Calculate the projection properties first on any 
+                //load callback.  That way if the window gets resized,
+                //the perspective matrix is updated accordingly
+                float aspectRatio = (float)GraphicsDevice.Viewport.Width /
+                    (float)GraphicsDevice.Viewport.Height;
+                float fov = MathHelper.PiOver4 * aspectRatio * 3 / 4;
+                projection = hostScreen.ProjectionMatrix;
+            }
 
             base.LoadContent();
         }
@@ -251,6 +268,7 @@ namespace SuperDragonBall
             }
             else
             {
+                GraphicsDevice.RenderState.CullMode = CullMode.None;
 
                 foreach (ModelMesh mesh in model.Meshes)
                 {
@@ -471,6 +489,12 @@ namespace SuperDragonBall
             lightDirectionParameter = celLightingEffect.Parameters["LightDirection"];
             EyePositionParameter = celLightingEffect.Parameters["EyePosition"];
             LightPositionParameter = celLightingEffect.Parameters["LightPosition"];
+            enableTexParameter = celLightingEffect.Parameters["enableTex"];
+            outlineThicknessParameter = celLightingEffect.Parameters["offset"];
+            modelTextureParameter = celLightingEffect.Parameters["modelTexture"];
+            //skyCullingParameter = celLightingEffect.Parameters["skyCulling"];
+            layerTwoContribParameter = celLightingEffect.Parameters["LayerTwoContrib"];
+            layerTwoSharpParameter = celLightingEffect.Parameters["LayerTwoSharp"];
         }
 
         /// <summary>
@@ -487,9 +511,14 @@ namespace SuperDragonBall
 
             foreach (ModelMesh mesh in sampleMesh.Meshes)
             {
-                
+                layerTwoContribParameter.SetValue(layerTwoContrib);
+                layerTwoSharpParameter.SetValue(layerTwoSharp);
+                modelTextureParameter.SetValue(modelTexture);
+                outlineThicknessParameter.SetValue(outlineThickness);
                 worldParameter.SetValue(bones[mesh.ParentBone.Index] * worldTransform);
-                lightColorParameter.SetValue(new Vector4(hostScreen.SpecularColor, 1.0f));
+                lightColorParameter.SetValue(celLightColor);
+                enableTexParameter.SetValue(mixCelWithTexture);
+
                 foreach (ModelMeshPart meshPart in mesh.MeshParts)
                 {
                     //our sample meshes only contain a single part, so we don't need to bother
@@ -521,6 +550,20 @@ namespace SuperDragonBall
                     //one in order
                     for (int i = 0; i < effect.CurrentTechnique.Passes.Count; i++)
                     {
+                        if (i == 1)
+                        {
+                            if (skyCulling)
+                            {
+                                GraphicsDevice.RenderState.CullMode = CullMode.None;
+                            }
+
+                            else
+                            {
+                                GraphicsDevice.RenderState.CullMode = CullMode.CullClockwiseFace;
+                            }
+                        }
+
+
                         //EffectPass.Begin will update the device to
                         //begin using the state information defined in the current pass
                         effect.CurrentTechnique.Passes[i].Begin();

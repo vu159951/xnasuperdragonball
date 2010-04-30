@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace SuperDragonBall
 {
@@ -29,7 +30,11 @@ namespace SuperDragonBall
 
             //rotationAxis = Vector3.Up;
             rotationVelocity = 1;
-           
+
+            mixCelWithTexture = true;
+            celLightColor = Color.Gold.ToVector4();
+            textureName = "dBallT";
+            enableCelShading = true;
         }
 
         public override void Update(GameTime gameTime)

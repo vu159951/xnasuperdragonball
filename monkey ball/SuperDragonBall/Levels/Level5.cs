@@ -24,18 +24,42 @@ namespace SuperDragonBall.Levels
             : base(game, host)
         {
 
-            startingLocation = new Vector3(1f, 905f, 1f);
+            startingLocation = new Vector3(1f, 605f, 1f);
             //make a few planes
 
             CollisionLevelPiece currentPlane;
             currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
             currentPlane.ScaleX = 30f;
             currentPlane.ScaleY = 15f;
-            currentPlane.ScaleZ = 60f;
+            currentPlane.ScaleZ = 45f;
 
-            currentPlane.position += new Vector3(0f, 440f, -400f);
-            currentPlane.setLocalRotation(MathHelper.ToRadians(-30), 0);
+            currentPlane.position += new Vector3(0f, 40f, -200f);
+            //currentPlane.setLocalRotation(MathHelper.ToRadians(-30), 0);
             planes.Add(currentPlane);
+
+            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
+            currentPlane.ScaleX = 10f;
+            currentPlane.ScaleY = 10f;
+            currentPlane.ScaleZ = 10f;
+            currentPlane.position += new Vector3(-400f, 40f, -800f);
+            currentPlane.setLocalRotation(0, MathHelper.ToRadians(-20));
+            planes.Add(currentPlane);
+
+            currentPlane = new CollisionLevelPiece(game, host, "checker_plane_3");
+            currentPlane.ScaleX = 10f;
+            currentPlane.ScaleY = 10f;
+            currentPlane.ScaleZ = 30f;
+            currentPlane.position += new Vector3(400f, 40f, -1100f);
+            currentPlane.setLocalRotation(0, MathHelper.ToRadians(20));
+            planes.Add(currentPlane);
+
+
+            MovingLevelPiece movingPlane;
+            movingPlane = new MovingLevelPiece(game, host, "checker_plane_3", new Vector3(300, 485f, 0), 85f);
+            movingPlane.scale = 15;
+            movingPlane.position += new Vector3(-350f, -150f, -1260f);
+            planes.Add(movingPlane);
+
 
             /*
             MovingLevelPiece movingPlane;
@@ -63,7 +87,7 @@ namespace SuperDragonBall.Levels
 
             //goal
             goal = new GoalObject(game, host);
-            goal.position += new Vector3(0, 300, -1540);
+            goal.position += new Vector3(150, -100, -1540);
             goal.scale = 10;
 
             //collectables

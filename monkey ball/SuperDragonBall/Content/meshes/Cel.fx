@@ -23,10 +23,18 @@ float LayerOneContrib = 0.05; // This is a multiplier for the final layer contri
 float LayerTwoSharp = 0.85; //This should be very sharp 0.85 is a good default
 float LayerTwoRough = 5.0f; //Highlight shoul1d be small 5.0f-10.0f is good start.
 float LayerTwoContrib = 0.3f; //0.3 f wil get you pretty close to white without blowing the highlight out. Set it to 0 if you don't want a spec highlight
+bool enableTex;
+float offset;
+texture modelTexture;
+//cullMode skyCulling = 2;
 
 //Sampler for the color texture applid to the model
 sampler TextureSampler = sampler_state
 {
+
+    // all samplers must specify which texture they are sampling from.
+    Texture = <modelTexture>;
+    
     AddressU  = WRAP;
     AddressV  = WRAP;
     MIPFILTER = LINEAR;
@@ -92,7 +100,7 @@ VS_OUTPUT2 Outline(VS_INPUT Input)
 	//You may need to increase this or better yet, caluclat it based on the distance
 	//between your camera and your model.
 	//float offset = 0.003;
-	float offset = 0.05;
+	//float offset = 0.05;
 	
 	float4x4 WorldViewProjection = mul(mul(world, view), projection);
 	
@@ -129,8 +137,13 @@ float4 Cel(PS_INPUT Input) : COLOR0
 	float4 layerOneColor	= smoothstep(0.72f-oneW, 0.72f+oneW, pow(saturate(dot(Reflection, ViewDirection)), LayerOneRough));
 	float4 layerTwoColor	= smoothstep(0.72f-twoW, 0.72f+twoW, pow(saturate(dot(Reflection, ViewDirection)), LayerTwoRough));
 	
-	float4 baseColor		= tex2D(TextureSampler, Input.Texcoord) * (lightColor*0.6f);
-	//float4 baseColor		= lightColor*0.6f;
+	float4 baseColor;
+	if(enableTex){
+	 baseColor		= tex2D(TextureSampler, Input.Texcoord) * (lightColor);
+	}
+	else{
+	 baseColor		= lightColor*0.6f;
+	}
 	
 	float4 color			= (baseColor + LayerOneContrib*layerOneColor) + LayerTwoContrib*layerTwoColor;
 	color.a					= 1.0;
@@ -141,18 +154,18 @@ float4 Cel(PS_INPUT Input) : COLOR0
 //This is the ouline pixel shader. It just outputs unlit black.
 float4 Black() : COLOR
 {
-   //return float4(0.0f, 0.0f, 0.0f, 1.0f);
    return float4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 technique Toon
 {
-	//Render the Cel shader surface color
+		//Render the Cel shader surface color
 	pass P0
 	{
 		VertexShader = compile vs_3_0 Transform();
 		PixelShader  = compile ps_3_0 Cel();
 		CullMode = CCW;
+
 	}
 	
 	//Render the outline surface inverted to create fake edge detection
@@ -160,7 +173,10 @@ technique Toon
 	{
 		VertexShader = compile vs_3_0 Outline();
 		PixelShader  = compile ps_3_0 Black();
-		CullMode = CW;
+
+		//CullMode = skyCulling;
 	}
+	
+
 	
 }
